@@ -1,0 +1,1118 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Free online photo grid overlay tool - Add custom grid lines to your images. Customizable columns, rows, colors, line width and opacity. No registration required." />
+    <meta name="keywords" content="photo grid, image grid overlay, grid generator, photo overlay, grid lines, picture grid, online grid tool, free grid overlay, photo grid maker" />
+    <meta name="author" content="Photo Grid Overlay" />
+    <meta name="robots" content="index, follow" />
+    <meta name="theme-color" content="#667eea" />
+    <title>Photo Grid Overlay - Add Custom Grid Lines to Images Online</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app"></div>
+    <script type="module">
+      import { createApp, ref, watchEffect } from 'https://cdn.jsdelivr.net/npm/vue@3.4.21/dist/vue.esm-browser.prod.js'
+
+      const AppHeader = {
+        template: `
+          <header class="header">
+            <h1>{{ title }}</h1>
+            <p>{{ subtitle }}</p>
+          </header>
+        `,
+        props: {
+          title: { type: String, default: 'Photo Grid Overlay' },
+          subtitle: { type: String, default: 'Upload image and add customizable grid lines' }
+        }
+      }
+
+      const UploadArea = {
+        template: `
+          <div class="upload-section">
+            <div 
+              class="upload-area" 
+              :class="{ dragover: isDragging }"
+              @click="triggerUpload" 
+              @dragover.prevent="isDragging = true"
+              @dragleave.prevent="isDragging = false"
+              @drop.prevent="handleDrop"
+            >
+              <input 
+                ref="fileInput" 
+                type="file" 
+                accept="image/*" 
+                class="file-input"
+                @change="handleFileSelect"
+              />
+              <div class="upload-placeholder">
+                <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                  <polyline points="17 8 12 3 7 8"></polyline>
+                  <line x1="12" y1="3" x2="12" y2="15"></line>
+                </svg>
+                <p>{{ label }}</p>
+                <span>{{ hint }}</span>
+              </div>
+            </div>
+          </div>
+        `,
+        props: {
+          label: { type: String, default: 'Click or drag to upload image' },
+          hint: { type: String, default: 'Supported formats: JPG, PNG, GIF' }
+        },
+        emits: ['file-selected'],
+        setup(props, { emit, expose }) {
+          const fileInput = ref(null)
+          const isDragging = ref(false)
+
+          const triggerUpload = () => fileInput.value?.click()
+
+          const handleFileSelect = (event) => {
+            const file = event.target.files?.[0]
+            if (file) emit('file-selected', file)
+          }
+
+          const handleDrop = (event) => {
+            isDragging.value = false
+            const file = event.dataTransfer?.files?.[0]
+            if (file && file.type.startsWith('image/')) emit('file-selected', file)
+          }
+
+          const reset = () => {
+            if (fileInput.value) fileInput.value.value = ''
+          }
+
+          expose({ reset })
+          return { fileInput, isDragging, triggerUpload, handleFileSelect, handleDrop }
+        }
+      }
+
+      const GridControls = {
+        template: `
+          <div class="controls-panel">
+            <h3>{{ title }}</h3>
+            
+            <div class="control-group">
+              <label>{{ columnsLabel }}</label>
+              <input 
+                type="number" 
+                v-model.number="localCols" 
+                min="1" 
+                max="50"
+                class="number-input"
+                @input="emitUpdate"
+              />
+            </div>
+
+            <div class="control-group">
+              <label>{{ rowsLabel }}</label>
+              <input 
+                type="number" 
+                v-model.number="localRows" 
+                min="1" 
+                max="50"
+                class="number-input"
+                @input="emitUpdate"
+              />
+            </div>
+
+            <div class="control-group">
+              <label>{{ colorLabel }}</label>
+              <div class="color-picker-wrapper">
+                <input 
+                  type="color" 
+                  v-model="localColor" 
+                  class="color-input"
+                  @input="emitUpdate"
+                />
+                <span class="color-value">{{ localColor }}</span>
+              </div>
+            </div>
+
+            <div class="control-group">
+              <label>{{ lineWidthLabel }}</label>
+              <input 
+                type="range" 
+                v-model.number="localLineWidth" 
+                min="1" 
+                max="10"
+                class="range-input"
+                @input="emitUpdate"
+              />
+              <span>{{ localLineWidth }}px</span>
+            </div>
+
+            <div class="control-group">
+              <label>{{ opacityLabel }}</label>
+              <input 
+                type="range" 
+                v-model.number="localOpacity" 
+                min="10" 
+                max="100"
+                class="range-input"
+                @input="emitUpdate"
+              />
+              <span>{{ localOpacity }}%</span>
+            </div>
+
+            <div class="control-group checkbox-group">
+              <label class="checkbox-label">
+                <input 
+                  type="checkbox" 
+                  v-model="localShowLabels" 
+                  @change="emitUpdate"
+                />
+                <span>{{ showLabelsLabel }}</span>
+              </label>
+            </div>
+
+            <div class="button-group">
+              <button class="btn btn-primary" :disabled="!canDownload" @click="$emit('download')">{{ downloadLabel }}</button>
+              <button class="btn btn-secondary" @click="$emit('clear')">{{ clearLabel }}</button>
+            </div>
+          </div>
+        `,
+        props: {
+          title: { type: String, default: 'Grid Settings' },
+          columnsLabel: { type: String, default: 'Columns' },
+          rowsLabel: { type: String, default: 'Rows' },
+          colorLabel: { type: String, default: 'Grid Color' },
+          lineWidthLabel: { type: String, default: 'Line Width' },
+          opacityLabel: { type: String, default: 'Opacity' },
+          showLabelsLabel: { type: String, default: 'Show Grid Labels' },
+          downloadLabel: { type: String, default: 'Download Image' },
+          clearLabel: { type: String, default: 'Upload New Image' },
+          cols: { type: Number, default: 3 },
+          rows: { type: Number, default: 3 },
+          color: { type: String, default: '#ff0000' },
+          lineWidth: { type: Number, default: 2 },
+          opacity: { type: Number, default: 50 },
+          showLabels: { type: Boolean, default: true },
+          canDownload: { type: Boolean, default: false }
+        },
+        emits: ['update', 'download', 'clear'],
+        setup(props, { emit }) {
+          const localCols = ref(props.cols)
+          const localRows = ref(props.rows)
+          const localColor = ref(props.color)
+          const localLineWidth = ref(props.lineWidth)
+          const localOpacity = ref(props.opacity)
+          const localShowLabels = ref(props.showLabels)
+
+          const emitUpdate = () => {
+            emit('update', {
+              cols: localCols.value,
+              rows: localRows.value,
+              color: localColor.value,
+              lineWidth: localLineWidth.value,
+              opacity: localOpacity.value,
+              showLabels: localShowLabels.value
+            })
+          }
+
+          return { localCols, localRows, localColor, localLineWidth, localOpacity, localShowLabels, emitUpdate }
+        }
+      }
+
+      const ImageCanvas = {
+        template: `
+          <div class="canvas-container">
+            <div class="image-wrapper">
+              <img 
+                :src="imageSrc" 
+                ref="imageRef" 
+                @load="onImageLoad" 
+                class="original-image" 
+              />
+              <canvas 
+                ref="canvasRef" 
+                class="grid-overlay"
+                :style="{ opacity: opacity / 100, width: imageWidth + 'px', height: imageHeight + 'px' }"
+              ></canvas>
+            </div>
+            <div v-if="showInfo" class="preview-info">
+              {{ infoLabel }}: {{ imageWidth }} × {{ imageHeight }} | {{ gridLabel }}: {{ gridCols }} × {{ gridRows }}
+            </div>
+          </div>
+        `,
+        props: {
+          imageSrc: { type: String, required: true },
+          gridCols: { type: Number, default: 3 },
+          gridRows: { type: Number, default: 3 },
+          gridColor: { type: String, default: '#ff0000' },
+          lineWidth: { type: Number, default: 2 },
+          opacity: { type: Number, default: 50 },
+          showInfo: { type: Boolean, default: true },
+          infoLabel: { type: String, default: 'Preview Size' },
+          gridLabel: { type: String, default: 'Grid' },
+          showLabels: { type: Boolean, default: true }
+        },
+        emits: ['loaded', 'dimensions'],
+        setup(props, { emit, expose }) {
+          const imageRef = ref(null)
+          const canvasRef = ref(null)
+          const imageWidth = ref(0)
+          const imageHeight = ref(0)
+          const imageLoaded = ref(false)
+
+          const drawGrid = () => {
+            if (!imageRef.value || !canvasRef.value || !imageLoaded.value) return
+            
+            const img = imageRef.value
+            const canvas = canvasRef.value
+            const ctx = canvas.getContext('2d')
+            
+            const displayWidth = img.offsetWidth
+            const displayHeight = img.offsetHeight
+            
+            if (displayWidth === 0 || displayHeight === 0) return
+            
+            canvas.width = displayWidth
+            canvas.height = displayHeight
+            
+            ctx.clearRect(0, 0, canvas.width, canvas.height)
+            
+            ctx.strokeStyle = props.gridColor
+            ctx.lineWidth = props.lineWidth
+            
+            const colWidth = canvas.width / props.gridCols
+            const rowHeight = canvas.height / props.gridRows
+            
+            for (let i = 1; i < props.gridCols; i++) {
+              ctx.beginPath()
+              ctx.moveTo(colWidth * i, 0)
+              ctx.lineTo(colWidth * i, canvas.height)
+              ctx.stroke()
+            }
+            
+            for (let i = 1; i < props.gridRows; i++) {
+              ctx.beginPath()
+              ctx.moveTo(0, rowHeight * i)
+              ctx.lineTo(canvas.width, rowHeight * i)
+              ctx.stroke()
+            }
+            
+            if (props.showLabels) {
+              ctx.fillStyle = props.gridColor
+              ctx.font = 'bold 12px Arial'
+              ctx.textAlign = 'right'
+              ctx.textBaseline = 'bottom'
+              
+              for (let row = 0; row < props.gridRows; row++) {
+                for (let col = 0; col < props.gridCols; col++) {
+                  const letter = String.fromCharCode(65 + col)
+                  const label = `${letter}${row + 1}`
+                  const x = colWidth * (col + 1) - 4
+                  const y = rowHeight * (row + 1) - 4
+                  ctx.fillText(label, x, y)
+                }
+              }
+            }
+          }
+
+          const onImageLoad = () => {
+            if (imageRef.value) {
+              imageLoaded.value = true
+              requestAnimationFrame(() => {
+                if (imageRef.value) {
+                  imageWidth.value = imageRef.value.offsetWidth
+                  imageHeight.value = imageRef.value.offsetHeight
+                  emit('dimensions', { width: imageWidth.value, height: imageHeight.value })
+                  emit('loaded')
+                  drawGrid()
+                }
+              })
+            }
+          }
+
+          const getCanvasWithGrid = () => {
+            if (!imageRef.value) return null
+            
+            const img = imageRef.value
+            const canvas = document.createElement('canvas')
+            const ctx = canvas.getContext('2d')
+            
+            const displayWidth = img.offsetWidth || img.naturalWidth
+            const displayHeight = img.offsetHeight || img.naturalHeight
+            
+            canvas.width = displayWidth
+            canvas.height = displayHeight
+            
+            ctx.drawImage(img, 0, 0, displayWidth, displayHeight)
+            
+            ctx.strokeStyle = props.gridColor
+            ctx.lineWidth = props.lineWidth
+            
+            const colWidth = canvas.width / props.gridCols
+            const rowHeight = canvas.height / props.gridRows
+            
+            for (let i = 1; i < props.gridCols; i++) {
+              ctx.beginPath()
+              ctx.moveTo(colWidth * i, 0)
+              ctx.lineTo(colWidth * i, canvas.height)
+              ctx.stroke()
+            }
+            
+            for (let i = 1; i < props.gridRows; i++) {
+              ctx.beginPath()
+              ctx.moveTo(0, rowHeight * i)
+              ctx.lineTo(canvas.width, rowHeight * i)
+              ctx.stroke()
+            }
+            
+            if (props.showLabels) {
+              ctx.fillStyle = props.gridColor
+              ctx.font = 'bold 12px Arial'
+              ctx.textAlign = 'right'
+              ctx.textBaseline = 'bottom'
+              
+              for (let row = 0; row < props.gridRows; row++) {
+                for (let col = 0; col < props.gridCols; col++) {
+                  const letter = String.fromCharCode(65 + col)
+                  const label = `${letter}${row + 1}`
+                  const x = colWidth * (col + 1) - 4
+                  const y = rowHeight * (row + 1) - 4
+                  ctx.fillText(label, x, y)
+                }
+              }
+            }
+            
+            return canvas
+          }
+
+          expose({ getCanvasWithGrid })
+          
+          watchEffect(() => {
+            const _cols = props.gridCols
+            const _rows = props.gridRows
+            const _color = props.gridColor
+            const _lineWidth = props.lineWidth
+            const _opacity = props.opacity
+            const _showLabels = props.showLabels
+            drawGrid()
+          })
+          
+          return { imageRef, canvasRef, imageWidth, imageHeight, onImageLoad, drawGrid }
+        }
+      }
+
+      const FeaturesSection = {
+        template: `
+          <section class="features-section">
+            <div class="features-container">
+              <div class="features-header">
+                <h2>{{ title }}</h2>
+                <p>{{ subtitle }}</p>
+              </div>
+              
+              <div class="features-grid">
+                <div 
+                  v-for="(feature, index) in features" 
+                  :key="index"
+                  class="feature-card"
+                >
+                  <div class="feature-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path :d="feature.iconPath" />
+                    </svg>
+                  </div>
+                  <h3>{{ feature.title }}</h3>
+                  <p>{{ feature.description }}</p>
+                </div>
+              </div>
+
+              <div class="how-it-works">
+                <h3>{{ stepsTitle }}</h3>
+                <div class="steps-grid">
+                  <div 
+                    v-for="(step, index) in steps" 
+                    :key="index"
+                    class="step-card"
+                  >
+                    <div class="step-number">{{ index + 1 }}</div>
+                    <h4>{{ step.title }}</h4>
+                    <p>{{ step.description }}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+        `,
+        props: {
+          title: { type: String, default: 'Why Choose Us' },
+          subtitle: { type: String, default: 'Simple, Fast, Professional Photo Grid Tool' },
+          stepsTitle: { type: String, default: 'How It Works' },
+          features: {
+            type: Array,
+            default: () => [
+              { iconPath: 'M12 20h9', title: 'Custom Grid', description: 'Customizable grid columns and rows for precise control' },
+              { iconPath: 'M20 7h-9', title: 'Rich Styles', description: 'Multiple color options with adjustable line width and opacity' },
+              { iconPath: 'M12 17c-3.866 0-7-3.134-7-7s3.134-7 7-7 7 3.134 7 7-3.134 7-7 7zm0-12c-2.761 0-5 2.239-5 5s2.239 5 5 5 5-2.239 5-5-2.239-5-5-5z', title: 'Privacy Protection', description: 'All operations are done locally. No data is uploaded to servers.' },
+              { iconPath: 'M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4', title: 'Quick Export', description: 'One-click download of high-quality images with grid overlay' }
+            ]
+          },
+          steps: {
+            type: Array,
+            default: () => [
+              { title: 'Upload Image', description: 'Click or drag to upload the image you want to add grid to' },
+              { title: 'Adjust Settings', description: 'Set grid columns, rows, color, line width and opacity' },
+              { title: 'Preview Effect', description: 'Real-time preview of grid effect with instant adjustments' },
+              { title: 'Download Image', description: 'Click download button to save the image with grid overlay' }
+            ]
+          }
+        }
+      }
+
+      const AppFooter = {
+        template: `
+          <footer class="footer">
+            <div class="footer-content">
+              <div class="footer-links">
+                <a 
+                  v-for="link in links" 
+                  :key="link.label"
+                  :href="link.url"
+                  class="footer-link"
+                  @click.prevent="$emit('navigate', link)"
+                >
+                  {{ link.label }}
+                </a>
+              </div>
+              <div class="footer-copyright">
+                <p>&copy; {{ year }} {{ company }}. All rights reserved.</p>
+              </div>
+            </div>
+          </footer>
+        `,
+        props: {
+          company: { type: String, default: 'Photo Grid App' },
+          links: {
+            type: Array,
+            default: () => [
+              { label: 'Privacy Policy', url: '#privacy' },
+              { label: 'Terms of Service', url: '#terms' },
+              { label: 'About Us', url: '#about' }
+            ]
+          }
+        },
+        emits: ['navigate'],
+        setup() {
+          const year = ref(new Date().getFullYear())
+          return { year }
+        }
+      }
+
+      const App = {
+        template: `
+          <div class="app-container">
+            <AppHeader 
+              title="Photo Grid Overlay"
+              subtitle="Upload image and add customizable grid lines"
+            />
+
+            <main class="main-content">
+              <div class="workspace">
+                <GridControls 
+                  title="Grid Settings"
+                  :cols="gridCols"
+                  :rows="gridRows"
+                  :color="gridColor"
+                  :line-width="lineWidth"
+                  :opacity="opacity"
+                  :show-labels="showLabels"
+                  :can-download="hasUserUploadedImage"
+                  @update="handleGridUpdate"
+                  @download="downloadImage"
+                  @clear="clearImage"
+                />
+
+                <div class="canvas-wrapper">
+                  <div class="upload-btn-wrapper">
+                    <input 
+                      ref="fileInput" 
+                      type="file" 
+                      accept="image/*" 
+                      class="file-input"
+                      @change="handleFileSelected"
+                    />
+                    <button class="btn btn-upload" @click="triggerUpload">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                        <polyline points="17 8 12 3 7 8"></polyline>
+                        <line x1="12" y1="3" x2="12" y2="15"></line>
+                      </svg>
+                      Change Image
+                    </button>
+                  </div>
+                  <ImageCanvas 
+                    ref="imageCanvasRef"
+                    :image-src="imageSrc"
+                    :grid-cols="gridCols"
+                    :grid-rows="gridRows"
+                    :grid-color="gridColor"
+                    :line-width="lineWidth"
+                    :opacity="opacity"
+                    :show-info="true"
+                    info-label="Preview Size"
+                    grid-label="Grid"
+                    :show-labels="showLabels"
+                  />
+                </div>
+              </div>
+            </main>
+
+            <FeaturesSection 
+              title="Why Choose Us"
+              subtitle="Simple, Fast, Professional Photo Grid Tool"
+              steps-title="How It Works"
+            />
+            
+            <AppFooter 
+              company="Photo Grid App"
+              @navigate="handleFooterNavigate"
+            />
+          </div>
+        `,
+        components: { AppHeader, UploadArea, GridControls, ImageCanvas, FeaturesSection, AppFooter },
+        setup() {
+          const uploadAreaRef = ref(null)
+          const imageCanvasRef = ref(null)
+          const fileInput = ref(null)
+          const defaultImage = 'https://picsum.photos/800/600?random=1'
+          const imageSrc = ref(defaultImage)
+          const hasUserUploadedImage = ref(false)
+          const gridCols = ref(4)
+          const gridRows = ref(3)
+          const gridColor = ref('#00ff00')
+          const lineWidth = ref(2)
+          const opacity = ref(50)
+          const showLabels = ref(true)
+
+          const triggerUpload = () => {
+            const fileInput = document.querySelector('.canvas-wrapper .file-input')
+            if (fileInput) fileInput.click()
+          }
+
+          const handleFileSelected = (event) => {
+            const file = event.target.files?.[0]
+            if (file) {
+              hasUserUploadedImage.value = true
+              const reader = new FileReader()
+              reader.onload = (e) => imageSrc.value = e.target.result
+              reader.readAsDataURL(file)
+            }
+            event.target.value = ''
+          }
+
+          const handleGridUpdate = (settings) => {
+            gridCols.value = settings.cols
+            gridRows.value = settings.rows
+            gridColor.value = settings.color
+            lineWidth.value = settings.lineWidth
+            opacity.value = settings.opacity
+            if (settings.showLabels !== undefined) {
+              showLabels.value = settings.showLabels
+            }
+          }
+
+          const downloadImage = () => {
+            if (!imageCanvasRef.value || !hasUserUploadedImage.value) return
+            const canvas = imageCanvasRef.value.getCanvasWithGrid()
+            if (canvas) {
+              const link = document.createElement('a')
+              link.download = 'grid-image.png'
+              link.href = canvas.toDataURL('image/png')
+              link.click()
+            }
+          }
+
+          const clearImage = () => {
+            const fileInput = document.querySelector('.canvas-wrapper .file-input')
+            if (fileInput) fileInput.click()
+          }
+
+          const handleFooterNavigate = (link) => {
+            console.log('Navigate to:', link.label, link.url)
+            if (link.label === 'Privacy Policy') {
+              alert('Privacy Policy\n\nWe respect your privacy.\n\n1. We do not collect any personal information.\n2. Images you upload are processed locally only and never sent to any server.\n3. All operations are performed on your device.')
+            } else if (link.label === 'Terms of Service') {
+              alert('Terms of Service\n\nBy using this tool, you agree to:\n\n1. Only process images that you have the right to use.\n2. Not use this tool for any illegal purposes.\n3. Take full responsibility for any consequences arising from using this tool.')
+            } else if (link.label === 'About Us') {
+              alert('About Us\n\nPhoto Grid Overlay is a free online photo grid tool.\n\nFeatures:\n• Customizable grid columns and rows\n• Adjustable grid color and opacity\n• Image download support\n• Local processing for privacy protection')
+            }
+          }
+
+          return {
+            uploadAreaRef,
+            imageCanvasRef,
+            imageSrc,
+            hasUserUploadedImage,
+            gridCols,
+            gridRows,
+            gridColor,
+            lineWidth,
+            opacity,
+            showLabels,
+            triggerUpload,
+            handleFileSelected,
+            handleGridUpdate,
+            downloadImage,
+            clearImage,
+            handleFooterNavigate
+          }
+        }
+      }
+
+      createApp(App).mount('#app')
+    </script>
+    <style>
+      .app-container {
+        min-height: 100vh;
+        padding: 20px;
+      }
+      .header {
+        text-align: center;
+        color: white;
+        margin-bottom: 30px;
+      }
+      .header h1 {
+        font-size: 2.5rem;
+        margin-bottom: 10px;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+      }
+      .header p {
+        font-size: 1.1rem;
+        opacity: 0.9;
+      }
+      .main-content {
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+      .upload-section {
+        background: white;
+        border-radius: 16px;
+        padding: 60px 20px;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+      }
+      .upload-area {
+        border: 3px dashed #ddd;
+        border-radius: 12px;
+        padding: 40px;
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+      .upload-area:hover,
+      .upload-area.dragover {
+        border-color: #667eea;
+        background-color: #f8f9ff;
+      }
+      .file-input {
+        display: none;
+      }
+      .upload-placeholder svg {
+        color: #667eea;
+        margin-bottom: 20px;
+      }
+      .upload-placeholder p {
+        font-size: 1.2rem;
+        color: #333;
+        margin-bottom: 8px;
+      }
+      .upload-placeholder span {
+        color: #666;
+        font-size: 0.9rem;
+      }
+      .workspace {
+        display: grid;
+        grid-template-columns: 320px 1fr;
+        gap: 24px;
+      }
+      .controls-panel {
+        background: white;
+        border-radius: 16px;
+        padding: 24px;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+        height: fit-content;
+        position: sticky;
+        top: 20px;
+      }
+      .controls-panel h3 {
+        font-size: 1.3rem;
+        margin-bottom: 24px;
+        color: #333;
+        border-bottom: 2px solid #eee;
+        padding-bottom: 12px;
+      }
+      .control-group {
+        margin-bottom: 20px;
+      }
+      .control-group label {
+        display: block;
+        font-weight: 600;
+        color: #555;
+        margin-bottom: 8px;
+      }
+      .number-input {
+        width: 100%;
+        padding: 10px 14px;
+        border: 2px solid #ddd;
+        border-radius: 8px;
+        font-size: 1rem;
+        transition: border-color 0.3s ease;
+      }
+      .number-input:focus {
+        outline: none;
+        border-color: #667eea;
+      }
+      .color-picker-wrapper {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+      .color-input {
+        width: 50px;
+        height: 40px;
+        border: 2px solid #ddd;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: border-color 0.3s ease;
+      }
+      .color-input:focus {
+        outline: none;
+        border-color: #667eea;
+      }
+      .color-value {
+        font-family: monospace;
+        font-size: 0.9rem;
+        color: #666;
+      }
+      .range-input {
+        width: 100%;
+        height: 6px;
+        border-radius: 3px;
+        background: #ddd;
+        outline: none;
+        -webkit-appearance: none;
+      }
+      .range-input::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        width: 18px;
+        height: 18px;
+        border-radius: 50%;
+        background: #667eea;
+        cursor: pointer;
+        transition: transform 0.2s ease;
+      }
+      .range-input::-webkit-slider-thumb:hover {
+        transform: scale(1.1);
+      }
+      .control-group span {
+        display: inline-block;
+        margin-top: 8px;
+        font-weight: 600;
+        color: #667eea;
+      }
+      .checkbox-group {
+        margin-bottom: 20px;
+      }
+      .checkbox-label {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        cursor: pointer;
+        font-weight: 600;
+        color: #555;
+      }
+      .checkbox-label input[type="checkbox"] {
+        width: 18px;
+        height: 18px;
+        cursor: pointer;
+        accent-color: #667eea;
+      }
+      .checkbox-label span {
+        margin-top: 0;
+        color: #555;
+      }
+      .button-group {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        margin-top: 24px;
+      }
+      .btn {
+        padding: 12px 24px;
+        border: none;
+        border-radius: 8px;
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+      .btn-primary {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+      }
+      .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+      }
+      .btn-primary:disabled {
+        background: #ccc;
+        cursor: not-allowed;
+        transform: none;
+        box-shadow: none;
+      }
+      .btn-secondary {
+        background: #f0f0f0;
+        color: #555;
+      }
+      .btn-secondary:hover {
+        background: #e0e0e0;
+      }
+      .canvas-wrapper {
+        background: white;
+        border-radius: 16px;
+        padding: 24px;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+      }
+      .upload-btn-wrapper {
+        margin-bottom: 16px;
+        display: flex;
+        justify-content: flex-end;
+      }
+      .btn-upload {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 20px;
+        border: 2px solid #667eea;
+        border-radius: 8px;
+        background: white;
+        color: #667eea;
+        font-size: 0.95rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+      .btn-upload:hover {
+        background: #f8f9ff;
+        transform: translateY(-1px);
+      }
+      .canvas-container {
+        background: white;
+        border-radius: 16px;
+        padding: 24px;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+      }
+      .image-wrapper {
+        position: relative;
+        display: inline-block;
+        max-width: 100%;
+      }
+      .original-image {
+        display: block;
+        max-width: 100%;
+        border-radius: 8px;
+      }
+      .grid-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        border-radius: 8px;
+        pointer-events: none;
+      }
+      .preview-info {
+        margin-top: 16px;
+        padding: 12px;
+        background: #f8f9ff;
+        border-radius: 8px;
+        font-size: 0.9rem;
+        color: #666;
+      }
+      .features-section {
+        padding: 40px 20px;
+        background: rgba(255, 255, 255, 0.05);
+      }
+      .features-container {
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+      .features-header {
+        text-align: center;
+        color: white;
+        margin-bottom: 40px;
+      }
+      .features-header h2 {
+        font-size: 2rem;
+        margin-bottom: 12px;
+      }
+      .features-header p {
+        font-size: 1.1rem;
+        opacity: 0.9;
+      }
+      .features-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 24px;
+        margin-bottom: 40px;
+      }
+      .feature-card {
+        background: white;
+        border-radius: 16px;
+        padding: 24px;
+        text-align: center;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+      }
+      .feature-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+      }
+      .feature-icon {
+        width: 64px;
+        height: 64px;
+        margin: 0 auto 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border-radius: 16px;
+        color: white;
+      }
+      .feature-card h3 {
+        font-size: 1.25rem;
+        margin-bottom: 12px;
+        color: #333;
+      }
+      .feature-card p {
+        color: #666;
+        font-size: 0.95rem;
+        line-height: 1.6;
+      }
+      .how-it-works {
+        background: white;
+        border-radius: 16px;
+        padding: 32px;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+      }
+      .how-it-works h3 {
+        text-align: center;
+        font-size: 1.5rem;
+        color: #333;
+        margin-bottom: 32px;
+      }
+      .steps-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 24px;
+      }
+      .step-card {
+        text-align: center;
+      }
+      .step-number {
+        width: 48px;
+        height: 48px;
+        margin: 0 auto 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border-radius: 50%;
+        font-size: 1.25rem;
+        font-weight: bold;
+      }
+      .step-card h4 {
+        font-size: 1.1rem;
+        margin-bottom: 8px;
+        color: #333;
+      }
+      .step-card p {
+        color: #666;
+        font-size: 0.9rem;
+        line-height: 1.5;
+      }
+      .footer {
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+        border-top: 1px solid rgba(255, 255, 255, 0.2);
+        margin-top: 40px;
+        padding: 24px 20px;
+      }
+      .footer-content {
+        max-width: 1200px;
+        margin: 0 auto;
+        text-align: center;
+      }
+      .footer-links {
+        display: flex;
+        justify-content: center;
+        gap: 24px;
+        margin-bottom: 16px;
+        flex-wrap: wrap;
+      }
+      .footer-link {
+        color: white;
+        text-decoration: none;
+        font-size: 0.9rem;
+        opacity: 0.9;
+        transition: all 0.3s ease;
+        cursor: pointer;
+      }
+      .footer-link:hover {
+        opacity: 1;
+        text-decoration: underline;
+      }
+      .footer-copyright {
+        color: white;
+        opacity: 0.7;
+        font-size: 0.85rem;
+      }
+      .footer-copyright p {
+        margin: 0;
+      }
+      @media (max-width: 600px) {
+        .footer-links {
+          flex-direction: column;
+          gap: 12px;
+        }
+      }
+      @media (max-width: 900px) {
+        .workspace {
+          grid-template-columns: 1fr;
+        }
+        .controls-panel {
+          position: relative;
+          top: auto;
+        }
+        .header h1 {
+          font-size: 1.8rem;
+        }
+        .features-header h2 {
+          font-size: 1.6rem;
+        }
+        .features-grid {
+          grid-template-columns: 1fr;
+        }
+        .steps-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </body>
+</html>
