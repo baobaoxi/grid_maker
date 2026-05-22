@@ -3,6 +3,25 @@
     <h3>{{ title }}</h3>
     
     <div class="control-group">
+      <label>{{ gridTypeLabel }}</label>
+      <select v-model="localGridType" class="select-input" @change="emitUpdate">
+        <optgroup label="Artist Guides">
+          <option value="fixed">Fixed Measurement Grid</option>
+          <option value="proportional">Proportional Transfer</option>
+          <option value="diagonal">Diagonal Cell Grid</option>
+        </optgroup>
+        <optgroup label="Composition">
+          <option value="ruleOfThirds">Rule of Thirds</option>
+          <option value="goldenRatio">Golden Ratio</option>
+          <option value="goldenSpiral">Golden Spiral</option>
+        </optgroup>
+        <optgroup label="Standard">
+          <option value="standard">Standard Grid</option>
+        </optgroup>
+      </select>
+    </div>
+
+    <div v-if="showStandardControls" class="control-group">
       <label>{{ columnsLabel }}</label>
       <input 
         type="number" 
@@ -14,7 +33,7 @@
       />
     </div>
 
-    <div class="control-group">
+    <div v-if="showStandardControls" class="control-group">
       <label>{{ rowsLabel }}</label>
       <input 
         type="number" 
@@ -84,10 +103,11 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from 'vue'
+import { ref, computed, watch } from 'vue'
 
 const props = withDefaults(defineProps<{
   title?: string
+  gridTypeLabel?: string
   columnsLabel?: string
   rowsLabel?: string
   colorLabel?: string
@@ -96,6 +116,7 @@ const props = withDefaults(defineProps<{
   showLabelsLabel?: string
   downloadLabel?: string
   clearLabel?: string
+  gridType?: string
   cols?: number
   rows?: number
   color?: string
@@ -105,6 +126,7 @@ const props = withDefaults(defineProps<{
   canDownload?: boolean
 }>(), {
   title: 'Grid Settings',
+  gridTypeLabel: 'Grid Type',
   columnsLabel: 'Columns',
   rowsLabel: 'Rows',
   colorLabel: 'Grid Color',
@@ -113,6 +135,7 @@ const props = withDefaults(defineProps<{
   showLabelsLabel: 'Show Grid Labels',
   downloadLabel: 'Download Image',
   clearLabel: 'Upload New Image',
+  gridType: 'standard',
   cols: 3,
   rows: 3,
   color: '#ff0000',
@@ -123,11 +146,12 @@ const props = withDefaults(defineProps<{
 })
 
 const emit = defineEmits<{
-  update: [settings: { cols: number; rows: number; color: string; lineWidth: number; opacity: number; showLabels: boolean }]
+  update: [settings: { gridType: string; cols: number; rows: number; color: string; lineWidth: number; opacity: number; showLabels: boolean }]
   download: []
   clear: []
 }>()
 
+const localGridType = ref(props.gridType ?? 'standard')
 const localCols = ref(props.cols ?? 3)
 const localRows = ref(props.rows ?? 3)
 const localColor = ref(props.color ?? '#ff0000')
@@ -135,6 +159,11 @@ const localLineWidth = ref(props.lineWidth ?? 2)
 const localOpacity = ref(props.opacity ?? 50)
 const localShowLabels = ref(props.showLabels ?? true)
 
+const showStandardControls = computed(() => {
+  return ['standard', 'fixed', 'proportional'].includes(localGridType.value)
+})
+
+watch(() => props.gridType, (newVal) => { if (newVal !== undefined) localGridType.value = newVal })
 watch(() => props.cols, (newVal) => { if (newVal !== undefined) localCols.value = newVal })
 watch(() => props.rows, (newVal) => { if (newVal !== undefined) localRows.value = newVal })
 watch(() => props.color, (newVal) => { if (newVal !== undefined) localColor.value = newVal })
@@ -144,6 +173,7 @@ watch(() => props.showLabels, (newVal) => { if (newVal !== undefined) localShowL
 
 const emitUpdate = () => {
   emit('update', {
+    gridType: localGridType.value,
     cols: localCols.value,
     rows: localRows.value,
     color: localColor.value,

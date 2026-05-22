@@ -17,6 +17,7 @@
       <div v-if="imageSrc" class="workspace">
         <GridControls
           title="Grid Settings"
+          :grid-type="gridType"
           :cols="gridCols"
           :rows="gridRows"
           :color="gridColor"
@@ -50,6 +51,7 @@
           <ImageCanvas 
             ref="imageCanvasRef"
             :image-src="imageSrc"
+            :grid-type="gridType"
             :grid-cols="gridCols"
             :grid-rows="gridRows"
             :grid-color="gridColor"
@@ -91,6 +93,7 @@ const imageCanvasRef = ref<InstanceType<typeof ImageCanvas> | null>(null)
 const hiddenFileInput = ref<HTMLInputElement | null>(null)
 const imageSrc = ref('')
 const hasUserUploadedImage = ref(false)
+const gridType = ref('standard')
 const gridCols = ref(4)
 const gridRows = ref(3)
 const gridColor = ref('#00ff00')
@@ -99,7 +102,7 @@ const opacity = ref(50)
 const showLabels = ref(true)
 
 onMounted(() => {
-  imageSrc.value = 'https://picsum.photos/800/600?random=1'
+  imageSrc.value = 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop'
 })
 
 const handleFileSelected = (file: File) => {
@@ -126,7 +129,8 @@ const handleHiddenFileSelect = (event: Event) => {
   }
 }
 
-const handleGridUpdate = (settings: { cols: number; rows: number; color: string; lineWidth: number; opacity: number; showLabels: boolean }) => {
+const handleGridUpdate = (settings: { gridType: string; cols: number; rows: number; color: string; lineWidth: number; opacity: number; showLabels: boolean }) => {
+  gridType.value = settings.gridType
   gridCols.value = settings.cols
   gridRows.value = settings.rows
   gridColor.value = settings.color
