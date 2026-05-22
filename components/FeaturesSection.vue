@@ -50,7 +50,7 @@ withDefaults(defineProps<{
 }>(), {
   title: 'Why Choose Us',
   subtitle: 'Simple, Fast, Professional Photo Grid Tool',
-  stepsTitle: 'How It Works',
+  stepsTitle: 'How to Use Our Free Online Grid Maker to Proportion Your Images Perfect',
   features: () => [
     { iconPath: 'M12 20h9', title: 'Custom Grid', description: 'Customizable grid columns and rows for precise control' },
     { iconPath: 'M20 7h-9', title: 'Rich Styles', description: 'Multiple color options with adjustable line width and opacity' },
@@ -58,10 +58,9 @@ withDefaults(defineProps<{
     { iconPath: 'M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4', title: 'Quick Export', description: 'One-click download of high-quality images with grid overlay' }
   ],
   steps: () => [
-    { title: 'Upload Image', description: 'Click or drag to upload the image you want to add grid to' },
-    { title: 'Adjust Settings', description: 'Set grid columns, rows, color, line width and opacity' },
-    { title: 'Preview Effect', description: 'Real-time preview of grid effect with instant adjustments' },
-    { title: 'Download Image', description: 'Click download button to save the image with grid overlay' }
+    { title: 'Upload Your Reference Image', description: 'Click the "Upload" button or drag and drop your photo into the workspace. Our online grid maker supports high-resolution PNG, JPG, and WebP formats without compressing your original image quality.' },
+    { title: 'Customize Grid Lines and Dimensions', description: 'Adjust the grid density according to your needs. Whether you need a standard 3x3 Instagram grid splitter or a 5x5 drawing grid overlay, you can easily adjust: Columns & Rows: Input precise numbers or pixel sizes. Line Color & Thickness: Choose high-contrast colors (like bright red or white) so the grid remains visible against dark background images.' },
+    { title: 'Download or Print', description: 'Once you are satisfied with the grid overlay, click "Export". You can download the image with the grid printed on it, or save individual sliced images for social media carousels.' }
   ]
 })
 </script>
