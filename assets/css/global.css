@@ -523,9 +523,14 @@ body {
 
 @media (max-width: 900px) {
   .workspace {
-    grid-template-columns: 1fr;
+    display: flex;
+    flex-direction: column;
+  }
+  .canvas-wrapper {
+    order: 1;
   }
   .controls-panel {
+    order: 2;
     position: relative;
     top: auto;
   }

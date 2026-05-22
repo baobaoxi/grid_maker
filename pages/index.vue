@@ -17,7 +17,7 @@
       <div v-if="imageSrc" class="workspace">
         <GridControls
           title="Grid Settings"
-          :grid-type="gridType"
+          :grid-types="gridTypes"
           :cols="gridCols"
           :rows="gridRows"
           :color="gridColor"
@@ -51,7 +51,7 @@
           <ImageCanvas 
             ref="imageCanvasRef"
             :image-src="imageSrc"
-            :grid-type="gridType"
+            :grid-types="gridTypes"
             :grid-cols="gridCols"
             :grid-rows="gridRows"
             :grid-color="gridColor"
@@ -93,7 +93,7 @@ const imageCanvasRef = ref<InstanceType<typeof ImageCanvas> | null>(null)
 const hiddenFileInput = ref<HTMLInputElement | null>(null)
 const imageSrc = ref('')
 const hasUserUploadedImage = ref(false)
-const gridType = ref('standard')
+const gridTypes = ref<string[]>(['standard'])
 const gridCols = ref(4)
 const gridRows = ref(3)
 const gridColor = ref('#00ff00')
@@ -129,8 +129,8 @@ const handleHiddenFileSelect = (event: Event) => {
   }
 }
 
-const handleGridUpdate = (settings: { gridType: string; cols: number; rows: number; color: string; lineWidth: number; opacity: number; showLabels: boolean }) => {
-  gridType.value = settings.gridType
+const handleGridUpdate = (settings: { gridTypes: string[]; cols: number; rows: number; color: string; lineWidth: number; opacity: number; showLabels: boolean }) => {
+  gridTypes.value = settings.gridTypes
   gridCols.value = settings.cols
   gridRows.value = settings.rows
   gridColor.value = settings.color
@@ -158,7 +158,7 @@ const handleFooterNavigate = (link: { label: string; url: string }) => {
   } else if (link.label === 'Terms of Service') {
     alert('Terms of Service\n\nBy using this tool, you agree to:\n\n1. Only process images that you have the right to use.\n2. Not use this tool for any illegal purposes.\n3. Take full responsibility for any consequences arising from using this tool.')
   } else if (link.label === 'About Us') {
-    alert('About Us\n\nPhoto Grid Overlay is a free online photo grid tool.\n\nFeatures:\n• Customizable grid columns and rows\n• Adjustable grid color and opacity\n• Image download support\n• Local processing for privacy protection')
+    alert('About Us\n\nPhoto Grid Overlay is a free online photo grid tool.\n\nFeatures:\n• Customizable grid columns and rows\n• Adjustable grid color and opacity\n• Image download support\n• Local processing for privacy protection\n• Multiple grid types overlay\n• Grid drag support')
   }
 }
 </script>

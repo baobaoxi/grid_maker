@@ -10,21 +10,30 @@
       <canvas 
         ref="canvasRef" 
         class="grid-overlay"
-        :style="{ opacity: opacity / 100, width: imageWidth + 'px', height: imageHeight + 'px' }"
+        :style="canvasStyle"
+        @mousedown="onMouseDown"
+        @mousemove="onMouseMove"
+        @mouseup="onMouseUp"
+        @mouseleave="onMouseUp"
       ></canvas>
     </div>
     <div v-if="showInfo" class="preview-info">
-      {{ infoLabel }}: {{ imageWidth }} × {{ imageHeight }} | {{ gridLabel }}: {{ gridTypeDisplay }}
+      {{ infoLabel }}: {{ imageWidth }} × {{ imageHeight }} | {{ gridLabel }}: {{ gridTypesDisplay }}
+    </div>
+    <div v-if="gridOffset.x !== 0 || gridOffset.y !== 0" class="offset-info">
+      Offset: {{ gridOffset.x }}px, {{ gridOffset.y }}px
+      <button class="reset-offset-btn" @click="resetOffset">Reset</button>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch, onMounted } from 'vue'
+import { ref, computed, watch, onMounted, onUnmounted } from 'vue'
+import * as gridDrawers from '~/composables/gridDrawers'
 
 const props = defineProps<{
   imageSrc: string
-  gridType?: string
+  gridTypes?: string[]
   gridCols?: number
   gridRows?: number
   gridColor?: string
@@ -36,7 +45,7 @@ const props = defineProps<{
   showLabels?: boolean
 }>()
 
-defineEmits<{
+const emit = defineEmits<{
   loaded: []
   dimensions: [dimensions: { width: number; height: number }]
 }>()
@@ -47,7 +56,11 @@ const imageWidth = ref(0)
 const imageHeight = ref(0)
 const imageLoaded = ref(false)
 
-const gridTypeDisplay = computed(() => {
+const gridOffset = ref({ x: 0, y: 0 })
+const isDragging = ref(false)
+const dragStart = ref({ x: 0, y: 0 })
+
+const gridTypesDisplay = computed(() => {
   const typeMap: Record<string, string> = {
     standard: 'Standard',
     fixed: 'Fixed Measurement',
@@ -55,10 +68,158 @@ const gridTypeDisplay = computed(() => {
     diagonal: 'Diagonal Cell',
     ruleOfThirds: 'Rule of Thirds',
     goldenRatio: 'Golden Ratio',
-    goldenSpiral: 'Golden Spiral'
+    goldenSpiral: 'Golden Spiral',
+    crossDiagonal: 'Cross-Diagonal Cells',
+    portraitFace: 'Portrait Face Guide',
+    loomisHead: 'Loomis Head Guide',
+    figureProportion: 'Figure Proportion',
+    muralScaling: 'Mural Scaling Grid',
+    goldenTriangle: 'Golden Triangle',
+    diagonalMethod: 'Diagonal Method',
+    centerCross: 'Center Cross',
+    ruleOfFifths: 'Rule of Fifths',
+    quadrantGrid: 'Quadrant Grid',
+    armature: 'Armature (14-line)',
+    rabatment: 'Rabatment',
+    baroqueDiagonal: 'Baroque Diagonal',
+    sinisterDiagonal: 'Sinister Diagonal',
+    reciprocalLines: 'Reciprocal Lines',
+    root2: 'Root 2 (1:1.414)',
+    root3: 'Root 3 (1:1.732)',
+    root4: 'Root 4 (1:2)',
+    root5: 'Root 5 (1:2.236)',
+    phiRectangle: 'Phi Rectangle',
+    rectangle15: '1.5 Rectangle (2:3)',
+    onePoint: '1-Point Perspective',
+    twoPoint: '2-Point Perspective',
+    threePoint: '3-Point Perspective',
+    isometric: 'Isometric',
+    fisheye: '5-Point / Fisheye',
+    dimetric: 'Dimetric',
+    trimetric: 'Trimetric',
+    anamorphic: 'Anamorphic',
+    triangular: 'Triangular Grid',
+    hexagonal: 'Hexagonal Grid',
+    radial: 'Radial / Circular',
+    dotGrid: 'Dot Grid',
+    diamond: 'Diamond / Rhombus',
+    polar: 'Polar / Spiral',
+    crossHair: 'Cross-Hair Grid',
+    flowerOfLife: 'Flower of Life',
+    seedOfLife: 'Seed of Life',
+    metatronsCube: "Metatron's Cube",
+    vesicaPiscis: 'Vesica Piscis',
+    sriYantra: 'Sri Yantra',
+    treeOfLife: 'Tree of Life',
+    merkaba: 'Merkaba',
+    hexagram: 'Hexagram',
+    pentagram: 'Pentagram',
+    eggOfLife: 'Egg of Life',
+    fruitOfLife: 'Fruit of Life',
+    yinYang: 'Yin-Yang',
+    enneagram: 'Enneagram',
+    islamic8Point: 'Islamic 8-Point Star',
+    islamic12Point: 'Islamic 12-Point Star',
+    borromeanRings: 'Borromean Rings',
+    torusField: 'Torus Field',
+    ainSoph: 'Ain Soph',
+    celticTriquetra: 'Celtic Triquetra',
+    platonicSolids: 'Platonic Solids'
   }
-  return typeMap[props.gridType ?? 'standard'] || 'Standard'
+  const types = props.gridTypes ?? []
+  if (types.length === 0) return 'None'
+  return types.map(t => typeMap[t] || t).join(', ')
 })
+
+const canvasStyle = computed(() => ({
+  opacity: (props.opacity ?? 100) / 100,
+  width: imageWidth.value > 0 ? imageWidth.value + 'px' : '100%',
+  height: imageHeight.value > 0 ? imageHeight.value + 'px' : 'auto',
+  transform: `translate(${gridOffset.value.x}px, ${gridOffset.value.y}px)`
+}))
+
+const gridDrawerMap: Record<string, (ctx: CanvasRenderingContext2D, width: number, height: number, color: string, lineWidth: number, cols?: number, rows?: number) => void> = {
+  ruleOfThirds: gridDrawers.drawRuleOfThirds,
+  goldenRatio: gridDrawers.drawGoldenRatio,
+  goldenSpiral: gridDrawers.drawGoldenSpiral,
+  diagonal: (ctx, width, height, color, lineWidth, cols, rows) => gridDrawers.drawDiagonalGrid(ctx, width, height, cols ?? 3, rows ?? 3, color, lineWidth),
+  fixed: gridDrawers.drawFixedGrid,
+  proportional: gridDrawers.drawProportionalGrid,
+  crossDiagonal: gridDrawers.drawCrossDiagonal,
+  portraitFace: gridDrawers.drawPortraitFace,
+  loomisHead: gridDrawers.drawLoomisHead,
+  figureProportion: gridDrawers.drawFigureProportion,
+  muralScaling: (ctx, width, height, color, lineWidth, cols, rows) => gridDrawers.drawMuralScaling(ctx, width, height, cols ?? 4, rows ?? 4, color, lineWidth),
+  goldenTriangle: gridDrawers.drawGoldenTriangle,
+  diagonalMethod: gridDrawers.drawDiagonalMethod,
+  centerCross: gridDrawers.drawCenterCross,
+  ruleOfFifths: gridDrawers.drawRuleOfFifths,
+  quadrantGrid: gridDrawers.drawQuadrantGrid,
+  armature: gridDrawers.drawArmature,
+  rabatment: gridDrawers.drawRabatment,
+  baroqueDiagonal: gridDrawers.drawBaroqueDiagonal,
+  sinisterDiagonal: gridDrawers.drawSinisterDiagonal,
+  reciprocalLines: gridDrawers.drawReciprocalLines,
+  root2: gridDrawers.drawRoot2,
+  root3: gridDrawers.drawRoot3,
+  root4: gridDrawers.drawRoot4,
+  root5: gridDrawers.drawRoot5,
+  phiRectangle: gridDrawers.drawPhiRectangle,
+  rectangle15: gridDrawers.drawRectangle15,
+  onePoint: gridDrawers.drawOnePointPerspective,
+  twoPoint: gridDrawers.drawTwoPointPerspective,
+  threePoint: gridDrawers.drawThreePointPerspective,
+  isometric: gridDrawers.drawIsometric,
+  fisheye: gridDrawers.drawFisheye,
+  dimetric: gridDrawers.drawDimetric,
+  trimetric: gridDrawers.drawTrimetric,
+  anamorphic: gridDrawers.drawAnamorphic,
+  triangular: gridDrawers.drawTriangularGrid,
+  hexagonal: gridDrawers.drawHexagonalGrid,
+  radial: gridDrawers.drawRadialGrid,
+  dotGrid: gridDrawers.drawDotGrid,
+  diamond: gridDrawers.drawDiamondGrid,
+  polar: gridDrawers.drawPolarGrid,
+  crossHair: gridDrawers.drawCrossHairGrid,
+  flowerOfLife: gridDrawers.drawFlowerOfLife,
+  seedOfLife: gridDrawers.drawSeedOfLife,
+  metatronsCube: gridDrawers.drawMetatronsCube,
+  vesicaPiscis: gridDrawers.drawVesicaPiscis,
+  sriYantra: gridDrawers.drawSriYantra,
+  treeOfLife: gridDrawers.drawTreeOfLife,
+  merkaba: gridDrawers.drawMerkaba,
+  hexagram: gridDrawers.drawHexagram,
+  pentagram: gridDrawers.drawPentagram,
+  eggOfLife: gridDrawers.drawEggOfLife,
+  fruitOfLife: gridDrawers.drawFruitOfLife,
+  yinYang: gridDrawers.drawYinYang,
+  enneagram: gridDrawers.drawEnneagram,
+  islamic8Point: gridDrawers.drawIslamic8PointStar,
+  islamic12Point: gridDrawers.drawIslamic12PointStar,
+  borromeanRings: gridDrawers.drawBorromeanRings,
+  torusField: gridDrawers.drawTorusField,
+  ainSoph: gridDrawers.drawAinSoph,
+  celticTriquetra: gridDrawers.drawCelticTriquetra,
+  platonicSolids: gridDrawers.drawPlatonicSolids,
+  columnGrid: gridDrawers.drawColumnGrid,
+  modularGrid: gridDrawers.drawModularGrid,
+  baselineGrid: gridDrawers.drawBaselineGrid,
+  manuscriptGrid: gridDrawers.drawManuscriptGrid,
+  hierarchicalGrid: gridDrawers.drawHierarchicalGrid,
+  spacingGrid: gridDrawers.drawSpacingGrid,
+  comicPanel: gridDrawers.drawComicPanel,
+  storyboardFrame: gridDrawers.drawStoryboardFrame,
+  logoConstruction: gridDrawers.drawLogoConstruction,
+  iconGrid: gridDrawers.drawIconGrid,
+  twelveColumnWeb: gridDrawers.drawTwelveColumnWeb,
+  mobileAppLayout: gridDrawers.drawMobileAppLayout,
+  posterEditorial: gridDrawers.drawPosterEditorial,
+  socialMediaSafe: gridDrawers.drawSocialMediaSafe,
+  structuralGrid: gridDrawers.drawStructuralGrid,
+  leCorbusierModulor: gridDrawers.drawLeCorbusierModulor,
+  tartanGrid: gridDrawers.drawTartanGrid,
+  standard: (ctx, width, height, color, lineWidth, cols, rows) => gridDrawers.drawStandardGrid(ctx, width, height, cols ?? 3, rows ?? 3, color, lineWidth)
+}
 
 const drawGrid = () => {
   if (!imageRef.value || !canvasRef.value || !imageLoaded.value) return
@@ -82,388 +243,202 @@ const drawGrid = () => {
   ctx.strokeStyle = props.gridColor ?? '#ff0000'
   ctx.lineWidth = props.lineWidth ?? 2
   
-  const gridType = props.gridType ?? 'standard'
+  const gridTypes = props.gridTypes ?? []
+  const color = props.gridColor ?? '#ff0000'
+  const lineWidth = props.lineWidth ?? 2
+  const cols = props.gridCols ?? 3
+  const rows = props.gridRows ?? 3
   
-  switch (gridType) {
-    case 'ruleOfThirds':
-      drawRuleOfThirds(ctx, canvas.width, canvas.height)
-      break
-    case 'goldenRatio':
-      drawGoldenRatio(ctx, canvas.width, canvas.height)
-      break
-    case 'goldenSpiral':
-      drawGoldenSpiral(ctx, canvas.width, canvas.height)
-      break
-    case 'diagonal':
-      drawDiagonalGrid(ctx, canvas.width, canvas.height, props.gridCols ?? 3, props.gridRows ?? 3)
-      break
-    case 'fixed':
-      drawFixedGrid(ctx, canvas.width, canvas.height)
-      break
-    case 'proportional':
-      drawProportionalGrid(ctx, canvas.width, canvas.height)
-      break
-    default:
-      drawStandardGrid(ctx, canvas.width, canvas.height, props.gridCols ?? 3, props.gridRows ?? 3)
-  }
-  
-  if (props.showLabels && gridType !== 'goldenSpiral') {
-    drawLabels(ctx, canvas.width, canvas.height, props.gridCols ?? 3, props.gridRows ?? 3, props.gridColor ?? '#ff0000', gridType)
-  }
-}
-
-const drawStandardGrid = (ctx: CanvasRenderingContext2D, width: number, height: number, cols: number, rows: number) => {
-  const colWidth = width / cols
-  const rowHeight = height / rows
-  
-  for (let i = 1; i < cols; i++) {
-    ctx.beginPath()
-    ctx.moveTo(colWidth * i, 0)
-    ctx.lineTo(colWidth * i, height)
-    ctx.stroke()
-  }
-  
-  for (let i = 1; i < rows; i++) {
-    ctx.beginPath()
-    ctx.moveTo(0, rowHeight * i)
-    ctx.lineTo(width, rowHeight * i)
-    ctx.stroke()
-  }
-}
-
-const drawRuleOfThirds = (ctx: CanvasRenderingContext2D, width: number, height: number) => {
-  const colWidth = width / 3
-  const rowHeight = height / 3
-  
-  for (let i = 1; i < 3; i++) {
-    ctx.beginPath()
-    ctx.moveTo(colWidth * i, 0)
-    ctx.lineTo(colWidth * i, height)
-    ctx.stroke()
-  }
-  
-  for (let i = 1; i < 3; i++) {
-    ctx.beginPath()
-    ctx.moveTo(0, rowHeight * i)
-    ctx.lineTo(width, rowHeight * i)
-    ctx.stroke()
-  }
-  
-  ctx.fillStyle = props.gridColor ?? '#ff0000'
-  ctx.globalAlpha = 0.3
-  ctx.fillRect(colWidth, rowHeight, colWidth, rowHeight)
-  ctx.globalAlpha = 1
-}
-
-const drawGoldenRatio = (ctx: CanvasRenderingContext2D, width: number, height: number) => {
-  const goldenRatio = (1 + Math.sqrt(5)) / 2
-  
-  const verticalDivider = width / goldenRatio
-  const horizontalDivider = height / goldenRatio
-  
-  ctx.beginPath()
-  ctx.moveTo(verticalDivider, 0)
-  ctx.lineTo(verticalDivider, height)
-  ctx.stroke()
-  
-  ctx.beginPath()
-  ctx.moveTo(0, horizontalDivider)
-  ctx.lineTo(width, horizontalDivider)
-  ctx.stroke()
-  
-  ctx.fillStyle = props.gridColor ?? '#ff0000'
-  ctx.globalAlpha = 0.2
-  ctx.fillRect(0, 0, verticalDivider, horizontalDivider)
-  ctx.fillRect(verticalDivider, horizontalDivider, width - verticalDivider, height - horizontalDivider)
-  ctx.globalAlpha = 1
-  
-  ctx.font = '12px Arial'
-  ctx.fillStyle = props.gridColor ?? '#ff0000'
-  ctx.textAlign = 'left'
-  ctx.textBaseline = 'bottom'
-  ctx.fillText('φ ≈ 1.618', 10, height - 10)
-}
-
-const drawGoldenSpiral = (ctx: CanvasRenderingContext2D, width: number, height: number) => {
-  const goldenRatio = (1 + Math.sqrt(5)) / 2
-  const minDimension = Math.min(width, height)
-  let currentWidth = minDimension
-  let currentHeight = minDimension
-  let x = 0
-  let y = 0
-  let direction = 0
-  
-  ctx.lineWidth = props.lineWidth ?? 2
-  ctx.strokeStyle = props.gridColor ?? '#ff0000'
-  
-  ctx.beginPath()
-  
-  while (currentWidth > 5) {
-    if (direction % 4 === 0) {
-      ctx.moveTo(x + currentWidth, y)
-      ctx.lineTo(x + currentWidth, y + currentHeight)
-      y += currentHeight
-    } else if (direction % 4 === 1) {
-      ctx.moveTo(x + currentWidth, y)
-      ctx.lineTo(x, y)
-      x += currentWidth
-    } else if (direction % 4 === 2) {
-      ctx.moveTo(x, y)
-      ctx.lineTo(x, y + currentHeight)
-      y -= currentHeight
-    } else {
-      ctx.moveTo(x, y)
-      ctx.lineTo(x + currentWidth, y)
-      x -= currentWidth
-    }
-    
-    const temp = currentWidth
-    currentWidth = currentHeight / goldenRatio
-    currentHeight = temp
-    direction++
-  }
-  
-  ctx.stroke()
-  
-  const centerX = width / 2
-  const centerY = height / 2
-  const maxRadius = Math.min(width, height) / 4
-  
-  ctx.beginPath()
-  ctx.arc(centerX, centerY, 4, 0, Math.PI * 2)
-  ctx.fillStyle = props.gridColor ?? '#ff0000'
-  ctx.fill()
-  
-  ctx.beginPath()
-  ctx.arc(centerX, centerY, maxRadius, -Math.PI / 2, Math.PI / 2)
-  ctx.strokeStyle = props.gridColor ?? '#ff0000'
-  ctx.setLineDash([5, 5])
-  ctx.stroke()
-  ctx.setLineDash([])
-}
-
-const drawDiagonalGrid = (ctx: CanvasRenderingContext2D, width: number, height: number, cols: number, rows: number) => {
-  const colWidth = width / cols
-  const rowHeight = height / rows
-  
-  for (let i = 1; i < cols; i++) {
-    ctx.beginPath()
-    ctx.moveTo(colWidth * i, 0)
-    ctx.lineTo(colWidth * i, height)
-    ctx.stroke()
-  }
-  
-  for (let i = 1; i < rows; i++) {
-    ctx.beginPath()
-    ctx.moveTo(0, rowHeight * i)
-    ctx.lineTo(width, rowHeight * i)
-    ctx.stroke()
-  }
-  
-  for (let row = 0; row < rows; row++) {
-    for (let col = 0; col < cols; col++) {
-      const x1 = col * colWidth
-      const y1 = row * rowHeight
-      const x2 = x1 + colWidth
-      const y2 = y1 + rowHeight
-      
-      ctx.beginPath()
-      ctx.moveTo(x1, y1)
-      ctx.lineTo(x2, y2)
-      ctx.stroke()
-      
-      ctx.beginPath()
-      ctx.moveTo(x2, y1)
-      ctx.lineTo(x1, y2)
-      ctx.stroke()
-    }
-  }
-}
-
-const drawFixedGrid = (ctx: CanvasRenderingContext2D, width: number, height: number) => {
-  const unit = Math.min(width, height) / 10
-  
-  for (let x = unit; x < width; x += unit) {
-    ctx.beginPath()
-    ctx.moveTo(x, 0)
-    ctx.lineTo(x, height)
-    ctx.stroke()
-  }
-  
-  for (let y = unit; y < height; y += unit) {
-    ctx.beginPath()
-    ctx.moveTo(0, y)
-    ctx.lineTo(width, y)
-    ctx.stroke()
-  }
-  
-  ctx.fillStyle = props.gridColor ?? '#ff0000'
-  ctx.font = 'bold 10px Arial'
-  ctx.textAlign = 'left'
-  ctx.textBaseline = 'top'
-  
-  for (let i = 1; i * unit < width; i++) {
-    ctx.fillText(`${i * 10}%`, i * unit + 2, 2)
-  }
-}
-
-const drawProportionalGrid = (ctx: CanvasRenderingContext2D, width: number, height: number) => {
-  const proportions = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9]
-  
-  proportions.forEach(p => {
-    ctx.beginPath()
-    ctx.moveTo(width * p, 0)
-    ctx.lineTo(width * p, height)
-    ctx.setLineDash(p === 0.5 ? [] : [3, 3])
-    ctx.stroke()
-    ctx.setLineDash([])
-    
-    ctx.beginPath()
-    ctx.moveTo(0, height * p)
-    ctx.lineTo(width, height * p)
-    ctx.setLineDash(p === 0.5 ? [] : [3, 3])
-    ctx.stroke()
-    ctx.setLineDash([])
+  gridTypes.forEach(gridType => {
+    ctx.save()
+    const drawer = gridDrawerMap[gridType] || gridDrawerMap.standard
+    drawer(ctx, canvas.width, canvas.height, color, lineWidth, cols, rows)
+    ctx.restore()
   })
   
-  ctx.fillStyle = props.gridColor ?? '#ff0000'
-  ctx.font = '10px Arial'
-  ctx.textAlign = 'left'
-  ctx.textBaseline = 'top'
-  
-  proportions.forEach(p => {
-    if (p * width < width - 30) {
-      ctx.fillText(`${Math.round(p * 100)}%`, p * width + 2, 2)
-    }
-  })
-}
-
-const drawLabels = (ctx: CanvasRenderingContext2D, width: number, height: number, cols: number, rows: number, color: string, gridType: string) => {
-  ctx.fillStyle = color
-  
-  if (gridType === 'ruleOfThirds') {
-    ctx.font = 'bold 14px Arial'
-    ctx.textAlign = 'center'
-    ctx.textBaseline = 'middle'
-    
-    const colWidth = width / 3
-    const rowHeight = height / 3
-    
-    const labels = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I']
-    let idx = 0
-    
-    for (let row = 0; row < 3; row++) {
-      for (let col = 0; col < 3; col++) {
-        const x = col * colWidth + colWidth / 2
-        const y = row * rowHeight + rowHeight / 2
-        ctx.fillText(labels[idx], x, y)
-        idx++
-      }
-    }
-  } else if (gridType === 'goldenRatio') {
-    ctx.font = 'bold 12px Arial'
-    ctx.textAlign = 'center'
-    ctx.textBaseline = 'middle'
-    const goldenRatio = (1 + Math.sqrt(5)) / 2
-    const vDiv = width / goldenRatio
-    const hDiv = height / goldenRatio
-    
-    ctx.fillText('A', vDiv / 2, hDiv / 2)
-    ctx.fillText('B', width - vDiv / 2, hDiv / 2)
-    ctx.fillText('C', vDiv / 2, height - hDiv / 2)
-    ctx.fillText('D', width - vDiv / 2, height - hDiv / 2)
-  } else {
-    ctx.font = 'bold 12px Arial'
-    ctx.textAlign = 'right'
-    ctx.textBaseline = 'bottom'
-    
-    const colWidth = width / cols
-    const rowHeight = height / rows
-    
-    for (let row = 0; row < rows; row++) {
-      for (let col = 0; col < cols; col++) {
-        const letter = String.fromCharCode(65 + col)
-        const label = `${letter}${row + 1}`
-        const x = colWidth * (col + 1) - 4
-        const y = rowHeight * (row + 1) - 4
-        ctx.fillText(label, x, y)
-      }
+  if (props.showLabels) {
+    const firstType = gridTypes.find(t => t !== 'goldenSpiral' && t !== 'portraitFace' && t !== 'loomisHead' && t !== 'figureProportion') || gridTypes[0]
+    if (firstType && !['goldenSpiral', 'portraitFace', 'loomisHead', 'figureProportion'].includes(firstType)) {
+      gridDrawers.drawLabels(ctx, canvas.width, canvas.height, cols, rows, color, firstType)
     }
   }
 }
 
 const onImageLoad = () => {
-  if (imageRef.value) {
-    imageLoaded.value = true
-    requestAnimationFrame(() => {
-      if (imageRef.value) {
-        imageWidth.value = imageRef.value.offsetWidth
-        imageHeight.value = imageRef.value.offsetHeight
-        drawGrid()
-      }
-    })
+  if (!imageRef.value) return
+  
+  imageWidth.value = imageRef.value.offsetWidth
+  imageHeight.value = imageRef.value.offsetHeight
+  imageLoaded.value = true
+  
+  drawGrid()
+  
+  const dimensions = { width: imageWidth.value, height: imageHeight.value }
+  emit('loaded')
+  emit('dimensions', dimensions)
+}
+
+const onMouseDown = (e: MouseEvent) => {
+  isDragging.value = true
+  dragStart.value = { x: e.clientX - gridOffset.value.x, y: e.clientY - gridOffset.value.y }
+}
+
+const onMouseMove = (e: MouseEvent) => {
+  if (!isDragging.value) return
+  
+  gridOffset.value = {
+    x: e.clientX - dragStart.value.x,
+    y: e.clientY - dragStart.value.y
   }
 }
 
+const onMouseUp = () => {
+  isDragging.value = false
+}
+
+const resetOffset = () => {
+  gridOffset.value = { x: 0, y: 0 }
+}
+
+watch(() => [props.gridTypes, props.gridColor, props.lineWidth, props.opacity, props.gridCols, props.gridRows], () => {
+  drawGrid()
+}, { deep: true })
+
+watch(() => props.imageSrc, () => {
+  imageLoaded.value = false
+  gridOffset.value = { x: 0, y: 0 }
+})
+
+onMounted(() => {
+  if (imageRef.value && imageRef.value.complete) {
+    onImageLoad()
+  }
+  
+  window.addEventListener('resize', handleResize)
+})
+
+const handleResize = () => {
+  if (imageLoaded.value && imageRef.value) {
+    imageWidth.value = imageRef.value.offsetWidth
+    imageHeight.value = imageRef.value.offsetHeight
+    drawGrid()
+  }
+}
+
+onUnmounted(() => {
+  window.removeEventListener('resize', handleResize)
+})
+
 const getCanvasWithGrid = (): HTMLCanvasElement | null => {
-  if (!imageRef.value) return null
+  if (!imageRef.value || !imageLoaded.value) return null
   
   const img = imageRef.value
   const canvas = document.createElement('canvas')
-  const ctx = canvas.getContext('2d')
+  canvas.width = img.naturalWidth
+  canvas.height = img.naturalHeight
   
+  const ctx = canvas.getContext('2d')
   if (!ctx) return null
   
-  const displayWidth = img.offsetWidth || img.naturalWidth
-  const displayHeight = img.offsetHeight || img.naturalHeight
+  ctx.drawImage(img, 0, 0)
   
-  canvas.width = displayWidth
-  canvas.height = displayHeight
+  const displayWidth = img.offsetWidth
+  const displayHeight = img.offsetHeight
   
-  ctx.drawImage(img, 0, 0, displayWidth, displayHeight)
+  if (displayWidth === 0 || displayHeight === 0) return null
   
   ctx.strokeStyle = props.gridColor ?? '#ff0000'
   ctx.lineWidth = props.lineWidth ?? 2
   
-  const gridType = props.gridType ?? 'standard'
+  const gridTypes = props.gridTypes ?? []
+  const color = props.gridColor ?? '#ff0000'
+  const lineWidth = props.lineWidth ?? 2
+  const cols = props.gridCols ?? 3
+  const rows = props.gridRows ?? 3
   
-  switch (gridType) {
-    case 'ruleOfThirds':
-      drawRuleOfThirds(ctx, canvas.width, canvas.height)
-      break
-    case 'goldenRatio':
-      drawGoldenRatio(ctx, canvas.width, canvas.height)
-      break
-    case 'goldenSpiral':
-      drawGoldenSpiral(ctx, canvas.width, canvas.height)
-      break
-    case 'diagonal':
-      drawDiagonalGrid(ctx, canvas.width, canvas.height, props.gridCols ?? 3, props.gridRows ?? 3)
-      break
-    case 'fixed':
-      drawFixedGrid(ctx, canvas.width, canvas.height)
-      break
-    case 'proportional':
-      drawProportionalGrid(ctx, canvas.width, canvas.height)
-      break
-    default:
-      drawStandardGrid(ctx, canvas.width, canvas.height, props.gridCols ?? 3, props.gridRows ?? 3)
-  }
+  const scaleX = canvas.width / displayWidth
   
-  if (props.showLabels && gridType !== 'goldenSpiral') {
-    drawLabels(ctx, canvas.width, canvas.height, props.gridCols ?? 3, props.gridRows ?? 3, props.gridColor ?? '#ff0000', gridType)
-  }
+  gridTypes.forEach(gridType => {
+    ctx.save()
+    const drawer = gridDrawerMap[gridType] || gridDrawerMap.standard
+    drawer(ctx, canvas.width, canvas.height, color, lineWidth * scaleX, cols, rows)
+    ctx.restore()
+  })
   
   return canvas
 }
 
-defineExpose({ getCanvasWithGrid })
-
-watch([() => props.gridType, () => props.gridCols, () => props.gridRows, () => props.gridColor, () => props.lineWidth, () => props.opacity, () => props.showLabels], () => {
-  drawGrid()
-})
-
-onMounted(() => {
-  drawGrid()
+defineExpose({
+  getCanvasWithGrid
 })
 </script>
+
+<style scoped>
+.canvas-container {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+  max-width: 100%;
+}
+
+.image-wrapper {
+  position: relative;
+  width: 100%;
+  display: inline-block;
+}
+
+.original-image {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-width: 100%;
+  user-select: none;
+}
+
+.grid-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  pointer-events: auto;
+  cursor: move;
+}
+
+.preview-info {
+  margin-top: 8px;
+  font-size: 0.85rem;
+  color: #666;
+  text-align: center;
+  padding: 4px 8px;
+  background: #f5f5f5;
+  border-radius: 4px;
+}
+
+.offset-info {
+  margin-top: 4px;
+  font-size: 0.8rem;
+  color: #888;
+  text-align: center;
+  padding: 4px 8px;
+  background: #fff8e1;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.reset-offset-btn {
+  padding: 2px 8px;
+  font-size: 0.75rem;
+  background: #ff9800;
+  color: white;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.reset-offset-btn:hover {
+  background: #f57c00;
+}
+</style>
