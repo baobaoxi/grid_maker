@@ -16,6 +16,7 @@
 
       <div v-if="imageSrc" class="workspace">
         <GridControls
+          class="left-container"
           title="Grid Settings"
           :cols="gridCols"
           :rows="gridRows"
@@ -134,6 +135,13 @@ const downloadImage = () => {
   grid-template-columns: 320px 1fr;
   gap: 24px;
 }
+
+.left-container {
+  height: 800px;
+  overflow-y: auto;
+}
+
+
 
 .hidden-file-input {
   display: none;

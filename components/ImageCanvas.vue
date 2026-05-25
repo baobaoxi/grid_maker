@@ -219,7 +219,40 @@ const gridDrawerMap: Record<string, (ctx: CanvasRenderingContext2D, width: numbe
   structuralGrid: gridDrawers.drawStructuralGrid,
   leCorbusierModulor: gridDrawers.drawLeCorbusierModulor,
   tartanGrid: gridDrawers.drawTartanGrid,
-  standard: (ctx, width, height, color, lineWidth, cols, rows) => gridDrawers.drawStandardGrid(ctx, width, height, cols ?? 3, rows ?? 3, color, lineWidth)
+  standard: (ctx, width, height, color, lineWidth, cols, rows) => gridDrawers.drawStandardGrid(ctx, width, height, cols ?? 3, rows ?? 3, color, lineWidth),
+  radialGrid: gridDrawers.drawRadialGrid,
+  triangularGrid: gridDrawers.drawTriangularGrid,
+  hexagonalGrid: gridDrawers.drawHexagonalGrid,
+  isometricGrid: gridDrawers.drawIsometric,
+  brickPattern: gridDrawers.drawBrickPattern,
+  herringbonePattern: gridDrawers.drawHerringbonePattern,
+  dynamicSymmetry: gridDrawers.drawDynamicSymmetry,
+  root2Rectangle: gridDrawers.drawRoot2,
+  root3Rectangle: gridDrawers.drawRoot3,
+  root4Rectangle: gridDrawers.drawRoot4,
+  goldenRectangle: gridDrawers.drawGoldenRectangle,
+  silverRectangle: gridDrawers.drawSilverRectangle,
+  onePointPerspective: gridDrawers.drawOnePointPerspective,
+  twoPointPerspective: gridDrawers.drawTwoPointPerspective,
+  threePointPerspective: gridDrawers.drawThreePointPerspective,
+  perspectiveGrid: gridDrawers.drawPerspectiveGrid,
+  tileGrid: gridDrawers.drawTileGrid,
+  mosaicGrid: gridDrawers.drawMosaicGrid,
+  stainedGlass: gridDrawers.drawStainedGlass,
+  quiltPattern: gridDrawers.drawQuiltPattern,
+  crossStitch: gridDrawers.drawCrossStitch,
+  pixelArt: gridDrawers.drawPixelArt,
+  metatronCube: gridDrawers.drawMetatronsCube,
+  torusGrid: gridDrawers.drawTorusField,
+  merkabaGrid: gridDrawers.drawMerkaba,
+  bookCover: gridDrawers.drawBookCover,
+  posterTemplate: gridDrawers.drawPosterTemplate,
+  businessCard: gridDrawers.drawBusinessCard,
+  socialMediaPost: gridDrawers.drawSocialMediaPost,
+  floorPlan: gridDrawers.drawFloorPlan,
+  elevationGrid: gridDrawers.drawElevationGrid,
+  sectionGrid: gridDrawers.drawSectionGrid,
+  sitePlan: gridDrawers.drawSitePlan
 }
 
 const drawGrid = () => {
@@ -369,8 +402,95 @@ const getCanvasWithGrid = (): HTMLCanvasElement | null => {
   return canvas
 }
 
+const getSvgWithGrid = (): string | null => {
+  if (!imageRef.value || !imageLoaded.value) return null
+
+  const img = imageRef.value
+  const width = img.naturalWidth
+  const height = img.naturalHeight
+
+  const gridTypes = props.gridTypes ?? []
+  const color = props.gridColor ?? '#ff0000'
+  const lineWidth = props.lineWidth ?? 2
+  const cols = props.gridCols ?? 3
+  const rows = props.gridRows ?? 3
+
+  const scaleX = width / img.offsetWidth
+
+  const imageDataUrl = img.src
+
+  let gridPaths = ''
+  gridTypes.forEach(gridType => {
+    const drawer = gridDrawerMap[gridType] || gridDrawerMap.standard
+    const pathCtx = { beginPath: () => {}, moveTo: (x: number, y: number) => {}, lineTo: (x: number, y: number) => {}, stroke: () => {}, save: () => {}, restore: () => {}, strokeStyle: '', lineWidth: 0 } as any
+    drawer(pathCtx, width, height, color, lineWidth * scaleX, cols, rows)
+  })
+
+  const generateGridLines = (): string => {
+    const strokeWidth = lineWidth * scaleX
+    const opacity = (props.opacity ?? 100) / 100
+    let lines = ''
+
+    if (gridTypes.includes('standard') || gridTypes.length === 0) {
+      for (let i = 1; i < cols; i++) {
+        const x = (width / cols) * i
+        lines += `<line x1="${x}" y1="0" x2="${x}" y2="${height}" stroke="${color}" stroke-width="${strokeWidth}" stroke-opacity="${opacity}" />`
+      }
+      for (let i = 1; i < rows; i++) {
+        const y = (height / rows) * i
+        lines += `<line x1="0" y1="${y}" x2="${width}" y2="${y}" stroke="${color}" stroke-width="${strokeWidth}" stroke-opacity="${opacity}" />`
+      }
+    }
+
+    gridTypes.forEach(gridType => {
+      if (gridType === 'ruleOfThirds') {
+        for (let i = 1; i < 3; i++) {
+          const x = (width / 3) * i
+          lines += `<line x1="${x}" y1="0" x2="${x}" y2="${height}" stroke="${color}" stroke-width="${strokeWidth}" stroke-opacity="${opacity}" />`
+        }
+        for (let i = 1; i < 3; i++) {
+          const y = (height / 3) * i
+          lines += `<line x1="0" y1="${y}" x2="${width}" y2="${y}" stroke="${color}" stroke-width="${strokeWidth}" stroke-opacity="${opacity}" />`
+        }
+      } else if (gridType === 'goldenRatio') {
+        const phi = 1.618033988749895
+        const x1 = width / phi
+        const x2 = width - x1
+        const y1 = height / phi
+        const y2 = height - y1
+        lines += `<line x1="${x1}" y1="0" x2="${x1}" y2="${height}" stroke="${color}" stroke-width="${strokeWidth}" stroke-opacity="${opacity}" />`
+        lines += `<line x1="${x2}" y1="0" x2="${x2}" y2="${height}" stroke="${color}" stroke-width="${strokeWidth}" stroke-opacity="${opacity}" />`
+        lines += `<line x1="0" y1="${y1}" x2="${width}" y2="${y1}" stroke="${color}" stroke-width="${strokeWidth}" stroke-opacity="${opacity}" />`
+        lines += `<line x1="0" y1="${y2}" x2="${width}" y2="${y2}" stroke="${color}" stroke-width="${strokeWidth}" stroke-opacity="${opacity}" />`
+      } else if (gridType === 'diagonal') {
+        lines += `<line x1="0" y1="0" x2="${width}" y2="${height}" stroke="${color}" stroke-width="${strokeWidth}" stroke-opacity="${opacity}" />`
+        lines += `<line x1="${width}" y1="0" x2="0" y2="${height}" stroke="${color}" stroke-width="${strokeWidth}" stroke-opacity="${opacity}" />`
+      } else if (gridType === 'centerCross') {
+        const cx = width / 2
+        const cy = height / 2
+        const crossSize = Math.min(width, height) * 0.1
+        lines += `<line x1="${cx - crossSize}" y1="${cy}" x2="${cx + crossSize}" y2="${cy}" stroke="${color}" stroke-width="${strokeWidth}" stroke-opacity="${opacity}" />`
+        lines += `<line x1="${cx}" y1="${cy - crossSize}" x2="${cx}" y2="${cy + crossSize}" stroke="${color}" stroke-width="${strokeWidth}" stroke-opacity="${opacity}" />`
+      }
+    })
+
+    return lines
+  }
+
+  const svg = `<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}">
+  <image xlink:href="${imageDataUrl}" width="${width}" height="${height}" />
+  <g id="grid-lines">
+    ${generateGridLines()}
+  </g>
+</svg>`
+
+  return svg
+}
+
 defineExpose({
-  getCanvasWithGrid
+  getCanvasWithGrid,
+  getSvgWithGrid
 })
 </script>
 

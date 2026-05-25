@@ -186,6 +186,8 @@ const emitUpdate = () => {
   height: fit-content;
   position: sticky;
   top: 20px;
+  height: 800px;
+  overflow-y: auto;
 }
 
 .controls-panel h3 {

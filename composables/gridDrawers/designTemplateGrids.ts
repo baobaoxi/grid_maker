@@ -251,6 +251,135 @@ export const drawSocialMediaSafe = (ctx: CanvasRenderingContext2D, width: number
   ctx.beginPath()
   ctx.rect(criticalX, criticalY, criticalWidth, criticalHeight)
   ctx.stroke()
-  
+
   ctx.setLineDash([])
+}
+
+export const drawBookCover = (ctx: CanvasRenderingContext2D, width: number, height: number, color: string, lineWidth: number) => {
+  ctx.strokeStyle = color
+  ctx.lineWidth = lineWidth
+
+  const spineWidth = width * 0.08
+  const frontWidth = width * 0.85
+  const gutter = width * 0.02
+
+  ctx.beginPath()
+  ctx.rect(0, 0, spineWidth, height)
+  ctx.stroke()
+
+  ctx.beginPath()
+  ctx.rect(spineWidth + gutter, 0, frontWidth, height)
+  ctx.stroke()
+
+  const foldLine = spineWidth + gutter * 0.5
+  ctx.setLineDash([5, 5])
+  ctx.beginPath()
+  ctx.moveTo(foldLine, 0)
+  ctx.lineTo(foldLine, height)
+  ctx.stroke()
+  ctx.setLineDash([])
+}
+
+export const drawPosterTemplate = (ctx: CanvasRenderingContext2D, width: number, height: number, color: string, lineWidth: number) => {
+  ctx.strokeStyle = color
+  ctx.lineWidth = lineWidth
+
+  const marginTop = height * 0.15
+  const marginSides = width * 0.1
+  const marginBottom = height * 0.1
+
+  ctx.beginPath()
+  ctx.rect(marginSides, marginTop, width - marginSides * 2, height - marginTop - marginBottom)
+  ctx.stroke()
+
+  const headlineHeight = marginTop * 0.4
+  ctx.beginPath()
+  ctx.moveTo(marginSides, marginTop)
+  ctx.lineTo(width - marginSides, marginTop)
+  ctx.stroke()
+
+  const bodyTop = marginTop + headlineHeight + 20
+  const bodyHeight = height - marginTop - marginBottom - headlineHeight - 40
+
+  ctx.setLineDash([3, 3])
+  ctx.beginPath()
+  ctx.rect(marginSides + 10, bodyTop, width - marginSides * 2 - 20, bodyHeight * 0.6)
+  ctx.stroke()
+  ctx.setLineDash([])
+}
+
+export const drawBusinessCard = (ctx: CanvasRenderingContext2D, width: number, height: number, color: string, lineWidth: number) => {
+  ctx.strokeStyle = color
+  ctx.lineWidth = lineWidth
+
+  const cardWidth = Math.min(width, height) * 1.75
+  const cardHeight = Math.min(width, height)
+  const cardX = (width - cardWidth) / 2
+  const cardY = (height - cardHeight) / 2
+
+  ctx.beginPath()
+  ctx.rect(cardX, cardY, cardWidth, cardHeight)
+  ctx.stroke()
+
+  const bleed = 3
+  ctx.setLineDash([2, 2])
+  ctx.beginPath()
+  ctx.rect(cardX - bleed, cardY - bleed, cardWidth + bleed * 2, cardHeight + bleed * 2)
+  ctx.stroke()
+  ctx.setLineDash([])
+
+  const logoAreaSize = cardHeight * 0.25
+  ctx.beginPath()
+  ctx.rect(cardX + 15, cardY + 15, logoAreaSize, logoAreaSize)
+  ctx.stroke()
+
+  const textStartX = cardX + 15 + logoAreaSize + 15
+  const textWidth = cardWidth - (textStartX - cardX) - 15
+
+  for (let i = 0; i < 3; i++) {
+    ctx.beginPath()
+    ctx.moveTo(textStartX, cardY + 25 + i * 12)
+    ctx.lineTo(textStartX + textWidth * 0.6, cardY + 25 + i * 12)
+    ctx.stroke()
+  }
+}
+
+export const drawSocialMediaPost = (ctx: CanvasRenderingContext2D, width: number, height: number, color: string, lineWidth: number) => {
+  ctx.strokeStyle = color
+  ctx.lineWidth = lineWidth
+
+  const isSquare = Math.abs(width - height) < Math.min(width, height) * 0.1
+  const isPortrait = height > width
+
+  if (isSquare || isPortrait) {
+    const safeWidth = isSquare ? width * 0.8 : height * 0.8
+    const safeHeight = safeWidth
+    const x = (width - safeWidth) / 2
+    const y = (height - safeHeight) / 2
+
+    ctx.setLineDash([5, 5])
+    ctx.beginPath()
+    ctx.rect(x, y, safeWidth, safeHeight)
+    ctx.stroke()
+    ctx.setLineDash([])
+
+    ctx.beginPath()
+    ctx.rect(x + 10, y + 10, safeWidth - 20, safeHeight - 20)
+    ctx.stroke()
+  } else {
+    const safeWidth = width * 0.8
+    const safeHeight = height * 0.8
+    const x = (width - safeWidth) / 2
+    const y = (height - safeHeight) / 2
+
+    ctx.setLineDash([5, 5])
+    ctx.beginPath()
+    ctx.rect(x, y, safeWidth, safeHeight)
+    ctx.stroke()
+    ctx.setLineDash([])
+
+    ctx.beginPath()
+    ctx.rect(x + 10, y + 10, safeWidth - 20, safeHeight - 20)
+    ctx.stroke()
+  }
 }

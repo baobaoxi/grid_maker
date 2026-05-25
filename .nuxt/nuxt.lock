@@ -1,9 +1,9 @@
 {
-  "pid": 48417,
-  "startedAt": 1779422053439,
+  "pid": 50679,
+  "startedAt": 1779694385376,
   "command": "dev",
   "cwd": "/Users/manlongfeng/Documents/trae_projects/grid_maker",
-  "port": 3000,
+  "port": 3002,
   "hostname": "::1",
-  "url": "http://[::1]:3000"
+  "url": "http://[::1]:3002"
 }

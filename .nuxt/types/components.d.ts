@@ -14,10 +14,14 @@ type HydrationStrategies = {
 type LazyComponent<T> = DefineComponent<HydrationStrategies, {}, {}, {}, {}, {}, {}, { hydrated: () => void }> & T
 
 interface _GlobalComponents {
+  ActionSection: typeof import("../../components/ActionSection.vue")['default']
   AppFooter: typeof import("../../components/AppFooter.vue")['default']
   AppHeader: typeof import("../../components/AppHeader.vue")['default']
+  AppNavbar: typeof import("../../components/AppNavbar.vue")['default']
   FeaturesSection: typeof import("../../components/FeaturesSection.vue")['default']
   GridControls: typeof import("../../components/GridControls.vue")['default']
+  GridMaker: typeof import("../../components/GridMaker.vue")['default']
+  HeroSection: typeof import("../../components/HeroSection.vue")['default']
   ImageCanvas: typeof import("../../components/ImageCanvas.vue")['default']
   UploadArea: typeof import("../../components/UploadArea.vue")['default']
   NuxtWelcome: typeof import("../../node_modules/nuxt/dist/app/components/welcome.vue")['default']
@@ -43,10 +47,14 @@ interface _GlobalComponents {
   Html: typeof import("../../node_modules/nuxt/dist/head/runtime/components")['Html']
   Body: typeof import("../../node_modules/nuxt/dist/head/runtime/components")['Body']
   NuxtIsland: typeof import("../../node_modules/nuxt/dist/app/components/nuxt-island")['default']
+  LazyActionSection: LazyComponent<typeof import("../../components/ActionSection.vue")['default']>
   LazyAppFooter: LazyComponent<typeof import("../../components/AppFooter.vue")['default']>
   LazyAppHeader: LazyComponent<typeof import("../../components/AppHeader.vue")['default']>
+  LazyAppNavbar: LazyComponent<typeof import("../../components/AppNavbar.vue")['default']>
   LazyFeaturesSection: LazyComponent<typeof import("../../components/FeaturesSection.vue")['default']>
   LazyGridControls: LazyComponent<typeof import("../../components/GridControls.vue")['default']>
+  LazyGridMaker: LazyComponent<typeof import("../../components/GridMaker.vue")['default']>
+  LazyHeroSection: LazyComponent<typeof import("../../components/HeroSection.vue")['default']>
   LazyImageCanvas: LazyComponent<typeof import("../../components/ImageCanvas.vue")['default']>
   LazyUploadArea: LazyComponent<typeof import("../../components/UploadArea.vue")['default']>
   LazyNuxtWelcome: LazyComponent<typeof import("../../node_modules/nuxt/dist/app/components/welcome.vue")['default']>

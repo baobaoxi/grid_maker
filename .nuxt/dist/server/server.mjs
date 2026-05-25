@@ -422,9 +422,79 @@ function getRouteRules(arg) {
 }
 const _routes = [
   {
+    name: "about",
+    path: "/about",
+    component: () => import("./_nuxt/about-Bb_fyL9W.js")
+  },
+  {
     name: "index",
     path: "/",
-    component: () => import("./_nuxt/index-DCKOML9_.js")
+    component: () => import("./_nuxt/index-B9YF0S2-.js")
+  },
+  {
+    name: "terms",
+    path: "/terms",
+    component: () => import("./_nuxt/terms-DYi2_wao.js")
+  },
+  {
+    name: "privacy",
+    path: "/privacy",
+    component: () => import("./_nuxt/privacy-CrSEAFoJ.js")
+  },
+  {
+    name: "advanced",
+    path: "/advanced",
+    component: () => import("./_nuxt/advanced-BKMcOrOV.js")
+  },
+  {
+    name: "edit-grid",
+    path: "/edit-grid",
+    component: () => import("./_nuxt/edit-grid-CrV-KR2y.js")
+  },
+  {
+    name: "blog",
+    path: "/blog",
+    component: () => import("./_nuxt/index-BXsHSzdU.js")
+  },
+  {
+    name: "blog-grid-maker-cross-stitch-pixel-art",
+    path: "/blog/grid-maker-cross-stitch-pixel-art",
+    component: () => import("./_nuxt/grid-maker-cross-stitch-pixel-art-DF_8klEw.js")
+  },
+  {
+    name: "blog-how-to-use-grid-overlays-for-drawing",
+    path: "/blog/how-to-use-grid-overlays-for-drawing",
+    component: () => import("./_nuxt/how-to-use-grid-overlays-for-drawing-CKr2O63j.js")
+  },
+  {
+    name: "blog-photo-grid-overlay-improve-composition",
+    path: "/blog/photo-grid-overlay-improve-composition",
+    component: () => import("./_nuxt/photo-grid-overlay-improve-composition-6L5RYZGG.js")
+  },
+  {
+    name: "blog-instagram-grid-maker-for-stunning-feeds",
+    path: "/blog/instagram-grid-maker-for-stunning-feeds",
+    component: () => import("./_nuxt/instagram-grid-maker-for-stunning-feeds-Bll4GP0u.js")
+  },
+  {
+    name: "blog-how-to-master-proportions-beginners-guide",
+    path: "/blog/how-to-master-proportions-beginners-guide",
+    component: () => import("./_nuxt/how-to-master-proportions-beginners-guide-CCc0oYIU.js")
+  },
+  {
+    name: "blog-10-composition-techniques-for-photographers",
+    path: "/blog/10-composition-techniques-for-photographers",
+    component: () => import("./_nuxt/10-composition-techniques-for-photographers-CDa_FlGI.js")
+  },
+  {
+    name: "blog-grid-method-template-create-customize-online",
+    path: "/blog/grid-method-template-create-customize-online",
+    component: () => import("./_nuxt/grid-method-template-create-customize-online-aD3q3VtH.js")
+  },
+  {
+    name: "blog-split-images-instagram-without-losing-quality",
+    path: "/blog/split-images-instagram-without-losing-quality",
+    component: () => import("./_nuxt/split-images-instagram-without-losing-quality-DTLVxIhS.js")
   }
 ];
 const ROUTE_KEY_PARENTHESES_RE = /(:\w+)\([^)]+\)/g;

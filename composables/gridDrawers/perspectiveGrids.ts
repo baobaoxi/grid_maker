@@ -250,3 +250,39 @@ export const drawAnamorphic = (ctx: CanvasRenderingContext2D, width: number, hei
   ctx.ellipse(centerX, centerY, size * 0.4, size * 0.2, 0, 0, Math.PI * 2)
   ctx.stroke()
 }
+
+export const drawPerspectiveGrid = (ctx: CanvasRenderingContext2D, width: number, height: number, color: string, lineWidth: number) => {
+  ctx.strokeStyle = color
+  ctx.lineWidth = lineWidth
+
+  const horizonY = height * 0.4
+  const vanishingPointX = width / 2
+  const groundLevel = height
+
+  ctx.beginPath()
+  ctx.moveTo(0, horizonY)
+  ctx.lineTo(width, horizonY)
+  ctx.stroke()
+
+  const numLines = 12
+  for (let i = 0; i <= numLines; i++) {
+    const t = i / numLines
+    const bottomX = t * width
+
+    ctx.beginPath()
+    ctx.moveTo(vanishingPointX, horizonY)
+    ctx.lineTo(bottomX, groundLevel)
+    ctx.stroke()
+  }
+
+  const numHorizontal = 8
+  for (let i = 1; i <= numHorizontal; i++) {
+    const t = i / numHorizontal
+    const y = horizonY + (groundLevel - horizonY) * Math.pow(t, 1.5)
+
+    ctx.beginPath()
+    ctx.moveTo(0, y)
+    ctx.lineTo(width, y)
+    ctx.stroke()
+  }
+}

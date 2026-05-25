@@ -1,6 +1,26 @@
 const interopDefault = r => r.default || r || []
 export default {
-  "node_modules/nuxt/dist/app/entry.js": () => import('./_nuxt/entry-styles.B6Kd541k.mjs').then(interopDefault),
+  "node_modules/nuxt/dist/app/entry.js": () => import('./_nuxt/entry-styles.BVGUZbIn.mjs').then(interopDefault),
+  "node_modules/nuxt/dist/app/components/error-404.vue": () => import('./_nuxt/error-404-styles.CiJjK6WX.mjs').then(interopDefault),
   "node_modules/nuxt/dist/app/components/error-500.vue": () => import('./_nuxt/error-500-styles.ulHNpcF1.mjs').then(interopDefault),
-  "node_modules/nuxt/dist/app/components/error-404.vue": () => import('./_nuxt/error-404-styles.CiJjK6WX.mjs').then(interopDefault)
+  "pages/index.vue": () => import('./_nuxt/index-styles.c140eX4i.mjs').then(interopDefault),
+  "pages/terms.vue": () => import('./_nuxt/terms-styles.Bga1zGKX.mjs').then(interopDefault),
+  "components/FeaturesSection.vue": () => import('./_nuxt/FeaturesSection-styles.TotV7S8Y.mjs').then(interopDefault),
+  "components/ActionSection.vue": () => import('./_nuxt/ActionSection-styles.B0KSD8H1.mjs').then(interopDefault),
+  "components/HeroSection.vue": () => import('./_nuxt/HeroSection-styles.ByXZ4EML.mjs').then(interopDefault),
+  "components/GridMaker.vue": () => import('./_nuxt/GridMaker-styles.D0ne5n1c.mjs').then(interopDefault),
+  "pages/about.vue": () => import('./_nuxt/about-styles.BCuy3IeH.mjs').then(interopDefault),
+  "pages/privacy.vue": () => import('./_nuxt/privacy-styles.nE0NeU4H.mjs').then(interopDefault),
+  "pages/blog/instagram-grid-maker-for-stunning-feeds.vue": () => import('./_nuxt/instagram-grid-maker-for-stunning-feeds-styles.CL0EXI_0.mjs').then(interopDefault),
+  "pages/blog/index.vue": () => import('./_nuxt/index-styles.BkQdtphO.mjs').then(interopDefault),
+  "pages/blog/photo-grid-overlay-improve-composition.vue": () => import('./_nuxt/photo-grid-overlay-improve-composition-styles.BhG334At.mjs').then(interopDefault),
+  "pages/advanced.vue": () => import('./_nuxt/advanced-styles.DcZL1GUR.mjs').then(interopDefault),
+  "pages/blog/split-images-instagram-without-losing-quality.vue": () => import('./_nuxt/split-images-instagram-without-losing-quality-styles.C8J8KK94.mjs').then(interopDefault),
+  "pages/edit-grid.vue": () => import('./_nuxt/edit-grid-styles.CPVbJtX3.mjs').then(interopDefault),
+  "pages/blog/grid-method-template-create-customize-online.vue": () => import('./_nuxt/grid-method-template-create-customize-online-styles.BXV3NKjr.mjs').then(interopDefault),
+  "pages/blog/how-to-master-proportions-beginners-guide.vue": () => import('./_nuxt/how-to-master-proportions-beginners-guide-styles.2EEwZyxD.mjs').then(interopDefault),
+  "pages/blog/10-composition-techniques-for-photographers.vue": () => import('./_nuxt/10-composition-techniques-for-photographers-styles.CfeW6EPm.mjs').then(interopDefault),
+  "pages/blog/how-to-use-grid-overlays-for-drawing.vue": () => import('./_nuxt/how-to-use-grid-overlays-for-drawing-styles.CtgbKwEj.mjs').then(interopDefault),
+  "pages/blog/grid-maker-cross-stitch-pixel-art.vue": () => import('./_nuxt/grid-maker-cross-stitch-pixel-art-styles.CAc_6pfV.mjs').then(interopDefault),
+  "components/AppNavbar.vue": () => import('./_nuxt/AppNavbar-styles.xVA2_cOs.mjs').then(interopDefault)
 }

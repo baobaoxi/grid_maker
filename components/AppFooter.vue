@@ -28,9 +28,10 @@ withDefaults(defineProps<{
 }>(), {
   company: 'Photo Grid App',
   links: () => [
-    { label: 'Privacy Policy', url: '#privacy' },
-    { label: 'Terms of Service', url: '#terms' },
-    { label: 'About Us', url: '#about' }
+    { label: 'Privacy Policy', url: '/privacy' },
+    { label: 'Terms of Service', url: '/terms' },
+    { label: 'About Us', url: '/about' },
+    { label: 'Blog', url: '/blog' }
   ]
 })
 

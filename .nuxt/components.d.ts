@@ -14,10 +14,14 @@ type HydrationStrategies = {
 type LazyComponent<T> = DefineComponent<HydrationStrategies, {}, {}, {}, {}, {}, {}, { hydrated: () => void }> & T
 
 
+export const ActionSection: typeof import("../components/ActionSection.vue")['default']
 export const AppFooter: typeof import("../components/AppFooter.vue")['default']
 export const AppHeader: typeof import("../components/AppHeader.vue")['default']
+export const AppNavbar: typeof import("../components/AppNavbar.vue")['default']
 export const FeaturesSection: typeof import("../components/FeaturesSection.vue")['default']
 export const GridControls: typeof import("../components/GridControls.vue")['default']
+export const GridMaker: typeof import("../components/GridMaker.vue")['default']
+export const HeroSection: typeof import("../components/HeroSection.vue")['default']
 export const ImageCanvas: typeof import("../components/ImageCanvas.vue")['default']
 export const UploadArea: typeof import("../components/UploadArea.vue")['default']
 export const NuxtWelcome: typeof import("../node_modules/nuxt/dist/app/components/welcome.vue")['default']
@@ -43,10 +47,14 @@ export const Head: typeof import("../node_modules/nuxt/dist/head/runtime/compone
 export const Html: typeof import("../node_modules/nuxt/dist/head/runtime/components")['Html']
 export const Body: typeof import("../node_modules/nuxt/dist/head/runtime/components")['Body']
 export const NuxtIsland: typeof import("../node_modules/nuxt/dist/app/components/nuxt-island")['default']
+export const LazyActionSection: LazyComponent<typeof import("../components/ActionSection.vue")['default']>
 export const LazyAppFooter: LazyComponent<typeof import("../components/AppFooter.vue")['default']>
 export const LazyAppHeader: LazyComponent<typeof import("../components/AppHeader.vue")['default']>
+export const LazyAppNavbar: LazyComponent<typeof import("../components/AppNavbar.vue")['default']>
 export const LazyFeaturesSection: LazyComponent<typeof import("../components/FeaturesSection.vue")['default']>
 export const LazyGridControls: LazyComponent<typeof import("../components/GridControls.vue")['default']>
+export const LazyGridMaker: LazyComponent<typeof import("../components/GridMaker.vue")['default']>
+export const LazyHeroSection: LazyComponent<typeof import("../components/HeroSection.vue")['default']>
 export const LazyImageCanvas: LazyComponent<typeof import("../components/ImageCanvas.vue")['default']>
 export const LazyUploadArea: LazyComponent<typeof import("../components/UploadArea.vue")['default']>
 export const LazyNuxtWelcome: LazyComponent<typeof import("../node_modules/nuxt/dist/app/components/welcome.vue")['default']>

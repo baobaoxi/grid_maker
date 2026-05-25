@@ -171,3 +171,199 @@ export const drawCrossHairGrid = (ctx: CanvasRenderingContext2D, width: number, 
   ctx.arc(centerX, centerY, size * 0.1, 0, Math.PI * 2)
   ctx.stroke()
 }
+
+export const drawBrickPattern = (ctx: CanvasRenderingContext2D, width: number, height: number, color: string, lineWidth: number) => {
+  ctx.strokeStyle = color
+  ctx.lineWidth = lineWidth
+
+  const brickHeight = 30
+  const brickWidth = 60
+  const offset = brickWidth / 2
+
+  for (let y = 0; y < height; y += brickHeight) {
+    ctx.beginPath()
+    ctx.moveTo(0, y)
+    ctx.lineTo(width, y)
+    ctx.stroke()
+  }
+
+  for (let y = 0; y < height; y += brickHeight) {
+    const rowOffset = (Math.floor(y / brickHeight) % 2) * offset
+    for (let x = -offset + rowOffset; x < width + offset; x += brickWidth) {
+      ctx.beginPath()
+      ctx.moveTo(x, y)
+      ctx.lineTo(x, y + brickHeight)
+      ctx.stroke()
+    }
+  }
+}
+
+export const drawHerringbonePattern = (ctx: CanvasRenderingContext2D, width: number, height: number, color: string, lineWidth: number) => {
+  ctx.strokeStyle = color
+  ctx.lineWidth = lineWidth
+
+  const tileSize = 40
+
+  for (let y = 0; y < height + tileSize; y += tileSize) {
+    for (let x = 0; x < width + tileSize; x += tileSize) {
+      const row = Math.floor(y / tileSize)
+      const col = Math.floor(x / tileSize)
+
+      if (row % 2 === 0) {
+        ctx.beginPath()
+        ctx.moveTo(x, y)
+        ctx.lineTo(x + tileSize, y + tileSize)
+        ctx.stroke()
+      } else {
+        ctx.beginPath()
+        ctx.moveTo(x + tileSize, y)
+        ctx.lineTo(x, y + tileSize)
+        ctx.stroke()
+      }
+    }
+  }
+}
+
+export const drawTileGrid = (ctx: CanvasRenderingContext2D, width: number, height: number, color: string, lineWidth: number) => {
+  ctx.strokeStyle = color
+  ctx.lineWidth = lineWidth
+
+  const tileSize = 50
+
+  for (let y = 0; y < height; y += tileSize) {
+    ctx.beginPath()
+    ctx.moveTo(0, y)
+    ctx.lineTo(width, y)
+    ctx.stroke()
+  }
+
+  for (let x = 0; x < width; x += tileSize) {
+    ctx.beginPath()
+    ctx.moveTo(x, 0)
+    ctx.lineTo(x, height)
+    ctx.stroke()
+  }
+}
+
+export const drawMosaicGrid = (ctx: CanvasRenderingContext2D, width: number, height: number, color: string, lineWidth: number) => {
+  ctx.strokeStyle = color
+  ctx.lineWidth = lineWidth
+
+  const irregularPolygons = [
+    { points: [[0, 0], [50, 20], [30, 50], [0, 40]] },
+    { points: [[50, 20], [100, 0], [90, 50], [30, 50]] },
+    { points: [[0, 40], [30, 50], [20, 90], [0, 80]] },
+    { points: [[30, 50], [90, 50], [80, 90], [20, 90]] },
+  ]
+
+  for (let baseY = -100; baseY < height; baseY += 100) {
+    for (let baseX = -100; baseX < width; baseX += 100) {
+      irregularPolygons.forEach(poly => {
+        ctx.beginPath()
+        ctx.moveTo(baseX + poly.points[0][0], baseY + poly.points[0][1])
+        poly.points.slice(1).forEach(point => {
+          ctx.lineTo(baseX + point[0], baseY + point[1])
+        })
+        ctx.closePath()
+        ctx.stroke()
+      })
+    }
+  }
+}
+
+export const drawStainedGlass = (ctx: CanvasRenderingContext2D, width: number, height: number, color: string, lineWidth: number) => {
+  ctx.strokeStyle = color
+  ctx.lineWidth = lineWidth
+
+  const centerX = width / 2
+  const centerY = height / 2
+  const maxRadius = Math.min(width, height) * 0.45
+
+  for (let r = maxRadius / 6; r <= maxRadius; r += maxRadius / 6) {
+    ctx.beginPath()
+    ctx.arc(centerX, centerY, r, 0, Math.PI * 2)
+    ctx.stroke()
+  }
+
+  for (let angle = 0; angle < Math.PI * 2; angle += Math.PI / 6) {
+    ctx.beginPath()
+    ctx.moveTo(centerX, centerY)
+    ctx.lineTo(centerX + maxRadius * Math.cos(angle), centerY + maxRadius * Math.sin(angle))
+    ctx.stroke()
+  }
+}
+
+export const drawQuiltPattern = (ctx: CanvasRenderingContext2D, width: number, height: number, color: string, lineWidth: number) => {
+  ctx.strokeStyle = color
+  ctx.lineWidth = lineWidth
+
+  const diamondSize = 60
+
+  ctx.beginPath()
+  for (let y = -diamondSize; y < height + diamondSize; y += diamondSize) {
+    const xOffset = (Math.floor(y / diamondSize) % 2) * (diamondSize / 2)
+    for (let x = -diamondSize + xOffset; x < width + diamondSize; x += diamondSize) {
+      ctx.moveTo(x, y + diamondSize / 2)
+      ctx.lineTo(x + diamondSize / 2, y + diamondSize)
+      ctx.lineTo(x + diamondSize, y + diamondSize / 2)
+      ctx.lineTo(x + diamondSize / 2, y)
+      ctx.closePath()
+    }
+  }
+  ctx.stroke()
+
+  ctx.beginPath()
+  for (let y = -diamondSize; y < height + diamondSize; y += diamondSize) {
+    const xOffset = (Math.floor(y / diamondSize) % 2) * (diamondSize / 2)
+    for (let x = -diamondSize + xOffset; x < width + diamondSize; x += diamondSize) {
+      ctx.moveTo(x, y + diamondSize / 2)
+      ctx.lineTo(x + diamondSize / 2, y)
+      ctx.lineTo(x + diamondSize, y + diamondSize / 2)
+      ctx.lineTo(x + diamondSize / 2, y + diamondSize)
+      ctx.closePath()
+    }
+  }
+  ctx.stroke()
+}
+
+export const drawCrossStitch = (ctx: CanvasRenderingContext2D, width: number, height: number, color: string, lineWidth: number) => {
+  ctx.strokeStyle = color
+  ctx.lineWidth = lineWidth
+
+  const stitchSize = 10
+
+  for (let y = 0; y < height; y += stitchSize) {
+    for (let x = 0; x < width; x += stitchSize) {
+      ctx.beginPath()
+      ctx.moveTo(x, y)
+      ctx.lineTo(x + stitchSize, y + stitchSize)
+      ctx.stroke()
+
+      ctx.beginPath()
+      ctx.moveTo(x + stitchSize, y)
+      ctx.lineTo(x, y + stitchSize)
+      ctx.stroke()
+    }
+  }
+}
+
+export const drawPixelArt = (ctx: CanvasRenderingContext2D, width: number, height: number, color: string, lineWidth: number) => {
+  ctx.strokeStyle = color
+  ctx.lineWidth = lineWidth
+
+  const pixelSize = 8
+
+  for (let y = 0; y < height; y += pixelSize) {
+    ctx.beginPath()
+    ctx.moveTo(0, y)
+    ctx.lineTo(width, y)
+    ctx.stroke()
+  }
+
+  for (let x = 0; x < width; x += pixelSize) {
+    ctx.beginPath()
+    ctx.moveTo(x, 0)
+    ctx.lineTo(x, height)
+    ctx.stroke()
+  }
+}
