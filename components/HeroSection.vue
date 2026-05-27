@@ -16,8 +16,9 @@
       </h1>
       
       <p class="hero-subtitle">
-        Grid Maker is a powerful tool that helps you create precise grids for your artistic works. 
-        Upload any image and overlay customizable grid lines to perfect your proportions and composition.
+        Grid Maker is the best online grid maker tool that helps you create precise grids for your artistic works. 
+        This grid maker allows you to upload any image and overlay customizable grid lines. 
+        Whether you're a beginner or a professional artist, this grid maker tool will perfect your proportions and composition.
       </p>
       
       

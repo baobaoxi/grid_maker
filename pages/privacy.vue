@@ -1,6 +1,10 @@
 <template>
   <div class="page-container">
-    <AppHeader 
+    <nav class="page-nav">
+      <a href="/" class="back-home">← Back to Home</a>
+    </nav>
+    
+    <AppHeader
       title="Privacy Policy"
       subtitle="Your privacy is our priority"
     />
@@ -122,5 +126,25 @@ const handleNavigate = (link: { label: string; url: string }) => {
 
 .content-section li {
   margin-bottom: 8px;
+}
+
+.page-nav {
+  padding: 16px 24px;
+  background: #f8f9fa;
+}
+
+.back-home {
+  color: #667eea;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 0.95rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: color 0.2s;
+}
+
+.back-home:hover {
+  color: #764ba2;
 }
 </style>

@@ -1,6 +1,10 @@
 <template>
   <div class="page-container">
-    <AppHeader 
+    <nav class="page-nav">
+      <a href="/" class="back-home">← Back to Home</a>
+    </nav>
+    
+    <AppHeader
       title="About Us"
       subtitle="Learn more about Photo Grid Overlay"
     />
@@ -144,9 +148,23 @@ const handleNavigate = (link: { label: string; url: string }) => {
   margin-bottom: 5px;
 }
 
-.feature-content p {
-  color: #666;
-  font-size: 0.9rem;
-  margin: 0;
+.page-nav {
+  padding: 16px 24px;
+  background: #f8f9fa;
+}
+
+.back-home {
+  color: #667eea;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 0.95rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: color 0.2s;
+}
+
+.back-home:hover {
+  color: #764ba2;
 }
 </style>

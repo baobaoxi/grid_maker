@@ -13,6 +13,9 @@ export default defineNuxtConfig({
         { name: 'author', content: 'Photo Grid Overlay' },
         { name: 'robots', content: 'index, follow' },
         { name: 'theme-color', content: '#667eea' }
+      ],
+      link: [
+        { rel: 'icon', type: 'image/x-icon', href: '/favicon.png' }
       ]
     }
   },

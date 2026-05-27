@@ -2,6 +2,10 @@
   <div class="advanced-page">
     <AppNavbar></AppNavbar>
 
+    <nav class="page-nav">
+      <a href="/" class="back-home">← Back to Home</a>
+    </nav>
+
     <div class="page-header">
       <div class="header-content">
         <h1>Advanced Grid Tools</h1>
@@ -532,7 +536,7 @@ const printImage = () => {
   const printWindow = window.open('', '_blank')
   if (printWindow) {
     const imgSrc = printCanvas.toDataURL('image/png')
-    printWindow.document.write('<img src="' + imgSrc + '" onload="window.print();window.close();">')
+    printWindow.document.write('<img src="' + imgSrc + '" alt="Advanced Grid Maker output" onload="window.print();window.close();">')
     printWindow.document.close()
   }
 }
@@ -1039,5 +1043,25 @@ input[type="color"] {
   .sidebar {
     position: static;
   }
+}
+
+.page-nav {
+  padding: 16px 24px;
+  background: #f8f9fa;
+}
+
+.back-home {
+  color: #667eea;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 0.95rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: color 0.2s;
+}
+
+.back-home:hover {
+  color: #764ba2;
 }
 </style>

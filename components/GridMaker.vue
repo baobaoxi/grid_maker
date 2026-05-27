@@ -357,7 +357,7 @@ const printImage = () => {
   const imageDataUrl = printCanvas.toDataURL('image/png')
   const printWindow = window.open('', '_blank')
   if (printWindow) {
-    printWindow.document.write('<img src="' + imageDataUrl + '" onload="window.print();window.close();">')
+    printWindow.document.write('<img src="' + imageDataUrl + '" alt="Grid Maker output" onload="window.print();window.close();">')
     printWindow.document.close()
   }
 }

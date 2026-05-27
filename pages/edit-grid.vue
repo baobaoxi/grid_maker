@@ -1,15 +1,10 @@
 <template>
   <div class="edit-grid-container">
-    <div class="edit-header">
-      <h1>Grid Editor</h1>
-      <button class="back-btn" @click="goBack">
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="m12 19-7-7 7-7"/>
-          <path d="M19 12H5"/>
-        </svg>
-        Back
-      </button>
-    </div>
+    <AppNavbar></AppNavbar>
+
+    <nav class="page-nav">
+      <a href="/" class="back-home">← Back to Home</a>
+    </nav>
 
     <div class="edit-content">
       <div class="edit-preview">
@@ -464,6 +459,7 @@ onMounted(() => {
   border-radius: 8px;
   cursor: pointer;
   transition: background 0.2s;
+  text-decoration: none;
 }
 
 .back-btn:hover {
@@ -723,5 +719,25 @@ onMounted(() => {
   .edit-header {
     padding: 16px 20px;
   }
+}
+
+.page-nav {
+  padding: 16px 24px;
+  background: #f8f9fa;
+}
+
+.back-home {
+  color: #667eea;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 0.95rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: color 0.2s;
+}
+
+.back-home:hover {
+  color: #764ba2;
 }
 </style>
