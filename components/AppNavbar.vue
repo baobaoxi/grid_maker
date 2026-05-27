@@ -20,13 +20,27 @@
       </div>
       
       <div class="navbar-actions">
-        <a v-if="currentPath === '/'" href="#grid-maker" class="nav-button">
+        <a v-if="currentPath === '/'" href="#grid-maker" class="nav-button desktop-only">
           <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"></path>
             <path d="m15 5 4 4"></path>
           </svg>
           Start Editing
         </a>
+        
+        <button class="mobile-menu-btn mobile-only" @click="toggleMobileMenu" :class="{ active: mobileMenuOpen }">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="6 9 12 15 18 9"></polyline>
+          </svg>
+        </button>
+      </div>
+      
+      <div class="mobile-dropdown" v-show="mobileMenuOpen" v-if="isMobile">
+        <a href="/" class="dropdown-link" :class="{ active: currentPath === '/' }">Home</a>
+        <a href="/advanced" class="dropdown-link" :class="{ active: currentPath === '/advanced' }">Advanced</a>
+        <a href="/pixel-art" class="dropdown-link" :class="{ active: currentPath === '/pixel-art' }">Pixel Art</a>
+        <a href="/blog" class="dropdown-link" :class="{ active: currentPath === '/blog' }">Blog</a>
+        <a v-if="currentPath === '/'" href="#grid-maker" class="dropdown-link start-editing">Start Editing</a>
       </div>
     </div>
   </nav>
@@ -36,6 +50,8 @@
 import { ref, onMounted, onUnmounted } from 'vue'
 
 const currentPath = ref('/')
+const mobileMenuOpen = ref(false)
+const isMobile = ref(false)
 
 const updatePath = () => {
   currentPath.value = window.location.pathname
@@ -45,13 +61,27 @@ const goHome = () => {
   window.location.href = '/'
 }
 
+const toggleMobileMenu = () => {
+  mobileMenuOpen.value = !mobileMenuOpen.value
+}
+
+const checkMobile = () => {
+  isMobile.value = window.innerWidth <= 768
+  if (!isMobile.value) {
+    mobileMenuOpen.value = false
+  }
+}
+
 onMounted(() => {
   updatePath()
+  checkMobile()
   window.addEventListener('popstate', updatePath)
+  window.addEventListener('resize', checkMobile)
 })
 
 onUnmounted(() => {
   window.removeEventListener('popstate', updatePath)
+  window.removeEventListener('resize', checkMobile)
 })
 </script>
 
@@ -140,9 +170,72 @@ onUnmounted(() => {
   box-shadow: 0 4px 12px rgba(139, 92, 246, 0.4);
 }
 
+.mobile-menu-btn {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  color: #374151;
+  transition: transform 0.2s;
+}
+
+.mobile-menu-btn svg {
+  transition: transform 0.2s;
+}
+
+.mobile-menu-btn.active svg {
+  transform: rotate(180deg);
+}
+
+.mobile-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: white;
+  border-top: 1px solid #eee;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  padding: 12px 0;
+  z-index: 999;
+}
+
+.dropdown-link {
+  display: block;
+  padding: 12px 24px;
+  color: #374151;
+  text-decoration: none;
+  font-weight: 500;
+  transition: background 0.2s, color 0.2s;
+}
+
+.dropdown-link:hover {
+  background: #f3f4f6;
+  color: #8b5cf6;
+}
+
+.dropdown-link.active {
+  color: #8b5cf6;
+  background: #f3f4f6;
+}
+
+.dropdown-link.start-editing {
+  color: #8b5cf6;
+  font-weight: 600;
+}
+
+.desktop-only {
+  display: flex;
+}
+
+.mobile-only {
+  display: none;
+}
+
 @media (max-width: 768px) {
   .navbar-container {
     padding: 12px 20px;
+    position: relative;
   }
   
   .navbar-links {
@@ -151,6 +244,18 @@ onUnmounted(() => {
   
   .navbar-brand span {
     font-size: 1rem;
+  }
+  
+  .desktop-only {
+    display: none;
+  }
+  
+  .mobile-only {
+    display: flex;
+  }
+  
+  .navbar-actions {
+    position: static;
   }
 }
 </style>
