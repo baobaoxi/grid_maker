@@ -2,15 +2,15 @@
   <div class="pixel-art-page">
     <AppNavbar></AppNavbar>
 
-    <nav class="page-nav">
-      <a href="/" class="back-home">← Back to Home</a>
-    </nav>
+  
 
     <div class="page-header">
       <h1>Pixel Art Generator</h1>
       <p>Convert your photos into pixel art for cross-stitch patterns</p>
     </div>
-
+  <nav class="page-nav">
+      <a href="/" class="back-home">← Back to Home</a>
+    </nav>
     <div class="page-content">
       <div class="main-section">
         <div class="sidebar">

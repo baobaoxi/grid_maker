@@ -2,9 +2,7 @@
   <div class="advanced-page">
     <AppNavbar></AppNavbar>
 
-    <nav class="page-nav">
-      <a href="/" class="back-home">← Back to Home</a>
-    </nav>
+  
 
     <div class="page-header">
       <div class="header-content">
@@ -16,6 +14,9 @@
         <div class="header-overlay"></div>
       </div>
     </div>
+      <nav class="page-nav">
+      <a href="/" class="back-home">← Back to Home</a>
+    </nav>
 
     <div class="page-content">
       <div class="main-section">
@@ -564,7 +565,6 @@ onMounted(() => {
   position: relative;
   height: 200px;
   overflow: hidden;
-  margin-bottom: 30px;
 }
 
 .header-image {
@@ -617,8 +617,7 @@ onMounted(() => {
   display: grid;
   grid-template-columns: 320px 1fr;
   gap: 30px;
-  min-height: calc(100vh - 200px);
-  align-items: center;
+  padding-bottom: 200px;
 }
 
 .sidebar {
@@ -989,6 +988,8 @@ input[type="color"] {
   border-radius: 12px;
   padding: 24px;
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+  position: sticky;
+  top: 80px;
 }
 
 .canvas-container {
