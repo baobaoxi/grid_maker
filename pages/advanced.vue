@@ -613,6 +613,8 @@ onMounted(() => {
   display: grid;
   grid-template-columns: 320px 1fr;
   gap: 30px;
+  min-height: calc(100vh - 200px);
+  align-items: center;
 }
 
 .sidebar {

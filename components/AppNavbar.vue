@@ -15,6 +15,7 @@
       <div class="navbar-links">
         <a href="/" :class="['nav-link', { active: currentPath === '/' }]">Home</a>
         <a href="/advanced" :class="['nav-link', { active: currentPath === '/advanced' }]">Advanced</a>
+        <a href="/pixel-art" :class="['nav-link', { active: currentPath === '/pixel-art' }]">Pixel Art</a>
         <a href="/blog" :class="['nav-link', { active: currentPath === '/blog' }]">Blog</a>
       </div>
       
