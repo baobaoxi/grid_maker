@@ -48,7 +48,7 @@
               <div class="color-picker">
                 <input type="color" v-model="gridSettings.color" />
                 <div class="preset-colors">
-                  <button v-for="color in presetColors" :key="color" :style="{ backgroundColor: color }" class="color-btn" @click="gridSettings.color = color"></button>
+                  <button v-for="color in presetColors" :key="color" :style="{ backgroundColor: color }" :class="['color-btn', { active: gridSettings.color === color }]" @click="gridSettings.color = color"></button>
                 </div>
               </div>
             </div>
@@ -724,24 +724,32 @@ input[type="color"] {
   display: flex;
   align-items: center;
   gap: 12px;
+  flex-wrap: wrap;
 }
 
 .preset-colors {
   display: flex;
   gap: 6px;
+  flex-wrap: wrap;
 }
 
 .color-btn {
-  width: 32px;
-  height: 32px;
-  border: 2px solid transparent;
+  width: 28px;
+  height: 28px;
+  border: 2px solid #e5e7eb;
   border-radius: 6px;
   cursor: pointer;
   transition: all 0.2s;
 }
 
 .color-btn:hover {
-  transform: scale(1.1);
+  transform: scale(1.15);
+  border-color: #8b5cf6;
+}
+
+.color-btn.active {
+  border-color: #8b5cf6;
+  box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.2);
 }
 
 .combination-options {
@@ -857,6 +865,40 @@ input[type="color"] {
   background: #8b5cf6;
   color: white;
   border-color: #8b5cf6;
+}
+
+.selected-patterns {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  background: #fef3c7;
+  border-radius: 8px;
+  margin-top: 12px;
+}
+
+.selected-label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #d97706;
+}
+
+.clear-btn {
+  padding: 6px 14px;
+  border: none;
+  border-radius: 4px;
+  background: #ef4444;
+  color: white;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.clear-btn:hover {
+  background: #dc2626;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(239, 68, 68, 0.3);
 }
 
 .grid-sub-settings {

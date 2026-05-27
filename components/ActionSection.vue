@@ -84,6 +84,10 @@
           </div>
         </div>
       </div>
+
+      <div class="cta-section">
+        <p class="cta-text">You don't need an art degree. You just need a pencil, a piece of paper, and this Grid Maker.</p>
+      </div>
     </div>
   </section>
 </template>
@@ -193,5 +197,27 @@
     grid-template-columns: 1fr;
     gap: 20px;
   }
+
+  .cta-text {
+    font-size: 1.2rem;
+  }
+}
+
+.cta-section {
+  margin-top: 60px;
+  text-align: center;
+  padding: 40px;
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+  border-radius: 16px;
+}
+
+.cta-text {
+  font-size: 1.5rem;
+  font-weight: 500;
+  color: #1a1a2e;
+  line-height: 1.6;
+  font-style: italic;
+  max-width: 800px;
+  margin: 0 auto;
 }
 </style>

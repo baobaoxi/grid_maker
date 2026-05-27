@@ -1,8 +1,10 @@
 <template>
   <div class="grid-maker-container">
-    <div class="grid-maker-main">
+    <h2 class="maker-title">Upload your photo, generate a grid, and start sketching square by square.</h2>
+    
+    <div class="grid-maker-main" :class="{ 'single-column': step < 2 }">
       <div class="preview-section">
-        <div class="preview-container" @click="goToEdit">
+        <div class="preview-container" :class="{ 'default-height': step < 2 }" @click="goToEdit">
           <img 
             ref="imageRef"
             :src="currentImage" 
@@ -33,64 +35,80 @@
               <polyline points="17 8 12 3 7 8"></polyline>
               <line x1="12" y1="3" x2="12" y2="15"></line>
             </svg>
-            Upload Image
+            {{ step === 1 ? 'Choose Image' : 'Change Image' }}
           </label>
         </div>
       </div>
 
-      <div class="form-section">
-        <h3>Grid Settings</h3>
+      <div class="form-section" v-if="step >= 2">
+        <!-- Step 1: Initial state - show nothing except upload button (already handled) -->
         
-        <div class="form-group">
-          <label for="grid-count">Grid Count</label>
-          <input 
-            type="number" 
-            id="grid-count" 
-            v-model.number="gridCount" 
-            min="4" 
-            max="1000"
-            placeholder="Enter grid count"
-          />
-        </div>
+        <!-- Step 2: After selecting image - show grid count and style selection -->
+        <template v-if="step >= 2">
+          <div class="form-group">
+            <label for="grid-count">Grid Count</label>
+            <input 
+              type="number" 
+              id="grid-count" 
+              v-model.number="gridCount" 
+              min="4" 
+              max="1000"
+              placeholder="Enter grid count"
+            />
+          </div>
 
-        <div class="form-group" v-if="gridCombinations.length > 0">
-          <label>Grid Combination</label>
-          <div class="combination-options">
-            <button 
-              v-for="combo in gridCombinations" 
-              :key="combo.label"
-              :class="['combo-btn', { active: selectedCombo.label === combo.label }]"
-              @click="selectCombo(combo)"
-            >
-              {{ combo.label }}
+          <div class="form-group">
+            <label>Grid Style</label>
+            <div class="style-options">
+              <label v-for="style in gridStyles" :key="style.value" class="style-radio">
+                <input 
+                  type="radio" 
+                  :value="style.value" 
+                  v-model="selectedStyle"
+                />
+                <span class="style-icon">{{ style.icon }}</span>
+                <span>{{ style.label }}</span>
+              </label>
+            </div>
+          </div>
+
+          <button v-if="step === 2" class="btn-primary add-grid-btn" @click="addGrid">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="12" y1="5" x2="12" y2="19"></line>
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+            </svg>
+            Add Grid
+          </button>
+        </template>
+
+        <!-- Step 3: After clicking Add Grid - show full settings -->
+        <template v-if="step >= 3">
+          <h3>Grid Settings</h3>
+          
+          <div class="form-group" v-if="gridCombinations.length > 0">
+            <label>Grid Combination</label>
+            <div class="combination-options">
+              <button 
+                v-for="combo in gridCombinations" 
+                :key="combo.label"
+                :class="['combo-btn', { active: selectedCombo.label === combo.label }]"
+                @click="selectCombo(combo)"
+              >
+                {{ combo.label }}
+              </button>
+            </div>
+          </div>
+
+          <div class="action-buttons">
+            <button class="btn-primary" @click="goToEdit">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"></path>
+                <path d="m15 5 4 4"></path>
+              </svg>
+              Edit
             </button>
           </div>
-        </div>
-
-        <div class="form-group">
-          <label>Grid Style</label>
-          <div class="style-options">
-            <label v-for="style in gridStyles" :key="style.value" class="style-radio">
-              <input 
-                type="radio" 
-                :value="style.value" 
-                v-model="selectedStyle"
-              />
-              <span class="style-icon">{{ style.icon }}</span>
-              <span>{{ style.label }}</span>
-            </label>
-          </div>
-        </div>
-
-        <div class="action-buttons">
-          <button class="btn-primary" @click="goToEdit">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"></path>
-              <path d="m15 5 4 4"></path>
-            </svg>
-            Edit
-          </button>
-        </div>
+        </template>
       </div>
     </div>
   </div>
@@ -98,7 +116,11 @@
 
 <script setup lang="ts">
 import { ref, computed, watch, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
 
+const router = useRouter()
+
+const step = ref(1) // 1: initial, 2: image selected, 3: grid added
 const currentImage = ref('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop')
 const imageRef = ref<HTMLImageElement | null>(null)
 const canvasRef = ref<HTMLCanvasElement | null>(null)
@@ -126,7 +148,7 @@ const gridCombinations = computed(() => {
     if (count % i === 0) {
       const j = count / i
       const score = Math.abs(i - j)
-      combinations.push({ rows: Math.min(i, j), cols: Math.max(i, j), label: `${Math.min(i, j)}×${Math.max(i, j)}`, score })
+      combinations.push({ rows: Math.min(i, j), cols: Math.max(i, j), label: Math.min(i, j) + '×' + Math.max(i, j), score })
     }
   }
   
@@ -134,7 +156,7 @@ const gridCombinations = computed(() => {
     if (count % i !== 0) {
       const j = Math.ceil(count / i)
       const score = Math.abs(i - j) + 1
-      combinations.push({ rows: Math.min(i, j), cols: Math.max(i, j), label: `${Math.min(i, j)}×${Math.max(i, j)}`, score })
+      combinations.push({ rows: Math.min(i, j), cols: Math.max(i, j), label: Math.min(i, j) + '×' + Math.max(i, j), score })
     }
   }
   
@@ -247,8 +269,22 @@ const onImageLoad = () => {
   drawGrid()
 }
 
+const addGrid = () => {
+  step.value = 3
+  if (gridCombinations.value.length > 0) {
+    selectedCombo.value = gridCombinations.value[0]
+  }
+  drawGrid()
+}
+
 watch([selectedCombo, selectedStyle], () => {
   drawGrid()
+})
+
+watch(gridCount, () => {
+  if (step.value >= 3 && gridCombinations.value.length > 0) {
+    selectedCombo.value = gridCombinations.value[0]
+  }
 })
 
 const handleImageUpload = (event: Event) => {
@@ -259,6 +295,7 @@ const handleImageUpload = (event: Event) => {
     const reader = new FileReader()
     reader.onload = (e) => {
       currentImage.value = e.target?.result as string
+      step.value = 2
     }
     reader.readAsDataURL(file)
   }
@@ -269,14 +306,16 @@ const selectCombo = (combo: { rows: number; cols: number; label: string }) => {
 }
 
 const goToEdit = () => {
-  const params = new URLSearchParams({
-    image: encodeURIComponent(currentImage.value),
-    rows: selectedCombo.value.rows.toString(),
-    cols: selectedCombo.value.cols.toString(),
-    count: gridCount.value.toString(),
-    style: selectedStyle.value
+  router.push({
+    path: '/edit-grid',
+    query: {
+      image: encodeURIComponent(currentImage.value),
+      rows: selectedCombo.value.rows.toString(),
+      cols: selectedCombo.value.cols.toString(),
+      count: gridCount.value.toString(),
+      style: selectedStyle.value
+    }
   })
-  window.location.href = `/edit-grid?${params.toString()}`
 }
 
 const downloadImage = (format: string) => {
@@ -295,8 +334,8 @@ const downloadImage = (format: string) => {
   ctx.drawImage(canvas, 0, 0)
 
   const link = document.createElement('a')
-  link.download = `grid.${format}`
-  link.href = exportCanvas.toDataURL(`image/${format}`, 0.95)
+  link.download = 'grid.' + format
+  link.href = exportCanvas.toDataURL('image/' + format, 0.95)
   link.click()
 }
 
@@ -315,9 +354,10 @@ const printImage = () => {
   ctx.globalAlpha = 0.6
   ctx.drawImage(canvas, 0, 0)
 
+  const imageDataUrl = printCanvas.toDataURL('image/png')
   const printWindow = window.open('', '_blank')
   if (printWindow) {
-    printWindow.document.write(`<img src="${printCanvas.toDataURL('image/png')}" onload="window.print();window.close();">`)
+    printWindow.document.write('<img src="' + imageDataUrl + '" onload="window.print();window.close();">')
     printWindow.document.close()
   }
 }
@@ -343,6 +383,10 @@ onMounted(() => {
   margin-bottom: 30px;
 }
 
+.grid-maker-main.single-column {
+  grid-template-columns: 1fr;
+}
+
 .preview-section {
   background: white;
   border-radius: 12px;
@@ -356,6 +400,10 @@ onMounted(() => {
   overflow: hidden;
   cursor: pointer;
   margin-bottom: 20px;
+}
+
+.preview-container.default-height {
+  height: 400px;
 }
 
 .preview-image {
@@ -419,6 +467,14 @@ onMounted(() => {
 .form-section h3 {
   margin-bottom: 20px;
   color: #1a1a2e;
+}
+
+.maker-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #1a1a2e;
+  text-align: center;
+  margin-bottom: 20px;
 }
 
 .form-group {
@@ -533,40 +589,8 @@ onMounted(() => {
   box-shadow: 0 4px 12px rgba(139, 92, 246, 0.4);
 }
 
-.download-section {
-  background: white;
-  border-radius: 12px;
-  padding: 24px;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-}
-
-.download-section h3 {
-  margin-bottom: 20px;
-  color: #1a1a2e;
-}
-
-.download-buttons {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
-}
-
-.download-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 12px 20px;
-  background: #f3f4f6;
-  color: #374151;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
-.download-btn:hover {
-  background: #8b5cf6;
-  color: white;
+.add-grid-btn {
+  width: 100%;
 }
 
 @media (max-width: 900px) {

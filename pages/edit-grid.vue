@@ -165,6 +165,9 @@
 
 <script setup lang="ts">
 import { ref, computed, watch, onMounted } from 'vue'
+import { useRoute } from 'vue-router'
+
+const route = useRoute()
 
 const currentImage = ref('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop')
 const imageRef = ref<HTMLImageElement | null>(null)
@@ -201,7 +204,7 @@ const gridCombinations = computed(() => {
     if (count % i === 0) {
       const j = count / i
       const score = Math.abs(i - j)
-      combinations.push({ rows: Math.min(i, j), cols: Math.max(i, j), label: `${Math.min(i, j)}×${Math.max(i, j)}`, score })
+      combinations.push({ rows: Math.min(i, j), cols: Math.max(i, j), label: Math.min(i, j) + '×' + Math.max(i, j), score })
     }
   }
   
@@ -209,7 +212,7 @@ const gridCombinations = computed(() => {
     if (count % i !== 0) {
       const j = Math.ceil(count / i)
       const score = Math.abs(i - j) + 1
-      combinations.push({ rows: Math.min(i, j), cols: Math.max(i, j), label: `${Math.min(i, j)}×${Math.max(i, j)}`, score })
+      combinations.push({ rows: Math.min(i, j), cols: Math.max(i, j), label: Math.min(i, j) + '×' + Math.max(i, j), score })
     }
   }
   
@@ -360,40 +363,61 @@ const downloadImage = (format: string) => {
   ctx.drawImage(canvas, 0, 0)
 
   const link = document.createElement('a')
-  link.download = `grid.${format}`
-  link.href = exportCanvas.toDataURL(`image/${format}`, 0.95)
+  link.download = 'grid.' + format
+  link.href = exportCanvas.toDataURL('image/' + format, 0.95)
   link.click()
 }
 
 const printImage = () => {
   const img = imageRef.value
   const canvas = canvasRef.value
-  if (!img || !canvas) return
+  if (!img || !canvas) {
+    alert('Please upload an image first')
+    return
+  }
 
   const printCanvas = document.createElement('canvas')
   printCanvas.width = img.naturalWidth
   printCanvas.height = img.naturalHeight
   const ctx = printCanvas.getContext('2d')
-  if (!ctx) return
+  if (!ctx) {
+    alert('Failed to create canvas context')
+    return
+  }
 
   ctx.drawImage(img, 0, 0)
   ctx.globalAlpha = opacity.value / 100
   ctx.drawImage(canvas, 0, 0)
 
+  const imageDataUrl = printCanvas.toDataURL('image/png')
+  
   const printWindow = window.open('', '_blank')
-  if (printWindow) {
-    printWindow.document.write(`<img src="${printCanvas.toDataURL('image/png')}" onload="window.print();window.close();">`)
-    printWindow.document.close()
+  if (!printWindow) {
+    alert('Please allow popups to use the print feature')
+    return
   }
+
+  const imgElement = document.createElement('img')
+  imgElement.src = imageDataUrl
+  imgElement.style.maxWidth = '100%'
+  imgElement.style.maxHeight = '100vh'
+  imgElement.onload = function() {
+    window.print()
+    setTimeout(function() {
+      printWindow.close()
+    }, 1000)
+  }
+  
+  printWindow.document.body.appendChild(imgElement)
+  printWindow.document.close()
 }
 
 onMounted(() => {
-  const params = new URLSearchParams(window.location.search)
-  const image = params.get('image')
-  const rowsParam = params.get('rows')
-  const colsParam = params.get('cols')
-  const countParam = params.get('count')
-  const styleParam = params.get('style')
+  const image = route.query.image as string
+  const rowsParam = route.query.rows as string
+  const colsParam = route.query.cols as string
+  const countParam = route.query.count as string
+  const styleParam = route.query.style as string
   
   if (image) currentImage.value = decodeURIComponent(image)
   if (rowsParam) selectedCombo.value.rows = parseInt(rowsParam)
@@ -401,7 +425,7 @@ onMounted(() => {
   if (countParam) gridCount.value = parseInt(countParam)
   if (styleParam) selectedStyle.value = styleParam
   
-  selectedCombo.value.label = `${selectedCombo.value.rows}×${selectedCombo.value.cols}`
+  selectedCombo.value.label = selectedCombo.value.rows + '×' + selectedCombo.value.cols
   
   if (imageRef.value?.complete) {
     drawGrid()

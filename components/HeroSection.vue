@@ -12,7 +12,7 @@
     
     <div class="hero-content">
       <h1 class="hero-title">
-        Grid Maker - Create Grids for Your Artwork
+        Grid Maker for People Who Can’t Draw.
       </h1>
       
       <p class="hero-subtitle">
@@ -20,22 +20,7 @@
         Upload any image and overlay customizable grid lines to perfect your proportions and composition.
       </p>
       
-      <div class="hero-cta">
-        <button class="btn btn-primary" @click="scrollToUpload">
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
-          </svg>
-          Get Started
-        </button>
-        <button class="btn btn-secondary" @click="scrollToFeatures">
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="12" cy="12" r="10"></circle>
-            <line x1="12" y1="16" x2="12" y2="12"></line>
-            <line x1="12" y1="8" x2="12.01" y2="8"></line>
-          </svg>
-          Learn More
-        </button>
-      </div>
+      
       
       <div class="hero-social-proof">
         <div class="user-avatars">
@@ -51,11 +36,6 @@
           </div>
           <p>Trusted by 999+ artists worldwide</p>
         </div>
-      </div>
-      
-      <div class="hero-feature">
-        <h2>Drawing Grid Generator</h2>
-        <p>Upload your image, overlay precise grids, and download printable reference materials in seconds.</p>
       </div>
     </div>
   </section>
@@ -81,11 +61,11 @@ const scrollToFeatures = () => {
 .hero-section {
   position: relative;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  min-height: 450px;
+  min-height: 250px;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 60px 20px;
+  padding: 20px 20px;
   overflow: hidden;
 }
 

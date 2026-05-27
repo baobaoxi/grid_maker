@@ -5,7 +5,7 @@
 
     <main class="main-content">
 
-    <section class="grid-maker-section">
+    <section class="grid-maker-section" id="grid-maker">
       <div class="container">
         <GridMaker />
       </div>
@@ -17,6 +17,7 @@
       :show-header="false"
       :show-features="false"
       :show-steps="true"
+      :show-faq="false"
     />
 
     <FeaturesSection
@@ -25,6 +26,7 @@
       :show-header="true"
       :show-features="true"
       :show-steps="false"
+      :showWhyToUse="false"
     />
 
     <ActionSection />
