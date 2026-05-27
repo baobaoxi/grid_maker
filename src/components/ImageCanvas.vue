@@ -216,7 +216,7 @@ defineExpose({ getCanvasWithGrid })
 .canvas-container {
   background: white;
   border-radius: 16px;
-  padding: 24px;
+  /* padding: 24px; */
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
 }
 

@@ -33,16 +33,6 @@
           <div class="grid-settings">
             <h3>Grid Settings</h3>
 
-            <div class="setting-group" v-if="selectedPatterns.includes('standardGrid') || selectedPatterns.includes('diagonalGrid') || selectedPatterns.includes('muralScaling')">
-              <label>Rows: {{ gridSettings.rows }}</label>
-              <input type="range" v-model.number="gridSettings.rows" min="2" max="20" />
-            </div>
-
-            <div class="setting-group" v-if="selectedPatterns.includes('standardGrid') || selectedPatterns.includes('diagonalGrid') || selectedPatterns.includes('muralScaling')">
-              <label>Columns: {{ gridSettings.cols }}</label>
-              <input type="range" v-model.number="gridSettings.cols" min="2" max="20" />
-            </div>
-
             <div class="setting-group">
               <label>Line Width: {{ gridSettings.lineWidth }}px</label>
               <input type="range" v-model.number="gridSettings.lineWidth" min="1" max="10" />
@@ -77,6 +67,14 @@
                 <button v-for="pattern in category.patterns" :key="pattern.value" :class="['pattern-btn', { active: selectedPatterns.includes(pattern.value) }]" @click="togglePattern(pattern.value)">
                   {{ pattern.label }}
                 </button>
+                <div v-if="category.name === 'standard' && (selectedPatterns.includes('standardGrid') || selectedPatterns.includes('diagonalGrid'))" class="grid-sub-settings">
+                  <div class="sub-setting">
+                    <label>Rows: <input type="number" v-model.number="gridSettings.rows" min="2" max="20" class="number-input" /></label>
+                  </div>
+                  <div class="sub-setting">
+                    <label>Columns: <input type="number" v-model.number="gridSettings.cols" min="2" max="20" class="number-input" /></label>
+                  </div>
+                </div>
               </div>
             </div>
             <div v-if="selectedPatterns.length > 0" class="selected-patterns">
@@ -122,8 +120,8 @@
         </div>
 
         <div class="canvas-section">
-          <div class="canvas-container">
-            <img ref="imageRef" :src="currentImage || defaultImage" alt="Preview" class="preview-image" @load="drawGrid" />
+          <div class="canvas-container" ref="containerRef">
+            <img ref="imageRef" :src="currentImage || defaultImage" alt="Preview" class="preview-image" @load="onImageLoad" />
             <canvas ref="canvasRef" class="grid-canvas" />
           </div>
           <div v-if="!currentImage" class="default-hint">
@@ -187,6 +185,7 @@ const currentImage = ref('')
 const defaultImage = 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop'
 const imageRef = ref<HTMLImageElement | null>(null)
 const canvasRef = ref<HTMLCanvasElement | null>(null)
+const containerRef = ref<HTMLDivElement | null>(null)
 const selectedPatterns = ref<string[]>(['standardGrid'])
 const expandedCategories = ref(['standard', 'composition'])
 
@@ -304,6 +303,20 @@ const clearAllPatterns = () => {
   drawGrid()
 }
 
+const onImageLoad = () => {
+  const container = containerRef.value
+  const img = imageRef.value
+  const canvas = canvasRef.value
+  if (!container || !img || !canvas) return
+  
+  const displayWidth = img.clientWidth
+  const displayHeight = img.clientHeight
+  
+  container.style.width = displayWidth + 'px'
+  
+  drawGrid()
+}
+
 const drawGrid = () => {
   const canvas = canvasRef.value
   const img = imageRef.value
@@ -312,13 +325,12 @@ const drawGrid = () => {
   const ctx = canvas.getContext('2d')
   if (!ctx) return
 
-  const rect = img.getBoundingClientRect()
+  const width = img.clientWidth
+  const height = img.clientHeight
   
-  canvas.width = rect.width
-  canvas.height = rect.height
+  canvas.width = width
+  canvas.height = height
 
-  const width = canvas.width
-  const height = canvas.height
   const color = gridSettings.color
   const alpha = gridSettings.opacity / 100
   const lineWidth = gridSettings.lineWidth
@@ -525,14 +537,16 @@ const printImage = () => {
   }
 }
 
-watch([() => gridSettings.lineWidth, () => gridSettings.opacity, () => gridSettings.color], () => {
+watch([() => gridSettings.rows, () => gridSettings.cols, () => gridSettings.lineWidth, () => gridSettings.opacity, () => gridSettings.color], () => {
   drawGrid()
 })
 
 onMounted(() => {
   if (imageRef.value?.complete) {
-    drawGrid()
+    onImageLoad()
   }
+  
+  window.addEventListener('resize', onImageLoad)
 })
 </script>
 
@@ -845,6 +859,36 @@ input[type="color"] {
   border-color: #8b5cf6;
 }
 
+.grid-sub-settings {
+  display: flex;
+  gap: 12px;
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid #e5e7eb;
+}
+
+.sub-setting {
+  flex: 1;
+}
+
+.sub-setting label {
+  font-size: 0.75rem;
+  color: #6b7280;
+}
+
+.sub-setting input {
+  width: 100%;
+  padding: 4px 8px;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+  font-size: 0.875rem;
+}
+
+.sub-setting input:focus {
+  outline: none;
+  border-color: #8b5cf6;
+}
+
 .custom-grid-settings {
   margin-bottom: 24px;
   padding: 16px;
@@ -902,7 +946,6 @@ input[type="color"] {
 .canvas-container {
   position: relative;
   width: 100%;
-  max-width: 100%;
   overflow: hidden;
   border-radius: 8px;
 }
