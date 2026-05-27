@@ -8,7 +8,7 @@
           alt="Grid Maker for people to draw artist" 
           width="960" 
           height="540"
-          loading="lazy"
+          fetchpriority="high"
         />
           <div class="grid-overlay"></div>
         </div>
