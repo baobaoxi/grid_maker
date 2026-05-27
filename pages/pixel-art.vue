@@ -85,7 +85,7 @@
 
         <div class="canvas-section">
           <div class="canvas-container" ref="containerRef">
-            <canvas ref="canvasRef" class="pixel-canvas"></canvas>
+            <canvas v-if="currentImage" ref="canvasRef" class="pixel-canvas"></canvas>
             <div v-if="!currentImage" class="placeholder">
               <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
