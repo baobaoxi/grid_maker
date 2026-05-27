@@ -3,7 +3,13 @@
     <div class="hero-background">
         <!-- Background demo image showing grid overlay effect -->
         <div class="demo-image">
-          <img src="https://images.unsplash.com/photo-1544531586-fde5298cdd40?w=1920&h=1080&fit=crop" alt="Grid Maker for people to draw artist" />
+          <img 
+          src="https://images.unsplash.com/photo-1544531586-fde5298cdd40?w=960&h=540&fit=crop" 
+          alt="Grid Maker for people to draw artist" 
+          width="960" 
+          height="540"
+          loading="lazy"
+        />
           <div class="grid-overlay"></div>
         </div>
         <!-- Gradient overlay to ensure text readability -->
@@ -25,11 +31,41 @@
       
       <div class="hero-social-proof">
         <div class="user-avatars">
-          <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop" alt="Grid Maker for people to draw artist" />
-          <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&h=100&fit=crop" alt="Grid Maker for people to draw artist" />
-          <img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=100&h=100&fit=crop" alt="Grid Maker for people to draw artist" />
-          <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop" alt="Grid Maker for people to draw artist" />
-          <img src="https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=100&h=100&fit=crop" alt="Grid Maker for people to draw artist" />
+          <img 
+            src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop" 
+            alt="User avatar" 
+            width="100" 
+            height="100"
+            loading="lazy"
+          />
+          <img 
+            src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&h=100&fit=crop" 
+            alt="User avatar" 
+            width="100" 
+            height="100"
+            loading="lazy"
+          />
+          <img 
+            src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=100&h=100&fit=crop" 
+            alt="User avatar" 
+            width="100" 
+            height="100"
+            loading="lazy"
+          />
+          <img 
+            src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop" 
+            alt="User avatar" 
+            width="100" 
+            height="100"
+            loading="lazy"
+          />
+          <img 
+            src="https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=100&h=100&fit=crop" 
+            alt="User avatar" 
+            width="100" 
+            height="100"
+            loading="lazy"
+          />
         </div>
         <div class="rating">
           <div class="stars">

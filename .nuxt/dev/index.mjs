@@ -681,6 +681,18 @@ const _inlineRuntimeConfig = {
       "/__nuxt_error": {
         "cache": false
       },
+      "/": {
+        "prerender": true
+      },
+      "/about": {
+        "prerender": true
+      },
+      "/privacy": {
+        "prerender": true
+      },
+      "/terms": {
+        "prerender": true
+      },
       "/_nuxt/builds/meta/**": {
         "headers": {
           "cache-control": "public, max-age=31536000, immutable"
@@ -2101,7 +2113,7 @@ const _j1fu0vD2FuVroQPAunubjpGApLPSV38HYIxLrZo4tQ = (function(nitro) {
 
 const rootDir = "/Users/manlongfeng/Documents/trae_projects/grid_maker";
 
-const appHead = {"meta":[{"charset":"utf-8"},{"name":"viewport","content":"width=device-width, initial-scale=1"},{"name":"description","content":"The ultimate Grid Maker for beginners. Create professional artwork with zero drawing skills. Completely free, no sign-up needed. Upload your photo now!"},{"name":"author","content":"Photo Grid Overlay"},{"name":"robots","content":"index, follow"},{"name":"theme-color","content":"#667eea"}],"link":[{"rel":"icon","type":"image/x-icon","href":"/favicon.png"}],"style":[],"script":[],"noscript":[],"title":"Photo Grid Maker for People Who Can’t Draw."};
+const appHead = {"meta":[{"charset":"utf-8"},{"name":"viewport","content":"width=device-width, initial-scale=1"},{"name":"description","content":"The ultimate Grid Maker for beginners. Create professional artwork with zero drawing skills. Completely free, no sign-up needed. Upload your photo now!"},{"name":"author","content":"Photo Grid Overlay"},{"name":"robots","content":"index, follow"},{"name":"theme-color","content":"#667eea"},{"name":"referrer","content":"no-referrer-when-downgrade"}],"link":[{"rel":"icon","type":"image/x-icon","href":"/favicon.png"},{"rel":"preconnect","href":"https://cdn.jsdelivr.net","crossorigin":""},{"rel":"preconnect","href":"https://images.unsplash.com","crossorigin":""},{"rel":"preconnect","href":"https://picsum.photos","crossorigin":""}],"style":[],"script":[],"noscript":[],"title":"Photo Grid Maker for People Who Can’t Draw."};
 
 const appRootTag = "div";
 
