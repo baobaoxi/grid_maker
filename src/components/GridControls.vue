@@ -89,7 +89,7 @@ import { ref, watch } from 'vue'
 const props = defineProps({
   title: {
     type: String,
-    default: 'Upload your photo, generate a grid, and start sketching square by square.'
+    default: 'Drawing Grid Maker'
   },
   columnsLabel: {
     type: String,

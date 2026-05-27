@@ -1,7 +1,7 @@
 <template>
   <div class="grid-maker-container">
-    <h2 class="maker-title">Upload your photo, generate a grid, and start sketching square by square.</h2>
-    
+    <h2 class="maker-title">Drawing Grid Maker</h2>
+    <div class="maker-subtitle">Upload your photo, generate a grid, and start sketching square by square.</div>
     <div class="grid-maker-main" :class="{ 'single-column': step < 2 }">
       <div class="preview-section">
         <div class="preview-container" :class="{ 'default-height': step < 2 }" @click="goToEdit">
@@ -474,7 +474,15 @@ onMounted(() => {
   font-weight: 700;
   color: #1a1a2e;
   text-align: center;
-  margin-bottom: 20px;
+  margin-bottom: 12px;
+}
+
+.maker-subtitle {
+  font-size: 1.1rem;
+  color: #666;
+  text-align: center;
+  margin-bottom: 30px;
+  line-height: 1.5;
 }
 
 .form-group {
@@ -596,6 +604,24 @@ onMounted(() => {
 @media (max-width: 900px) {
   .grid-maker-main {
     grid-template-columns: 1fr;
+  }
+  
+  .maker-title {
+    display: none;
+  }
+  
+  .maker-subtitle {
+    display: none;
+  }
+  
+  .grid-canvas {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+  }
+  
+  .preview-container.default-height {
+    height: auto;
   }
 }
 </style>

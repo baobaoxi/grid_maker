@@ -260,47 +260,40 @@ const scrollToFeatures = () => {
 
 @media (max-width: 768px) {
   .hero-section {
-    min-height: 400px;
-    padding: 40px 20px;
-  }
-  
-  .hero-title {
-    font-size: 2rem;
-  }
-  
-  .hero-subtitle {
-    font-size: 1rem;
-  }
-  
-  .hero-cta {
-    flex-direction: column;
-    gap: 10px;
-  }
-  
-  .btn {
-    width: 100%;
-    justify-content: center;
-  }
-  
-  .hero-social-proof {
-    flex-direction: column;
-    gap: 15px;
-  }
-  
-  .rating {
-    text-align: center;
-  }
-  
-  .hero-feature {
+    min-height: 180px;
     padding: 20px;
   }
   
-  .hero-feature h2 {
-    font-size: 1.3rem;
+  .hero-title {
+    font-size: 1.5rem;
+  }
+  
+  .hero-subtitle {
+    display: none;
+  }
+  
+  .hero-cta {
+    display: none;
+  }
+  
+  .hero-social-proof {
+    display: none;
+  }
+  
+  .hero-feature {
+    display: none;
+  }
+  
+  .demo-image {
+    display: none;
   }
   
   .grid-overlay {
-    background-size: 60px 60px;
+    display: none;
+  }
+  
+  .overlay-gradient {
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.95) 0%, rgba(118, 75, 162, 0.95) 100%);
   }
 }
 </style>

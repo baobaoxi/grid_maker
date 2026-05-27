@@ -454,8 +454,22 @@ withDefaults(defineProps<{
   }
 
   .why-grid {
-    grid-template-columns: 1fr;
     gap: 24px;
+  }
+
+  .why-card {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .why-card.reverse {
+    flex-direction: column;
+  }
+
+  .why-image {
+    width: 100%;
+    height: auto;
+    max-height: 200px;
   }
 }
 </style>
