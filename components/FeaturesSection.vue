@@ -40,16 +40,18 @@
       <div v-if="showWhyToUse" class="why-to-use">
         <h3>Why to Use</h3>
         <div class="why-grid">
-          <div v-for="(item, index) in whyItems" :key="index" class="why-card">
-            <div class="why-icon">
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path :d="item.iconPath" />
-              </svg>
-            </div>
-            <h4>{{ item.title }}</h4>
-            <p>{{ item.description }}</p>
+          <div v-for="(item, index) in whyItems" :key="index" class="why-card" :class="{ 'reverse': index % 2 === 1 }">
             <div class="why-image">
               <img :src="item.imageUrl" :alt="item.title" />
+            </div>
+            <div class="why-content">
+              <div class="why-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path :d="item.iconPath" />
+                </svg>
+              </div>
+              <h4>{{ item.title }}</h4>
+              <p>{{ item.description }}</p>
             </div>
           </div>
         </div>
@@ -286,8 +288,8 @@ withDefaults(defineProps<{
 }
 
 .why-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  display: flex;
+  flex-direction: column;
   gap: 32px;
 }
 
@@ -296,6 +298,31 @@ withDefaults(defineProps<{
   border-radius: 12px;
   padding: 24px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  display: flex;
+  gap: 24px;
+  align-items: center;
+}
+
+.why-card.reverse {
+  flex-direction: row-reverse;
+}
+
+.why-image {
+  flex-shrink: 0;
+  width: 300px;
+  height: 200px;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.why-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.why-content {
+  flex: 1;
 }
 
 .why-icon {
@@ -321,20 +348,6 @@ withDefaults(defineProps<{
   font-size: 0.95rem;
   color: #555;
   line-height: 1.6;
-  margin-bottom: 16px;
-}
-
-.why-image {
-  width: 100%;
-  height: 180px;
-  border-radius: 8px;
-  overflow: hidden;
-}
-
-.why-image img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
 }
 
 .faq-section {
