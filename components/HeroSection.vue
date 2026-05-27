@@ -1,14 +1,14 @@
 <template>
   <section class="hero-section">
     <div class="hero-background">
-      <!-- 背景示例图：展示网格叠加效果 -->
-      <div class="demo-image">
-        <img src="https://images.unsplash.com/photo-1544531586-fde5298cdd40?w=1920&h=1080&fit=crop" alt="Portrait with grid overlay demo" />
-        <div class="grid-overlay"></div>
+        <!-- Background demo image showing grid overlay effect -->
+        <div class="demo-image">
+          <img src="https://images.unsplash.com/photo-1544531586-fde5298cdd40?w=1920&h=1080&fit=crop" alt="Portrait with grid overlay demo" />
+          <div class="grid-overlay"></div>
+        </div>
+        <!-- Gradient overlay to ensure text readability -->
+        <div class="overlay-gradient"></div>
       </div>
-      <!-- 渐变遮罩，保证文字清晰 -->
-      <div class="overlay-gradient"></div>
-    </div>
     
     <div class="hero-content">
       <h1 class="hero-title">
