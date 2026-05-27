@@ -8,7 +8,7 @@
           <img 
             ref="imageRef"
             :src="currentImage" 
-            alt="Grid preview" 
+            alt="Grid Maker for people to draw artist" 
             class="preview-image"
             @load="onImageLoad"
           />

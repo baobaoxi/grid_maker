@@ -9,7 +9,7 @@
       <div class="action-grid">
         <div class="action-card">
           <div class="action-image">
-            <img src="https://images.unsplash.com/photo-1547826039-bfc35e0f1ea8?w=400&h=300&fit=crop" alt="Wall mural painting with grid" />
+            <img src="https://images.unsplash.com/photo-1547826039-bfc35e0f1ea8?w=400&h=300&fit=crop" alt="Grid Maker for people to draw artist" />
             <div class="grid-overlay"></div>
           </div>
           <div class="action-content">
@@ -20,7 +20,7 @@
 
         <div class="action-card">
           <div class="action-image">
-            <img src="https://images.unsplash.com/photo-1549490349-8643362247b5?w=400&h=300&fit=crop" alt="Abstract painting with grid" />
+            <img src="https://images.unsplash.com/photo-1549490349-8643362247b5?w=400&h=300&fit=crop" alt="Grid Maker for people to draw artist" />
             <div class="grid-overlay"></div>
           </div>
           <div class="action-content">
@@ -31,7 +31,7 @@
 
         <div class="action-card">
           <div class="action-image">
-            <img src="https://images.unsplash.com/photo-1501504905252-473c47e087f8?w=400&h=300&fit=crop" alt="Sketch drawing with grid" />
+            <img src="https://images.unsplash.com/photo-1501504905252-473c47e087f8?w=400&h=300&fit=crop" alt="Grid Maker for people to draw artist" />
             <div class="grid-overlay"></div>
           </div>
           <div class="action-content">
@@ -42,7 +42,7 @@
 
         <div class="action-card">
           <div class="action-image">
-            <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400&h=300&fit=crop" alt="Portrait drawing with grid" />
+            <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400&h=300&fit=crop" alt="Grid Maker for people to draw artist" />
             <div class="grid-overlay"></div>
           </div>
           <div class="action-content">
@@ -53,7 +53,7 @@
 
         <div class="action-card">
           <div class="action-image">
-            <img src="https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=400&h=300&fit=crop" alt="Product photography with grid" />
+            <img src="https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=400&h=300&fit=crop" alt="Grid Maker for people to draw artist" />
             <div class="grid-overlay"></div>
           </div>
           <div class="action-content">
@@ -64,7 +64,7 @@
 
         <div class="action-card">
           <div class="action-image">
-            <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=300&fit=crop" alt="Cross stitch pattern with grid" />
+            <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=300&fit=crop" alt="Grid Maker for people to draw artist" />
             <div class="grid-overlay"></div>
           </div>
           <div class="action-content">
@@ -75,7 +75,7 @@
 
         <div class="action-card">
           <div class="action-image">
-            <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=300&fit=crop" alt="Instagram grid layout" />
+            <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=300&fit=crop" alt="Grid Maker for people to draw artist" />
             <div class="grid-overlay"></div>
           </div>
           <div class="action-content">

@@ -42,7 +42,7 @@
         <div class="why-grid">
           <div v-for="(item, index) in whyItems" :key="index" class="why-card" :class="{ 'reverse': index % 2 === 1 }">
             <div class="why-image">
-              <img :src="item.imageUrl" :alt="item.title" />
+              <img :src="item.imageUrl" alt="Grid Maker for people to draw artist" />
             </div>
             <div class="why-content">
               <div class="why-icon">

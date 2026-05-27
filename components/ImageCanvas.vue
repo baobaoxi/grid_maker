@@ -6,7 +6,7 @@
         ref="imageRef" 
         @load="onImageLoad" 
         class="original-image" 
-        alt="online grid maker tool overlay on a sketch reference photo"
+        alt="Grid Maker for people to draw artist"
       />
       <canvas 
         ref="canvasRef" 
