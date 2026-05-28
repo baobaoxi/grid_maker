@@ -110,7 +110,7 @@ onUnmounted(() => {
   cursor: pointer;
   color: #8b5cf6;
   font-weight: 700;
-  font-size: 1.2rem;
+  font-size: 1.5rem;
 }
 
 .navbar-links {
@@ -121,16 +121,17 @@ onUnmounted(() => {
 .nav-link {
   text-decoration: none;
   color: #374151;
-  font-weight: 500;
+  font-weight: 700;
+  font-size: 1.125rem;
   transition: color 0.2s;
 }
 
 .nav-link:hover {
-  color: #8b5cf6;
+  color: #5208f9;
 }
 
 .nav-link.active {
-  color: #8b5cf6;
+  color: #5208f9;
   position: relative;
 }
 
@@ -154,12 +155,13 @@ onUnmounted(() => {
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 10px 20px;
+  padding: 12px 24px;
   background: linear-gradient(135deg, #8b5cf6, #7c3aed);
   color: white;
   border-radius: 8px;
   text-decoration: none;
   font-weight: 500;
+  font-size: 1rem;
   transition: all 0.2s;
 }
 
@@ -200,10 +202,11 @@ onUnmounted(() => {
 
 .dropdown-link {
   display: block;
-  padding: 12px 24px;
+  padding: 14px 24px;
   color: #374151;
   text-decoration: none;
   font-weight: 500;
+  font-size: 1.125rem;
   transition: background 0.2s, color 0.2s;
 }
 
