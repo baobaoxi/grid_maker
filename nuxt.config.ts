@@ -19,6 +19,20 @@ export default defineNuxtConfig({
         { rel: 'preconnect', href: 'https://cdn.jsdelivr.net', crossorigin: '' },
         { rel: 'preconnect', href: 'https://images.unsplash.com', crossorigin: '' },
         { rel: 'preconnect', href: 'https://picsum.photos', crossorigin: '' }
+      ],
+      script: [
+        { 
+          src: 'https://www.googletagmanager.com/gtag/js?id=G-G9S51Q6KQZ', 
+          async: true 
+        },
+        {
+          innerHTML: `
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-G9S51Q6KQZ');
+          `
+        }
       ]
     }
   },

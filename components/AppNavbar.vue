@@ -109,7 +109,7 @@ onUnmounted(() => {
   align-items: center;
   gap: 10px;
   cursor: pointer;
-  color: #8b5cf6;
+  color: #5208f9;
   font-weight: 700;
   font-size: 1.5rem;
 }
