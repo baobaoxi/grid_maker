@@ -380,7 +380,6 @@ onMounted(() => {
   display: grid;
   grid-template-columns: 1fr 350px;
   gap: 30px;
-  margin-bottom: 30px;
 }
 
 .grid-maker-main.single-column {
@@ -621,7 +620,7 @@ onMounted(() => {
   }
   
   .preview-container.default-height {
-    height: auto;
+    height: 220px;
   }
 }
 </style>

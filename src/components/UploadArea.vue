@@ -79,7 +79,7 @@ defineExpose({ reset })
 .upload-section {
   background: white;
   border-radius: 16px;
-  padding: 60px 20px;
+  padding: 20px 20px;
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
 }
 
