@@ -58,15 +58,15 @@
   </url>
   
   <!-- 博客首页 -->
-  <url>
+  <!-- <url>
     <loc>https://grid-maker.pro/blog</loc>
     <lastmod>2026-05-28</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
-  </url>
+  </url> -->
   
   <!-- 博客文章 -->
-  <url>
+  <!-- <url>
     <loc>https://grid-maker.pro/blog/grid-maker-cross-stitch-pixel-art</loc>
     <lastmod>2026-05-28</lastmod>
     <changefreq>yearly</changefreq>
@@ -120,6 +120,6 @@
     <lastmod>2026-05-28</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.6</priority>
-  </url>
+  </url> -->
   
 </urlset>
