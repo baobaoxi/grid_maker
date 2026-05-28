@@ -15,6 +15,7 @@
             alt="Grid preview" 
             class="preview-image"
             @load="onImageLoad"
+            fetchpriority="high"
           />
           <canvas 
             ref="canvasRef"

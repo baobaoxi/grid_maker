@@ -11,6 +11,7 @@
             alt="Grid Maker for people to draw artist" 
             class="preview-image"
             @load="onImageLoad"
+            fetchpriority="high"
           />
           <canvas 
             ref="canvasRef"
