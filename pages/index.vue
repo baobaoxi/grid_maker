@@ -57,7 +57,7 @@ import ActionSection from '~/components/ActionSection.vue'
 import HeroSection from '~/components/HeroSection.vue'
 import AppFooter from '~/components/AppFooter.vue'
 import GridMaker from '~/components/GridMaker.vue'
-import AppNavbar from '~/components/AppNavbar.vue'
+const AppNavbar = defineAsyncComponent(() => import('~/components/AppNavbar.vue'))
 
 const handleFooterNavigate = (link: { label: string; url: string }) => {
   window.location.href = link.url
