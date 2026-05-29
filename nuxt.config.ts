@@ -20,7 +20,7 @@ export default defineNuxtConfig({
         { rel: 'preconnect', href: 'https://cdn.jsdelivr.net', crossorigin: '' },
         { rel: 'preconnect', href: 'https://images.unsplash.com', crossorigin: '' },
         { rel: 'preconnect', href: 'https://picsum.photos', crossorigin: '' },
-        { rel: 'canonical', href: 'https://grid-maker.pro' }
+        { rel: 'canonical', href: 'https://grid-maker.pro/' }
       ],
       script: [
         { 
