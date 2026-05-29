@@ -120,7 +120,12 @@
         <div class="form-section">
           <h3>Export Options</h3>
           <div class="export-buttons">
-            <button class="export-btn" @click="downloadImage('jpg')">
+            <button 
+              class="export-btn" 
+              :class="{ disabled: !hasUploadedImage }" 
+              :disabled="!hasUploadedImage"
+              @click="downloadImage('jpg')"
+            >
               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
                 <polyline points="7 10 12 15 17 10"></polyline>
@@ -128,7 +133,12 @@
               </svg>
               JPG
             </button>
-            <button class="export-btn" @click="downloadImage('png')">
+            <button 
+              class="export-btn" 
+              :class="{ disabled: !hasUploadedImage }" 
+              :disabled="!hasUploadedImage"
+              @click="downloadImage('png')"
+            >
               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
                 <polyline points="7 10 12 15 17 10"></polyline>
@@ -136,7 +146,12 @@
               </svg>
               PNG
             </button>
-            <button class="export-btn" @click="downloadImage('svg')">
+            <button 
+              class="export-btn" 
+              :class="{ disabled: !hasUploadedImage }" 
+              :disabled="!hasUploadedImage"
+              @click="downloadImage('svg')"
+            >
               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
                 <polyline points="7 10 12 15 17 10"></polyline>
@@ -144,7 +159,12 @@
               </svg>
               SVG
             </button>
-            <button class="export-btn print-btn" @click="printImage">
+            <button 
+              class="export-btn print-btn" 
+              :class="{ disabled: !hasUploadedImage }" 
+              :disabled="!hasUploadedImage"
+              @click="printImage"
+            >
               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <polyline points="6 9 6 2 18 2 18 9"></polyline>
                 <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path>
@@ -166,6 +186,7 @@ import { useRoute } from 'vue-router'
 const route = useRoute()
 
 const currentImage = ref('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop')
+const hasUploadedImage = ref(false)
 const imageRef = ref<HTMLImageElement | null>(null)
 const canvasRef = ref<HTMLCanvasElement | null>(null)
 const gridCount = ref(12)
@@ -334,6 +355,7 @@ const handleImageUpload = (event: Event) => {
     const reader = new FileReader()
     reader.onload = (e) => {
       currentImage.value = e.target?.result as string
+      hasUploadedImage.value = true
     }
     reader.readAsDataURL(file)
   }
@@ -386,26 +408,42 @@ const printImage = () => {
   ctx.drawImage(canvas, 0, 0)
 
   const imageDataUrl = printCanvas.toDataURL('image/png')
-  
-  const printWindow = window.open('', '_blank')
-  if (!printWindow) {
-    alert('Please allow popups to use the print feature')
+
+  const iframe = document.createElement('iframe')
+  iframe.style.display = 'none'
+  document.body.appendChild(iframe)
+
+  const doc = iframe.contentDocument || iframe.contentWindow?.document
+  if (!doc) {
+    document.body.removeChild(iframe)
     return
   }
 
-  const imgElement = document.createElement('img')
-  imgElement.src = imageDataUrl
-  imgElement.style.maxWidth = '100%'
-  imgElement.style.maxHeight = '100vh'
-  imgElement.onload = function() {
-    window.print()
-    setTimeout(function() {
-      printWindow.close()
-    }, 1000)
+  doc.write(`
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <title>Print Grid</title>
+      <style>
+        body { margin: 0; padding: 20px; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
+        img { max-width: 100%; max-height: 100vh; }
+        @media print {
+          body { padding: 0; }
+        }
+      </style>
+    </head>
+    <body>
+      <img src="${imageDataUrl}" onload="window.print();" />
+    </body>
+    </html>
+  `)
+  doc.close()
+
+  iframe.onload = function() {
+    setTimeout(() => {
+      document.body.removeChild(iframe)
+    }, 100)
   }
-  
-  printWindow.document.body.appendChild(imgElement)
-  printWindow.document.close()
 }
 
 onMounted(() => {
@@ -702,6 +740,17 @@ onMounted(() => {
 .export-btn:hover {
   background: #7c3aed;
   transform: translateY(-2px);
+}
+
+.export-btn.disabled {
+  background: #d1d5db;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.export-btn.disabled:hover {
+  background: #d1d5db;
+  transform: none;
 }
 
 .print-btn {

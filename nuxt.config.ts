@@ -12,13 +12,15 @@ export default defineNuxtConfig({
         { name: 'author', content: 'Photo Grid Overlay' },
         { name: 'robots', content: 'index, follow' },
         { name: 'theme-color', content: '#667eea' },
-        { name: 'referrer', content: 'no-referrer-when-downgrade' }
+        { name: 'referrer', content: 'no-referrer-when-downgrade' },
+        { property: 'og:url', content: 'https://grid-maker.pro' }
       ],
       link: [
         { rel: 'icon', type: 'image/x-icon', href: '/favicon.png' },
         { rel: 'preconnect', href: 'https://cdn.jsdelivr.net', crossorigin: '' },
         { rel: 'preconnect', href: 'https://images.unsplash.com', crossorigin: '' },
-        { rel: 'preconnect', href: 'https://picsum.photos', crossorigin: '' }
+        { rel: 'preconnect', href: 'https://picsum.photos', crossorigin: '' },
+        { rel: 'canonical', href: 'https://grid-maker.pro' }
       ],
       script: [
         { 
