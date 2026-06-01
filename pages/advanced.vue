@@ -139,12 +139,18 @@
         </div>
       </div>
     </div>
+    
+    <AppFooter 
+      company="Grid Maker"
+      @navigate="handleNavigate"
+    />
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref, reactive, watch, onMounted } from 'vue'
 import AppNavbar from '~/components/AppNavbar.vue'
+import AppFooter from '~/components/AppFooter.vue'
 
 useHead({
   title: 'Advanced Online Grid Tool for Artists & Photographers | Custom Photo Overlay',
@@ -496,6 +502,10 @@ const drawPattern = (pattern: string, ctx: CanvasRenderingContext2D, width: numb
       drawPixelArt(ctx, width, height, color, lineWidth)
       break
   }
+}
+
+const handleNavigate = (link: { label: string; url: string }) => {
+  window.location.href = link.url
 }
 
 const handleImageUpload = (event: Event) => {

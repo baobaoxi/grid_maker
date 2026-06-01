@@ -176,12 +176,18 @@
         </div>
       </div>
     </div>
+    
+    <AppFooter 
+      company="Grid Maker"
+      @navigate="handleNavigate"
+    />
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref, computed, watch, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
+import AppFooter from '~/components/AppFooter.vue'
 
 const route = useRoute()
 
@@ -369,6 +375,10 @@ const handleImageUpload = (event: Event) => {
 
 const goBack = () => {
   window.history.back()
+}
+
+const handleNavigate = (link: { label: string; url: string }) => {
+  window.location.href = link.url
 }
 
 const downloadImage = (format: string) => {
