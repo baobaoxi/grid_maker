@@ -60,7 +60,7 @@
         
         <section>
           <h3>Contact Us</h3>
-          <p>If you have any questions about these Terms, please contact us at terms@photogridoverlay.com.</p>
+          <p>If you have any questions about these Terms, please contact us at support@grid-maker.pro.</p>
         </section>
       </div>
     </main>

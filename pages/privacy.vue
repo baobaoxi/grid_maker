@@ -54,7 +54,7 @@
         
         <section>
           <h3>Contact Us</h3>
-          <p>If you have any questions about this privacy policy, please contact us at privacy@photogridoverlay.com.</p>
+          <p>If you have any questions about this privacy policy, please contact us at support@grid-maker.pro.</p>
         </section>
       </div>
     </main>
