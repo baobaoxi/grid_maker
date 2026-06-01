@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
+        http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
+  
+  <!-- 首页 -->
+  <url>
+    <loc>https://grid-maker.pro/</loc>
+    <lastmod>2026-05-28</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+  </url>
+  
+  <!-- 主要功能页面 -->
+  <url>
+    <loc>https://grid-maker.pro/advanced</loc>
+    <lastmod>2026-05-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  
+  <url>
+    <loc>https://grid-maker.pro/pixel-art</loc>
+    <lastmod>2026-05-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  
+  <!-- 工具页面 -->
+  <url>
+    <loc>https://grid-maker.pro/edit-grid</loc>
+    <lastmod>2026-05-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <!-- 信息页面 -->
+  <url>
+    <loc>https://grid-maker.pro/about</loc>
+    <lastmod>2026-05-28</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://grid-maker.pro/privacy</loc>
+    <lastmod>2026-05-28</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  
+  <url>
+    <loc>https://grid-maker.pro/terms</loc>
+    <lastmod>2026-05-28</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  
+  <!-- 博客首页 -->
+  <!-- <url>
+    <loc>https://grid-maker.pro/blog</loc>
+    <lastmod>2026-05-28</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url> -->
+  
+  <!-- 博客文章 -->
+  <!-- <url>
+    <loc>https://grid-maker.pro/blog/grid-maker-cross-stitch-pixel-art</loc>
+    <lastmod>2026-05-28</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://grid-maker.pro/blog/photo-grid-overlay-improve-composition</loc>
+    <lastmod>2026-05-28</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://grid-maker.pro/blog/split-images-instagram-without-losing-quality</loc>
+    <lastmod>2026-05-28</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://grid-maker.pro/blog/instagram-grid-maker-for-stunning-feeds</loc>
+    <lastmod>2026-05-28</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://grid-maker.pro/blog/grid-method-template-create-customize-online</loc>
+    <lastmod>2026-05-28</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://grid-maker.pro/blog/how-to-master-proportions-beginners-guide</loc>
+    <lastmod>2026-05-28</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://grid-maker.pro/blog/10-composition-techniques-for-photographers</loc>
+    <lastmod>2026-05-28</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://grid-maker.pro/blog/how-to-use-grid-overlays-for-drawing</loc>
+    <lastmod>2026-05-28</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url> -->
+  
+</urlset>

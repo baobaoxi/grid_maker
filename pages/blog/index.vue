@@ -1,19 +1,29 @@
 <template>
   <div class="page-container">
-    <AppHeader 
+    <AppHeader
       title="Blog"
       subtitle="Tips, tutorials, and updates"
     />
-    
+
     <nav class="blog-nav">
       <a href="/" class="nav-link">← Back to Home</a>
     </nav>
-    
+
     <main class="page-content">
-      <div class="blog-list">
-        <article 
-          v-for="post in blogPosts" 
-          :key="post.slug"
+      <div v-if="loading" class="loading-state">
+        <div class="spinner"></div>
+        <p>Loading blogs...</p>
+      </div>
+
+      <div v-else-if="error" class="error-state">
+        <p>{{ error }}</p>
+        <button @click="fetchBlogs" class="retry-btn">Retry</button>
+      </div>
+
+      <div v-else class="blog-list">
+        <article
+          v-for="post in blogPosts"
+          :key="post._id || post.slug"
           class="blog-card"
           @click="navigateToPost(post.slug)"
         >
@@ -27,84 +37,46 @@
             <span class="read-more">Read More →</span>
           </div>
         </article>
+
+        <div v-if="blogPosts.length === 0" class="empty-state">
+          <p>No blog posts yet. Check back soon!</p>
+        </div>
       </div>
     </main>
-    
-    <AppFooter 
+
+    <AppFooter
       company="Photo Grid App"
       @navigate="handleNavigate"
     />
   </div>
 </template>
 
-<script setup lang="ts">
+<script setup>
 import AppHeader from '~/components/AppHeader.vue'
 import AppFooter from '~/components/AppFooter.vue'
 
-const blogPosts = [
-  {
-    slug: 'grid-maker-cross-stitch-pixel-art',
-    title: 'DIY Crafting Guide: How to Use a Grid Maker for Cross Stitch & Pixel Art',
-    excerpt: 'Turn any custom image into an easy-to-follow crafting pattern. Discover how our digital grid maker for cross stitch helps crafters map out pixels and threads perfectly.',
-    date: 'May 30, 2026',
-    image: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop'
-  },
-  {
-    slug: 'photo-grid-overlay-improve-composition',
-    title: 'How to Use a Photo Grid Overlay Tool to Improve Image Composition',
-    excerpt: 'Need to analyze photography composition or add aesthetic alignment lines to your designs? Learn how to use our free online photo grid overlay tool seamlessly.',
-    date: 'May 29, 2026',
-    image: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop'
-  },
-  {
-    slug: 'split-images-instagram-without-losing-quality',
-    title: 'How to Split Images for Instagram Without Losing Quality (No Crop)',
-    excerpt: 'Don\'t let Instagram compress or awkwardly crop your panorama photos. Use our free online image splitter for Instagram to slice photos perfectly into a crisp 3x3 grid.',
-    date: 'May 28, 2026',
-    image: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop'
-  },
-  {
-    slug: 'instagram-grid-maker-for-stunning-feeds',
-    title: 'Boost Your Engagement: How to Use an Instagram Grid Maker for Stunning Feeds',
-    excerpt: 'Want your profile to stand out? Discover creative Instagram grid layout ideas and learn how to use a 3x3 grid splitter to create cohesive viral banners effortlessly.',
-    date: 'May 27, 2026',
-    image: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop'
-  },
-  {
-    slug: 'grid-method-template-create-customize-online',
-    title: 'Looking for a Grid Method Template? Create and Customize Your Own Online',
-    excerpt: 'Stop downloading static grid method templates that don\'t fit your canvas ratio. Use our free drawing grid online tool to generate a custom printable drawing grid for any photo size.',
-    date: 'May 26, 2026',
-    image: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop'
-  },
-  {
-    slug: 'how-to-master-proportions-beginners-guide',
-    title: 'How to Master Proportions: A Beginner\'s Guide to Using a Grid Maker for Drawing',
-    excerpt: 'Struggle with drawing accurate proportions? Learn how to use a digital grid maker for drawing to master the traditional grid method in 5 minutes.',
-    date: 'May 25, 2026',
-    image: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop'
-  },
-  {
-    slug: 'how-to-use-grid-overlays-for-drawing',
-    title: 'How to Use Grid Overlays for Drawing',
-    excerpt: 'Learn how to use grid overlays to improve your drawing accuracy and proportions. Step-by-step guide for artists of all skill levels.',
-    date: 'May 20, 2026',
-    image: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop'
-  },
-  {
-    slug: '10-composition-techniques-for-photographers',
-    title: '10 Composition Techniques Every Photographer Should Know',
-    excerpt: 'Master the art of photo composition with these essential techniques. From rule of thirds to leading lines, elevate your photography skills.',
-    date: 'May 15, 2026',
-    image: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop'
-  }
-]
+const blogPosts = ref([])
+const loading = ref(true)
+const error = ref('')
 
-const navigateToPost = (slug: string) => {
+const { data, pending, error: fetchError } = await useFetch('/api/blogs', {
+  lazy: true
+})
+
+watch([data, fetchError], ([newData, newError]) => {
+  if (newData && newData.success) {
+    blogPosts.value = newData.data.filter(blog => blog.published)
+  } else if (newError) {
+    error.value = 'Failed to load blogs'
+  }
+  loading.value = false
+}, { immediate: true })
+
+function navigateToPost(slug) {
   window.location.href = `/blog/${slug}`
 }
 
-const handleNavigate = (link: { label: string; url: string }) => {
+const handleNavigate = (link) => {
   window.location.href = link.url
 }
 </script>
@@ -206,17 +178,51 @@ const handleNavigate = (link: { label: string; url: string }) => {
   font-size: 0.9rem;
 }
 
+.loading-state,
+.empty-state,
+.error-state {
+  text-align: center;
+  padding: 60px 20px;
+  color: #888;
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid #f3f4f6;
+  border-top-color: #667eea;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 16px;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.retry-btn {
+  margin-top: 16px;
+  padding: 10px 20px;
+  background: #667eea;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
 @media (min-width: 768px) {
   .blog-card {
     display: grid;
     grid-template-columns: 350px 1fr;
   }
-  
+
   .blog-image {
     height: auto;
     min-height: 250px;
   }
-  
+
   .blog-content {
     display: flex;
     flex-direction: column;

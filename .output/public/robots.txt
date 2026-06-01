@@ -1,0 +1,25 @@
+# Robots.txt for Grid Maker
+# https://grid-maker.pro
+
+User-agent: *
+Allow: /
+
+# Sitemap location
+Sitemap: https://grid-maker.pro/sitemap.xml
+
+# Crawl-delay (optional, for polite crawling)
+Crawl-delay: 1
+
+# Block admin and private areas (if any)
+Disallow: /admin/
+Disallow: /api/
+Disallow: /*.json$
+
+# Allow all public pages
+# Allow: /blog/
+Allow: /about
+Allow: /privacy
+Allow: /terms
+Allow: /advanced
+Allow: /pixel-art
+Allow: /edit-grid

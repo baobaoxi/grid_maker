@@ -1,0 +1,1 @@
+import{j as l,x as s,e as o,b as t,I as a}from"./D63xuftO.js";const n={class:"header"},c=l({__name:"AppHeader",props:{title:{default:"Photo Grid Overlay"},subtitle:{default:"Upload image and add customizable grid lines"}},setup(e){return(r,i)=>(s(),o("header",n,[t("h1",null,a(e.title),1),t("p",null,a(e.subtitle),1)]))}});export{c as _};

@@ -7,6 +7,9 @@ import { parentPort, threadId } from 'node:worker_threads';
 import { escapeHtml } from 'file:///Users/manlongfeng/Documents/trae_projects/grid_maker/node_modules/@vue/shared/dist/shared.cjs.js';
 import viteNodeEntry_mjs from 'file:///Users/manlongfeng/Documents/trae_projects/grid_maker/node_modules/@nuxt/vite-builder/dist/vite-node-entry.mjs';
 import { viteNodeFetch } from 'file:///Users/manlongfeng/Documents/trae_projects/grid_maker/node_modules/@nuxt/vite-builder/dist/vite-node.mjs';
+import jwt from 'file:///Users/manlongfeng/Documents/trae_projects/grid_maker/node_modules/jsonwebtoken/index.js';
+import bcrypt from 'file:///Users/manlongfeng/Documents/trae_projects/grid_maker/node_modules/bcrypt/bcrypt.js';
+import mongoose from 'file:///Users/manlongfeng/Documents/trae_projects/grid_maker/node_modules/mongoose/index.js';
 import { createRenderer, getRequestDependencies, getPreloadLinks, getPrefetchLinks } from 'file:///Users/manlongfeng/Documents/trae_projects/grid_maker/node_modules/vue-bundle-renderer/dist/runtime.mjs';
 import { parseURL, withoutBase, joinURL, getQuery, withQuery, withTrailingSlash, decodePath, withLeadingSlash, withoutTrailingSlash, encodePath, joinRelativeURL } from 'file:///Users/manlongfeng/Documents/trae_projects/grid_maker/node_modules/ufo/dist/index.mjs';
 import { renderToString } from 'file:///Users/manlongfeng/Documents/trae_projects/grid_maker/node_modules/vue/server-renderer/index.mjs';
@@ -680,18 +683,6 @@ const _inlineRuntimeConfig = {
     "routeRules": {
       "/__nuxt_error": {
         "cache": false
-      },
-      "/": {
-        "prerender": true
-      },
-      "/about": {
-        "prerender": true
-      },
-      "/privacy": {
-        "prerender": true
-      },
-      "/terms": {
-        "prerender": true
       },
       "/_nuxt/builds/meta/**": {
         "headers": {
@@ -2094,26 +2085,9 @@ async function errorHandler(error, event) {
   // H3 will handle fallback
 }
 
-const script = `
-if (!window.__NUXT_DEVTOOLS_TIME_METRIC__) {
-  Object.defineProperty(window, '__NUXT_DEVTOOLS_TIME_METRIC__', {
-    value: {},
-    enumerable: false,
-    configurable: true,
-  })
-}
-window.__NUXT_DEVTOOLS_TIME_METRIC__.appInit = Date.now()
-`;
-
-const _j1fu0vD2FuVroQPAunubjpGApLPSV38HYIxLrZo4tQ = (function(nitro) {
-  nitro.hooks.hook("render:html", (htmlContext) => {
-    htmlContext.head.push(`<script>${script}<\/script>`);
-  });
-});
-
 const rootDir = "/Users/manlongfeng/Documents/trae_projects/grid_maker";
 
-const appHead = {"meta":[{"charset":"utf-8"},{"name":"viewport","content":"width=device-width, initial-scale=1"},{"name":"description","content":"The ultimate Grid Maker for beginners. Create professional artwork with zero drawing skills. Completely free, no sign-up needed. Upload your photo now!"},{"name":"author","content":"Photo Grid Overlay"},{"name":"robots","content":"index, follow"},{"name":"theme-color","content":"#667eea"},{"name":"referrer","content":"no-referrer-when-downgrade"},{"property":"og:url","content":"https://grid-maker.pro"}],"link":[{"rel":"icon","type":"image/x-icon","href":"/favicon.png"},{"rel":"preconnect","href":"https://cdn.jsdelivr.net","crossorigin":""},{"rel":"preconnect","href":"https://images.unsplash.com","crossorigin":""},{"rel":"preconnect","href":"https://picsum.photos","crossorigin":""},{"rel":"canonical","href":"https://grid-maker.pro/"}],"style":[],"script":[{"src":"https://www.googletagmanager.com/gtag/js?id=G-G9S51Q6KQZ","async":true},{"innerHTML":"\n            window.dataLayer = window.dataLayer || [];\n            function gtag(){dataLayer.push(arguments);}\n            gtag('js', new Date());\n            gtag('config', 'G-G9S51Q6KQZ');\n          "}],"noscript":[],"title":"Photo Grid Maker for People Who Can’t Draw."};
+const appHead = {"meta":[{"charset":"utf-8"},{"name":"viewport","content":"width=device-width, initial-scale=1"},{"name":"description","content":"The ultimate Grid Maker for beginners."}],"link":[],"style":[],"script":[],"noscript":[],"title":"Photo Grid Maker for People Who Can't Draw."};
 
 const appRootTag = "div";
 
@@ -2213,8 +2187,7 @@ function onConsoleLog(callback) {
 }
 
 const plugins = [
-  _j1fu0vD2FuVroQPAunubjpGApLPSV38HYIxLrZo4tQ,
-_5YzLjxqBztQUIOcbLoa2S5o11d0zPMkNghJoxEfDWm0,
+  _5YzLjxqBztQUIOcbLoa2S5o11d0zPMkNghJoxEfDWm0,
 _wH6JrtIxmaSoA8lCPWFnE9z4lQeXW6H5z3l5aymEQw
 ];
 
@@ -2749,10 +2722,22 @@ async function getIslandContext(event) {
 	};
 }
 
+const _lazy_ElIipT = () => Promise.resolve().then(function () { return login_post$1; });
+const _lazy_brskU5 = () => Promise.resolve().then(function () { return register_post$1; });
+const _lazy_K1Ph_u = () => Promise.resolve().then(function () { return blogs_get$1; });
+const _lazy_37eFGq = () => Promise.resolve().then(function () { return blogs_post$1; });
+const _lazy_e6QTiH = () => Promise.resolve().then(function () { return _id__delete$1; });
+const _lazy_E2bzaI = () => Promise.resolve().then(function () { return _id__put$1; });
 const _lazy_OlMHsy = () => Promise.resolve().then(function () { return renderer; });
 
 const handlers = [
   { route: '', handler: _ayAhxF, lazy: false, middleware: true, method: undefined },
+  { route: '/api/auth/login', handler: _lazy_ElIipT, lazy: true, middleware: false, method: "post" },
+  { route: '/api/auth/register', handler: _lazy_brskU5, lazy: true, middleware: false, method: "post" },
+  { route: '/api/blogs', handler: _lazy_K1Ph_u, lazy: true, middleware: false, method: "get" },
+  { route: '/api/blogs', handler: _lazy_37eFGq, lazy: true, middleware: false, method: "post" },
+  { route: '/api/blogs/:id', handler: _lazy_e6QTiH, lazy: true, middleware: false, method: "delete" },
+  { route: '/api/blogs/:id', handler: _lazy_E2bzaI, lazy: true, middleware: false, method: "put" },
   { route: '/__nuxt_error', handler: _lazy_OlMHsy, lazy: true, middleware: false, method: undefined },
   { route: '/__nuxt_island/**', handler: handler$1, lazy: false, middleware: false, method: undefined },
   { route: '/**', handler: _lazy_OlMHsy, lazy: true, middleware: false, method: undefined }
@@ -3105,6 +3090,206 @@ const styles = {};
 const styles$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
   __proto__: null,
   default: styles
+}, Symbol.toStringTag, { value: 'Module' }));
+
+const MONGODB_URI = process.env.MONGODB_URI || "mongodb+srv://Vercel-Admin-atlas-byzantine-horizon:4feGD1EEf0VxwFN2@atlas-byzantine-horizon.mtnc8ax.mongodb.net/grid-maker?retryWrites=true&w=majority";
+const MONGODB_DB = process.env.MONGODB_DB || "grid-maker";
+let cached = global.mongoose;
+if (!cached) {
+  cached = global.mongoose = { conn: null, promise: null };
+}
+async function dbConnect() {
+  if (cached.conn) return cached.conn;
+  if (!cached.promise) {
+    const opts = {
+      serverSelectionTimeoutMS: 5e3,
+      socketTimeoutMS: 45e3,
+      maxPoolSize: 10
+    };
+    cached.promise = mongoose.connect(MONGODB_URI, opts).then((mongoose2) => {
+      console.log("\u2705 MongoDB connected to", MONGODB_DB);
+      return mongoose2;
+    }).catch((err) => {
+      console.error("\u274C MongoDB connection error:", err.message);
+      cached.promise = null;
+      throw err;
+    });
+  }
+  cached.conn = await cached.promise;
+  return cached.conn;
+}
+
+const UserSchema = new mongoose.Schema({
+  username: { type: String, required: true, unique: true },
+  password: { type: String, required: true },
+  createdAt: { type: Date, default: Date.now }
+});
+const User = mongoose.models.User || mongoose.model("User", UserSchema);
+
+const JWT_SECRET = process.env.JWT_SECRET || "your-secret-key-change-in-production";
+const login_post = defineEventHandler(async (event) => {
+  try {
+    await dbConnect();
+    const body = await readBody(event);
+    const { username, password } = body;
+    if (!username || !password) {
+      return { success: false, error: "Username and password are required" };
+    }
+    const user = await User.findOne({ username }).lean();
+    if (!user) return { success: false, error: "Invalid credentials" };
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) return { success: false, error: "Invalid credentials" };
+    const token = jwt.sign({ userId: user._id, username: user.username }, JWT_SECRET, { expiresIn: "7d" });
+    return { success: true, token, user: { id: user._id, username: user.username } };
+  } catch (error) {
+    console.error("Login error:", error);
+    return { success: false, error: error.message || "Login failed" };
+  }
+});
+
+const login_post$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
+  __proto__: null,
+  default: login_post
+}, Symbol.toStringTag, { value: 'Module' }));
+
+const register_post = defineEventHandler(async (event) => {
+  try {
+    await dbConnect();
+    const body = await readBody(event);
+    const { username, password } = body;
+    if (!username || !password) {
+      return { success: false, error: "Username and password are required" };
+    }
+    if (password.length < 6) {
+      return { success: false, error: "Password must be at least 6 characters" };
+    }
+    const existingUser = await User.findOne({ username }).lean();
+    if (existingUser) return { success: false, error: "User already exists" };
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const user = await User.create({ username, password: hashedPassword });
+    return { success: true, message: "User created successfully", user: { id: user._id, username: user.username } };
+  } catch (error) {
+    console.error("Registration error:", error);
+    return { success: false, error: error.message || "Registration failed" };
+  }
+});
+
+const register_post$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
+  __proto__: null,
+  default: register_post
+}, Symbol.toStringTag, { value: 'Module' }));
+
+const BlogSchema = new mongoose.Schema({
+  title: { type: String, required: true },
+  slug: { type: String, required: true, unique: true },
+  excerpt: { type: String, default: "" },
+  content: { type: String, required: true },
+  date: { type: String, default: "" },
+  image: { type: String, default: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop" },
+  published: { type: Boolean, default: true },
+  createdAt: { type: Date, default: Date.now },
+  updatedAt: { type: Date, default: Date.now }
+});
+const Blog = mongoose.models.Blog || mongoose.model("Blog", BlogSchema);
+
+const blogs_get = defineEventHandler(async () => {
+  try {
+    await dbConnect();
+    const blogs = await Blog.find({ published: true }).sort({ createdAt: -1 }).lean();
+    return { success: true, data: blogs };
+  } catch (error) {
+    console.error("Error fetching blogs:", error);
+    return { success: false, error: error.message, data: [] };
+  }
+});
+
+const blogs_get$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
+  __proto__: null,
+  default: blogs_get
+}, Symbol.toStringTag, { value: 'Module' }));
+
+function formatDate(date) {
+  return date.toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" });
+}
+const blogs_post = defineEventHandler(async (event) => {
+  try {
+    await dbConnect();
+    const body = await readBody(event);
+    if (!body.title || !body.slug || !body.content) {
+      return { success: false, error: "Title, slug, and content are required" };
+    }
+    const blogData = {
+      title: body.title,
+      slug: body.slug,
+      excerpt: body.excerpt || "",
+      content: body.content,
+      date: body.date || formatDate(/* @__PURE__ */ new Date()),
+      image: body.image || "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop",
+      published: body.published !== false
+    };
+    const blog = await Blog.create(blogData);
+    return { success: true, data: blog };
+  } catch (error) {
+    console.error("Error creating blog:", error);
+    return { success: false, error: error.message || "Failed to create blog" };
+  }
+});
+
+const blogs_post$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
+  __proto__: null,
+  default: blogs_post
+}, Symbol.toStringTag, { value: 'Module' }));
+
+const _id__delete = defineEventHandler(async (event) => {
+  try {
+    await dbConnect();
+    const { id } = event.context.params || {};
+    if (!id) {
+      return { success: false, error: "Blog ID is required" };
+    }
+    const deleted = await Blog.findByIdAndDelete(id).lean();
+    if (!deleted) return { success: false, error: "Blog not found" };
+    return { success: true, message: "Blog deleted successfully" };
+  } catch (error) {
+    console.error("Error deleting blog:", error);
+    return { success: false, error: error.message || "Failed to delete blog" };
+  }
+});
+
+const _id__delete$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
+  __proto__: null,
+  default: _id__delete
+}, Symbol.toStringTag, { value: 'Module' }));
+
+const _id__put = defineEventHandler(async (event) => {
+  try {
+    await dbConnect();
+    const body = await readBody(event);
+    const { id } = event.context.params || {};
+    if (!id) {
+      return { success: false, error: "Blog ID is required" };
+    }
+    const updates = {};
+    if (body.title) updates.title = body.title;
+    if (body.slug) updates.slug = body.slug;
+    if (body.excerpt) updates.excerpt = body.excerpt;
+    if (body.content) updates.content = body.content;
+    if (body.date) updates.date = body.date;
+    if (body.image) updates.image = body.image;
+    if (body.published != null) updates.published = body.published;
+    updates.updatedAt = Date.now();
+    const blog = await Blog.findByIdAndUpdate(id, updates, { new: true }).lean();
+    if (!blog) return { success: false, error: "Blog not found" };
+    return { success: true, data: blog };
+  } catch (error) {
+    console.error("Error updating blog:", error);
+    return { success: false, error: error.message || "Failed to update blog" };
+  }
+});
+
+const _id__put$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
+  __proto__: null,
+  default: _id__put
 }, Symbol.toStringTag, { value: 'Module' }));
 
 function renderPayloadResponse(ssrContext) {
