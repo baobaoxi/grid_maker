@@ -59,6 +59,7 @@ import AppFooter from '~/components/AppFooter.vue'
 import GridMaker from '~/components/GridMaker.vue'
 
 useHead({
+  title: 'Free Online Photo Grid Maker — No Design Skills Needed',
   link: [
     { rel: 'canonical', href: 'https://grid-maker.pro/' }
   ]

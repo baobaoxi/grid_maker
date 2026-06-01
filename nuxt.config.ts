@@ -5,7 +5,7 @@ export default defineNuxtConfig({
   srcDir: '.',
   app: {
     head: {
-      title: "Photo Grid Maker for People Who Can't Draw.",
+      title: "Free Online Photo Grid Maker — No Design Skills Needed",
       meta: [
         { charset: 'utf-8' },
         { name: 'viewport', content: 'width=device-width, initial-scale=1' },

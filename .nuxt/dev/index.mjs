@@ -2087,7 +2087,7 @@ async function errorHandler(error, event) {
 
 const rootDir = "/Users/manlongfeng/Documents/trae_projects/grid_maker";
 
-const appHead = {"meta":[{"charset":"utf-8"},{"name":"viewport","content":"width=device-width, initial-scale=1"},{"name":"description","content":"The ultimate Grid Maker for beginners."}],"link":[{"rel":"icon","type":"image/x-icon","href":"/favicon.ico"},{"rel":"icon","type":"image/png","href":"/favicon.png"}],"style":[],"script":[],"noscript":[],"title":"Photo Grid Maker for People Who Can't Draw."};
+const appHead = {"meta":[{"charset":"utf-8"},{"name":"viewport","content":"width=device-width, initial-scale=1"},{"name":"description","content":"The ultimate Grid Maker for beginners."}],"link":[{"rel":"icon","type":"image/x-icon","href":"/favicon.ico"},{"rel":"icon","type":"image/png","href":"/favicon.png"}],"style":[],"script":[],"noscript":[],"title":"Free Online Photo Grid Maker — No Design Skills Needed"};
 
 const appRootTag = "div";
 
