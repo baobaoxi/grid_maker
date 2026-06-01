@@ -1,13 +1,11 @@
 <template>
   <div class="page-container">
-    <AppHeader
-      title="Blog"
-      subtitle="Tips, tutorials, and updates"
-    />
+    <AppNavbar />
 
-    <nav class="blog-nav">
-      <a href="/" class="nav-link">← Back to Home</a>
-    </nav>
+    <div class="page-header">
+      <h1>Blog</h1>
+      <p>Tips, tutorials, and updates</p>
+    </div>
 
     <main class="page-content">
       <div v-if="loading" class="loading-state">
@@ -32,7 +30,7 @@
           </div>
           <div class="blog-content">
             <span class="blog-date">{{ post.date }}</span>
-            <h3>{{ post.title }}</h3>
+            <h2>{{ post.title }}</h2>
             <p>{{ post.excerpt }}</p>
             <span class="read-more">Read More →</span>
           </div>
@@ -52,8 +50,14 @@
 </template>
 
 <script setup>
-import AppHeader from '~/components/AppHeader.vue'
+import AppNavbar from '~/components/AppNavbar.vue'
 import AppFooter from '~/components/AppFooter.vue'
+
+useHead({
+  link: [
+    { rel: 'canonical', href: 'https://grid-maker.pro/blog/' }
+  ]
+})
 
 const blogPosts = ref([])
 const loading = ref(true)
@@ -84,27 +88,25 @@ const handleNavigate = (link) => {
 <style scoped>
 .page-container {
   min-height: 100vh;
+  background: #f5f7fa;
 }
 
-.blog-nav {
-  max-width: 1000px;
-  margin: 0 auto;
-  padding: 15px 20px;
+.page-header {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 40px 20px;
+  text-align: center;
 }
 
-.nav-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  color: #667eea;
-  font-weight: 600;
-  text-decoration: none;
-  transition: color 0.2s ease;
+.page-header h1 {
+  font-size: 2.5rem;
+  margin-bottom: 10px;
+  font-weight: 700;
 }
 
-.nav-link:hover {
-  color: #764ba2;
-  text-decoration: underline;
+.page-header p {
+  font-size: 1.1rem;
+  opacity: 0.9;
 }
 
 .page-content {
@@ -160,7 +162,7 @@ const handleNavigate = (link) => {
   display: block;
 }
 
-.blog-content h3 {
+.blog-content h2 {
   color: #333;
   margin-bottom: 12px;
   font-size: 1.4rem;

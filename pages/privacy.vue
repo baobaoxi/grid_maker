@@ -70,6 +70,12 @@
 import AppHeader from '~/components/AppHeader.vue'
 import AppFooter from '~/components/AppFooter.vue'
 
+useHead({
+  link: [
+    { rel: 'canonical', href: 'https://grid-maker.pro/privacy/' }
+  ]
+})
+
 const handleNavigate = (link: { label: string; url: string }) => {
   window.location.href = link.url
 }

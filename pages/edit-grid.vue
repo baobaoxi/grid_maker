@@ -185,6 +185,12 @@ import { useRoute } from 'vue-router'
 
 const route = useRoute()
 
+useHead({
+  link: [
+    { rel: 'canonical', href: 'https://grid-maker.pro/edit-grid/' }
+  ]
+})
+
 const currentImage = ref('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop')
 const hasUploadedImage = ref(false)
 const imageRef = ref<HTMLImageElement | null>(null)

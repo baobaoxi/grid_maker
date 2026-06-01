@@ -57,6 +57,12 @@ import ActionSection from '~/components/ActionSection.vue'
 import HeroSection from '~/components/HeroSection.vue'
 import AppFooter from '~/components/AppFooter.vue'
 import GridMaker from '~/components/GridMaker.vue'
+
+useHead({
+  link: [
+    { rel: 'canonical', href: 'https://grid-maker.pro/' }
+  ]
+})
 const AppNavbar = defineAsyncComponent(() => import('~/components/AppNavbar.vue'))
 
 const handleFooterNavigate = (link: { label: string; url: string }) => {

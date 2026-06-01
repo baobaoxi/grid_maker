@@ -7,7 +7,7 @@
     <div class="page-header">
       <div class="header-content">
         <h1>Advanced Grid Tools</h1>
-        <p>Professional grid overlay tools with full customization</p>
+        <h2>Professional grid overlay tools with full customization</h2>
       </div>
       <div class="header-image">
         <img src="https://images.unsplash.com/photo-1526379095098-d400fd0bf935?w=1200&amp;h=400&amp;fit=crop" alt="Advanced grid overlay"></img>
@@ -142,6 +142,12 @@
 <script setup lang="ts">
 import { ref, reactive, watch, onMounted } from 'vue'
 import AppNavbar from '~/components/AppNavbar.vue'
+
+useHead({
+  link: [
+    { rel: 'canonical', href: 'https://grid-maker.pro/advanced/' }
+  ]
+})
 import {
   drawStandardGrid,
   drawRuleOfThirds,
@@ -602,7 +608,7 @@ onMounted(() => {
   margin-bottom: 10px;
 }
 
-.header-content p {
+.header-content h2 {
   font-size: 1.1rem;
   opacity: 0.9;
 }

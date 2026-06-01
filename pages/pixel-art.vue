@@ -6,7 +6,7 @@
 
     <div class="page-header">
       <h1>Pixel Art Generator</h1>
-      <p>Convert your photos into pixel art for cross-stitch patterns</p>
+      <h2>Convert your photos into pixel art for cross-stitch patterns</h2>
     </div>
   <nav class="page-nav">
       <a href="/" class="back-home">← Back to Home</a>
@@ -132,6 +132,12 @@
 import { ref, watch, onMounted, nextTick } from 'vue'
 import AppNavbar from '~/components/AppNavbar.vue'
 import AppFooter from '~/components/AppFooter.vue'
+
+useHead({
+  link: [
+    { rel: 'canonical', href: 'https://grid-maker.pro/pixel-art/' }
+  ]
+})
 
 const currentImage = ref<string>('')
 const originalWidth = ref(0)
@@ -416,7 +422,7 @@ onMounted(() => {
   font-weight: 700;
 }
 
-.page-header p {
+.page-header h2 {
   font-size: 1.1rem;
   opacity: 0.9;
 }

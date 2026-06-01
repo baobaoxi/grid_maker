@@ -41,6 +41,12 @@ import AppHeader from '~/components/AppHeader.vue'
 import AppFooter from '~/components/AppFooter.vue'
 
 const route = useRoute()
+
+useHead({
+  link: [
+    { rel: 'canonical', href: `https://grid-maker.pro/blog/${route.params.slug}/` }
+  ]
+})
 const loading = ref(true)
 const error = ref(false)
 const post = ref(null)
