@@ -144,6 +144,10 @@ import { ref, reactive, watch, onMounted } from 'vue'
 import AppNavbar from '~/components/AppNavbar.vue'
 
 useHead({
+  title: 'Advanced Grid Overlay Tool - Full Customization',
+  meta: [
+    { name: 'description', content: 'Advanced grid overlay tool with full customization. Adjust line width, opacity, colors & multiple grid patterns. Perfect for artists & designers.' }
+  ],
   link: [
     { rel: 'canonical', href: 'https://grid-maker.pro/advanced/' }
   ]
