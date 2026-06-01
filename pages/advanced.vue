@@ -6,8 +6,8 @@
 
     <div class="page-header">
       <div class="header-content">
-        <h1>Advanced Grid Tools</h1>
-        <h2>Professional grid overlay tools with full customization</h2>
+        <h1>Advanced Grid Tools: Professional Photo Overlay & Drawing Grids</h1>
+        <div>Professional grid overlay tools with full customization</div>
       </div>
       <div class="header-image">
         <img src="https://images.unsplash.com/photo-1526379095098-d400fd0bf935?w=1200&amp;h=400&amp;fit=crop" alt="Advanced grid overlay"></img>
@@ -21,6 +21,7 @@
     <div class="page-content">
       <div class="main-section">
         <div class="sidebar">
+          <h2>Fully Customizable Grid Settings</h2>
           <div class="upload-section">
             <h3>Upload Image</h3>
             <input type="file" id="image-upload" class="upload-input" accept="image/*" @change="handleImageUpload" />
@@ -88,6 +89,7 @@
             </div>
           </div>
 
+          <h2>High-Quality Vector & Raster Export Options</h2>
           <div class="export-section">
             <button class="export-btn" @click="downloadImage('png')">
               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -125,6 +127,7 @@
         </div>
 
         <div class="canvas-section">
+          <h2>Multi-Select Grid Patterns & Composition Guides</h2>
           <div class="canvas-container" ref="containerRef">
             <img ref="imageRef" :src="currentImage || defaultImage" alt="Preview" class="preview-image" @load="onImageLoad" />
             <canvas ref="canvasRef" class="grid-canvas" />
@@ -144,9 +147,9 @@ import { ref, reactive, watch, onMounted } from 'vue'
 import AppNavbar from '~/components/AppNavbar.vue'
 
 useHead({
-  title: 'Advanced Grid Overlay Tool - Full Customization',
+  title: 'Advanced Online Grid Tool for Artists & Photographers | Custom Photo Overlay',
   meta: [
-    { name: 'description', content: 'Advanced grid overlay tool with full customization. Adjust line width, opacity, colors & multiple grid patterns. Perfect for artists & designers.' }
+    { name: 'description', content: 'Upload your image and apply highly customizable grid overlays. Features Rule of Thirds, Golden Ratio, 1/2/3-Point Perspective guides, and standard drawing grids. Customize line width, color, and opacity. Download as PNG, JPG, or SVG for free!' }
   ],
   link: [
     { rel: 'canonical', href: 'https://grid-maker.pro/advanced/' }
@@ -640,6 +643,15 @@ onMounted(() => {
   height: fit-content;
 }
 
+.sidebar h2 {
+  margin: 24px 0 16px 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #1f2937;
+  border-bottom: 2px solid #667eea;
+  padding-bottom: 10px;
+}
+
 .sidebar h3 {
   margin: 0 0 16px 0;
   font-size: 1rem;
@@ -1000,6 +1012,15 @@ input[type="color"] {
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
   position: sticky;
   top: 80px;
+}
+
+.canvas-section h2 {
+  margin: 0 0 16px 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #1f2937;
+  border-bottom: 2px solid #667eea;
+  padding-bottom: 10px;
 }
 
 .canvas-container {
