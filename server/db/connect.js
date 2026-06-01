@@ -1,7 +1,7 @@
 import mongoose from 'mongoose'
 
-const MONGODB_URI = process.env.MONGODB_URI || 'mongodb+srv://Vercel-Admin-atlas-byzantine-horizon:4feGD1EEf0VxwFN2@atlas-byzantine-horizon.mtnc8ax.mongodb.net/grid-maker?retryWrites=true&w=majority'
-const MONGODB_DB = process.env.MONGODB_DB || 'grid-maker'
+const MONGODB_URI = process.env.MONGODB_URI || process.env.VERCEL_MONGODB_URI || 'mongodb+srv://Vercel-Admin-atlas-byzantine-horizon:4feGD1EEf0VxwFN2@atlas-byzantine-horizon.mtnc8ax.mongodb.net/grid-maker?retryWrites=true&w=majority'
+const MONGODB_DB = process.env.MONGODB_DB || process.env.VERCEL_MONGODB_DATABASE || 'grid-maker'
 
 if (!MONGODB_URI) {
   throw new Error('Please define MONGODB_URI in .env')

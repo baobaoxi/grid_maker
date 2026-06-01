@@ -2191,7 +2191,22 @@ const plugins = [
 _wH6JrtIxmaSoA8lCPWFnE9z4lQeXW6H5z3l5aymEQw
 ];
 
-const assets = {};
+const assets = {
+  "/index.mjs": {
+    "type": "text/javascript; charset=utf-8",
+    "etag": "\"1d058-lplSSUg5vns9L6rropPB2MEicGc\"",
+    "mtime": "2026-06-01T00:41:40.410Z",
+    "size": 118872,
+    "path": "index.mjs"
+  },
+  "/index.mjs.map": {
+    "type": "application/json",
+    "etag": "\"71d60-GzAJIo3fqVVMxiNzvOm4lFsk9NE\"",
+    "mtime": "2026-06-01T00:41:40.410Z",
+    "size": 466272,
+    "path": "index.mjs.map"
+  }
+};
 
 function readAsset (id) {
   const serverDir = dirname$1(fileURLToPath(globalThis._importMeta_.url));
@@ -3092,8 +3107,8 @@ const styles$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
   default: styles
 }, Symbol.toStringTag, { value: 'Module' }));
 
-const MONGODB_URI = process.env.MONGODB_URI || "mongodb+srv://Vercel-Admin-atlas-byzantine-horizon:4feGD1EEf0VxwFN2@atlas-byzantine-horizon.mtnc8ax.mongodb.net/grid-maker?retryWrites=true&w=majority";
-const MONGODB_DB = process.env.MONGODB_DB || "grid-maker";
+const MONGODB_URI = process.env.MONGODB_URI || process.env.VERCEL_MONGODB_URI || "mongodb+srv://Vercel-Admin-atlas-byzantine-horizon:4feGD1EEf0VxwFN2@atlas-byzantine-horizon.mtnc8ax.mongodb.net/grid-maker?retryWrites=true&w=majority";
+const MONGODB_DB = process.env.MONGODB_DB || process.env.VERCEL_MONGODB_DATABASE || "grid-maker";
 let cached = global.mongoose;
 if (!cached) {
   cached = global.mongoose = { conn: null, promise: null };
