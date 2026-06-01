@@ -2087,7 +2087,7 @@ async function errorHandler(error, event) {
 
 const rootDir = "/Users/manlongfeng/Documents/trae_projects/grid_maker";
 
-const appHead = {"meta":[{"charset":"utf-8"},{"name":"viewport","content":"width=device-width, initial-scale=1"},{"name":"description","content":"The ultimate Grid Maker for beginners."}],"link":[],"style":[],"script":[],"noscript":[],"title":"Photo Grid Maker for People Who Can't Draw."};
+const appHead = {"meta":[{"charset":"utf-8"},{"name":"viewport","content":"width=device-width, initial-scale=1"},{"name":"description","content":"The ultimate Grid Maker for beginners."}],"link":[{"rel":"icon","type":"image/x-icon","href":"/favicon.ico"},{"rel":"icon","type":"image/png","href":"/favicon.png"}],"style":[],"script":[],"noscript":[],"title":"Photo Grid Maker for People Who Can't Draw."};
 
 const appRootTag = "div";
 
@@ -2191,22 +2191,7 @@ const plugins = [
 _wH6JrtIxmaSoA8lCPWFnE9z4lQeXW6H5z3l5aymEQw
 ];
 
-const assets = {
-  "/index.mjs": {
-    "type": "text/javascript; charset=utf-8",
-    "etag": "\"1d058-lplSSUg5vns9L6rropPB2MEicGc\"",
-    "mtime": "2026-06-01T00:41:40.410Z",
-    "size": 118872,
-    "path": "index.mjs"
-  },
-  "/index.mjs.map": {
-    "type": "application/json",
-    "etag": "\"71d60-GzAJIo3fqVVMxiNzvOm4lFsk9NE\"",
-    "mtime": "2026-06-01T00:41:40.410Z",
-    "size": 466272,
-    "path": "index.mjs.map"
-  }
-};
+const assets = {};
 
 function readAsset (id) {
   const serverDir = dirname$1(fileURLToPath(globalThis._importMeta_.url));
