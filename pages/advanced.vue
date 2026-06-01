@@ -23,7 +23,7 @@
         <div class="sidebar">
           <h2>Fully Customizable Grid Settings</h2>
           <div class="upload-section">
-            <h3>Upload Image</h3>
+            <div class="section-title">Upload Image</div>
             <input type="file" id="image-upload" class="upload-input" accept="image/*" @change="handleImageUpload" />
             <label for="image-upload" class="upload-label">
               <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -37,7 +37,7 @@
           </div>
 
           <div class="grid-settings">
-            <h3>Grid Settings</h3>
+            <div class="section-title">Grid Settings</div>
 
             <div class="setting-group">
               <label>Line Width: {{ gridSettings.lineWidth }}px</label>
@@ -61,10 +61,10 @@
           </div>
 
           <div class="grid-categories">
-            <h3>Grid Patterns <span class="hint">(Multi-select supported)</span></h3>
+            <div class="section-title">Grid Patterns <span class="hint">(Multi-select supported)</span></div>
             <div v-for="category in gridCategories" :key="category.name" class="grid-category">
               <div class="category-header" @click="toggleCategory(category.name)">
-                <span>{{ category.label }}</span>
+                <h3>{{ category.label }}</h3>
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" :class="{ rotated: expandedCategories.includes(category.name) }">
                   <polyline points="6 9 12 15 18 9"></polyline>
                 </svg>
@@ -220,7 +220,7 @@ const presetColors = ['#000000', '#ffffff', '#8b5cf6', '#ef4444', '#22c55e', '#3
 const gridCategories = [
   {
     name: 'standard',
-    label: 'Standard Grids',
+    label: 'Standard Drawing & Mural Scaling Grids',
     patterns: [
       { value: 'standardGrid', label: 'Standard Grid' },
       { value: 'diagonalGrid', label: 'Diagonal Grid' },
@@ -232,30 +232,30 @@ const gridCategories = [
   },
   {
     name: 'composition',
-    label: 'Composition Guides',
+    label: 'Professional Composition Guides',
     patterns: [
       { value: 'ruleOfThirds', label: 'Rule of Thirds' },
       { value: 'goldenRatio', label: 'Golden Ratio' },
       { value: 'goldenSpiral', label: 'Golden Spiral' },
+      { value: 'ruleOfFifths', label: 'Rule of Fifths' },
+      { value: 'quadrantGrid', label: 'Quadrant Grid' },
       { value: 'goldenTriangle', label: 'Golden Triangle' },
       { value: 'diagonalMethod', label: 'Diagonal Method' },
-      { value: 'centerCross', label: 'Center Cross' },
-      { value: 'ruleOfFifths', label: 'Rule of Fifths' },
-      { value: 'quadrantGrid', label: 'Quadrant Grid' }
+      { value: 'centerCross', label: 'Center Cross' }
     ]
   },
   {
     name: 'perspective',
-    label: 'Perspective Guides',
+    label: 'Advanced Perspective Guides for Artists',
     patterns: [
       { value: 'onePointPerspective', label: '1-Point Perspective' },
       { value: 'twoPointPerspective', label: '2-Point Perspective' },
       { value: 'threePointPerspective', label: '3-Point Perspective' },
-      { value: 'isometric', label: 'Isometric' },
-      { value: 'dimetric', label: 'Dimetric' },
-      { value: 'trimetric', label: 'Trimetric' },
+      { value: 'isometric', label: 'Isometric Grid' },
       { value: 'fisheye', label: 'Fisheye' },
       { value: 'anamorphic', label: 'Anamorphic' },
+      { value: 'dimetric', label: 'Dimetric' },
+      { value: 'trimetric', label: 'Trimetric' },
       { value: 'perspectiveGrid', label: 'Perspective Grid' }
     ]
   },
@@ -652,7 +652,7 @@ onMounted(() => {
   padding-bottom: 10px;
 }
 
-.sidebar h3 {
+.sidebar .section-title {
   margin: 0 0 16px 0;
   font-size: 1rem;
   font-weight: 600;
