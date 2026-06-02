@@ -119,7 +119,7 @@ import { useRouter } from 'vue-router'
 const router = useRouter()
 
 const step = ref(1) // 1: initial, 2: image selected, 3: grid added
-const currentImage = ref('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop')
+const currentImage = ref('https://6a1650b35d38b1b9b092a71f.imgix.net/shoutuweb.jpeg')
 const imageRef = ref<HTMLImageElement | null>(null)
 const canvasRef = ref<HTMLCanvasElement | null>(null)
 const gridCount = ref(12)
