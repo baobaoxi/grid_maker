@@ -16,7 +16,7 @@ Disallow: /api/
 Disallow: /*.json$
 
 # Allow all public pages
-# Allow: /blog/
+Allow: /blog/
 Allow: /about
 Allow: /privacy
 Allow: /terms
