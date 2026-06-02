@@ -60,7 +60,7 @@
         
         <section>
           <h3>Contact Us</h3>
-          <p>If you have any questions about these Terms, please contact us at support@grid-maker.pro.</p>
+          <p>If you have any questions about these Terms, please contact us at <a href="mailto:support&#64;grid-maker&#46;pro">support&#64;grid-maker&#46;pro</a>.</p>
         </section>
       </div>
     </main>
