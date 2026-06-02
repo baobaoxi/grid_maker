@@ -20,7 +20,7 @@
       </div>
       
       <div class="navbar-actions">
-        <a v-if="currentPath === '/'" href="#grid-maker" class="nav-button desktop-only">
+        <a href="/edit-grid" class="nav-button desktop-only">
           <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"></path>
             <path d="m15 5 4 4"></path>
@@ -41,7 +41,7 @@
         <a href="/advanced" class="dropdown-link" :class="{ active: currentPath === '/advanced' }">Advanced</a>
         <a href="/pixel-art" class="dropdown-link" :class="{ active: currentPath === '/pixel-art' }">Pixel Art</a>
         <a href="/blog" class="dropdown-link" :class="{ active: currentPath === '/blog' }">Blog</a>
-        <a v-if="currentPath === '/'" href="#grid-maker" class="dropdown-link start-editing">Start Editing</a>
+        <a href="/edit-grid" class="dropdown-link start-editing">Start Editing</a>
       </div>
     </div>
   </nav>

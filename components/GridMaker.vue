@@ -4,7 +4,7 @@
     <div class="maker-subtitle">Upload your photo, generate a grid, and start sketching square by square.</div>
     <div class="grid-maker-main" :class="{ 'single-column': step < 2 }">
       <div class="preview-section">
-        <div class="preview-container" :class="{ 'default-height': step < 2 }" @click="goToEdit">
+        <div class="preview-container" :class="{ 'default-height': step < 2 }">
           <img 
             ref="imageRef"
             :src="currentImage" 
@@ -17,9 +17,6 @@
             ref="canvasRef"
             class="grid-canvas"
           ></canvas>
-          <div class="click-indicator">
-            <span>Click to edit</span>
-          </div>
         </div>
         
         <div class="upload-section">

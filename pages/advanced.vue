@@ -6,7 +6,7 @@
 
     <div class="page-header">
       <div class="header-content">
-        <h1>Advanced Grid Tools: Professional Photo Overlay & Drawing Grids</h1>
+        <h1>Image Grid Maker: Custom Grid Splitter & Drawing Templates</h1>
         <div>Professional grid overlay tools with full customization</div>
       </div>
       <div class="header-image">
@@ -153,9 +153,9 @@ import AppNavbar from '~/components/AppNavbar.vue'
 import AppFooter from '~/components/AppFooter.vue'
 
 useHead({
-  title: 'Advanced Online Grid Tool for Artists & Photographers | Custom Photo Overlay',
+  title: 'Advanced Online Grid Tool for Artists| Custom Photo Overlay.',
   meta: [
-    { name: 'description', content: 'Upload your image and apply highly customizable grid overlays. Features Rule of Thirds, Golden Ratio, 1/2/3-Point Perspective guides, and standard drawing grids. Customize line width, color, and opacity. Download as PNG, JPG, or SVG for free!' }
+    { name: 'description', content: 'Upload your image and apply highly customizable grid overlays. Features Rule of Thirds, Golden Ratio, 1/2/3-Point Perspective guides, and standard drawing grids.' }
   ],
   link: [
     { rel: 'canonical', href: 'https://grid-maker.pro/advanced' }
