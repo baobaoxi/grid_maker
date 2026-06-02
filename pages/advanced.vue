@@ -158,7 +158,7 @@ useHead({
     { name: 'description', content: 'Upload your image and apply highly customizable grid overlays. Features Rule of Thirds, Golden Ratio, 1/2/3-Point Perspective guides, and standard drawing grids. Customize line width, color, and opacity. Download as PNG, JPG, or SVG for free!' }
   ],
   link: [
-    { rel: 'canonical', href: 'https://grid-maker.pro/advanced/' }
+    { rel: 'canonical', href: 'https://grid-maker.pro/advanced' }
   ]
 })
 import {

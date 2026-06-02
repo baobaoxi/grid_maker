@@ -193,7 +193,7 @@ const route = useRoute()
 
 useHead({
   link: [
-    { rel: 'canonical', href: 'https://grid-maker.pro/edit-grid/' }
+    { rel: 'canonical', href: 'https://grid-maker.pro/edit-grid' }
   ]
 })
 

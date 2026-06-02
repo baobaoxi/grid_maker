@@ -139,7 +139,7 @@ useHead({
     { name: 'description', content: 'Convert photos to pixel art for cross-stitch patterns. Customize pixel size, colors, and grid. Perfect for embroidery and cross-stitch projects.' }
   ],
   link: [
-    { rel: 'canonical', href: 'https://grid-maker.pro/pixel-art/' }
+    { rel: 'canonical', href: 'https://grid-maker.pro/pixel-art' }
   ]
 })
 

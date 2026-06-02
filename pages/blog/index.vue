@@ -55,7 +55,7 @@ import AppFooter from '~/components/AppFooter.vue'
 
 useHead({
   link: [
-    { rel: 'canonical', href: 'https://grid-maker.pro/blog/' }
+    { rel: 'canonical', href: 'https://grid-maker.pro/blog' }
   ]
 })
 

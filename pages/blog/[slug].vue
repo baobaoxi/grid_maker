@@ -44,7 +44,7 @@ const route = useRoute()
 
 useHead({
   link: [
-    { rel: 'canonical', href: `https://grid-maker.pro/blog/${route.params.slug}/` }
+    { rel: 'canonical', href: `https://grid-maker.pro/blog/${route.params.slug}` }
   ]
 })
 const loading = ref(true)
