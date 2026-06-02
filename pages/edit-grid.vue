@@ -6,6 +6,11 @@
       <a href="/" class="back-home">← Back to Home</a>
     </nav>
 
+    <div class="page-header">
+      <h1>Image Grid Maker: Custom Grid Splitter & Drawing Templates</h1>
+      <p>Upload your image and create professional grid overlays for drawing and composition</p>
+    </div>
+
     <div class="edit-content">
       <div class="edit-preview">
         <div class="preview-container">
@@ -44,7 +49,7 @@
 
       <div class="edit-form">
         <div class="form-section">
-          <h3>Grid Settings</h3>
+          <h2>Flexible Grid & Matrix Settings</h2>
           
           <div class="form-group">
             <label>Grid Count</label>
@@ -71,7 +76,7 @@
           </div>
 
           <div class="form-group">
-            <label>Grid Style</label>
+            <h2>Geometric Grid Styles & Shapes</h2>
             <div class="style-options">
               <label v-for="style in gridStyles" :key="style.value" class="style-radio">
                 <input 
@@ -87,7 +92,7 @@
         </div>
 
         <div class="form-section">
-          <h3>Appearance Settings</h3>
+          <h2>Appearance Styling & Vector Export</h2>
           
           <div class="form-group">
             <label>Line Width: {{ lineWidth }}px</label>
@@ -521,6 +526,25 @@ onMounted(() => {
   background: #e5e7eb;
 }
 
+.page-header {
+  text-align: center;
+  padding: 40px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+.page-header h1 {
+  margin: 0 0 10px 0;
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+.page-header p {
+  margin: 0;
+  font-size: 1.125rem;
+  opacity: 0.9;
+}
+
 .edit-content {
   display: grid;
   grid-template-columns: 1fr 400px;
@@ -597,9 +621,10 @@ onMounted(() => {
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
 }
 
-.form-section h3 {
+.form-section h2 {
   margin: 0 0 20px 0;
   color: #1a1a2e;
+  font-size: 16px;
 }
 
 .form-group {
