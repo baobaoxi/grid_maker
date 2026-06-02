@@ -6,7 +6,7 @@
 
     <div class="page-header">
       <div class="header-content">
-        <h1>Image Grid Maker: Custom Grid Splitter & Drawing Templates</h1>
+        <h1>Advanced Grid Tools: Professional Photo Overlay & Drawing Grids</h1>
         <div>Professional grid overlay tools with full customization</div>
       </div>
       <div class="header-image">
