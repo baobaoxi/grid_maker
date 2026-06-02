@@ -2087,7 +2087,7 @@ async function errorHandler(error, event) {
 
 const rootDir = "/Users/manlongfeng/Documents/trae_projects/grid_maker";
 
-const appHead = {"meta":[{"charset":"utf-8"},{"name":"viewport","content":"width=device-width, initial-scale=1"},{"name":"description","content":"The ultimate Grid Maker for beginners. Create professional artwork with zero drawing skills. Completely free, no sign-up needed. Upload your photo now!"}],"link":[{"rel":"icon","type":"image/x-icon","href":"/favicon.ico"},{"rel":"icon","type":"image/png","href":"/favicon.png"}],"style":[],"script":[],"noscript":[],"title":"Free Online Photo Grid Maker — No Design Skills Needed"};
+const appHead = {"meta":[{"charset":"utf-8"},{"name":"viewport","content":"width=device-width, initial-scale=1"},{"name":"description","content":"The ultimate Grid Maker for beginners. Create professional artwork with zero drawing skills. Completely free, no sign-up needed. Upload your photo now!"}],"link":[{"rel":"icon","type":"image/x-icon","href":"/favicon.ico"},{"rel":"icon","type":"image/png","href":"/favicon.png"}],"style":[],"script":[{"async":true,"src":"https://www.googletagmanager.com/gtag/js?id=G-G9S51Q6KQZ"},{"innerHTML":"\n            window.dataLayer = window.dataLayer || [];\n            function gtag(){dataLayer.push(arguments);}\n            gtag('js', new Date());\n            gtag('config', 'G-G9S51Q6KQZ');\n          "}],"noscript":[],"title":"Free Online Photo Grid Maker — No Design Skills Needed"};
 
 const appRootTag = "div";
 
