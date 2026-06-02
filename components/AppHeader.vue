@@ -10,7 +10,7 @@ withDefaults(defineProps<{
   title?: string
   subtitle?: string
 }>(), {
-  title: 'Photo Grid Overlay',
+  title: 'grid maker pro',
   subtitle: 'Upload image and add customizable grid lines'
 })
 </script>

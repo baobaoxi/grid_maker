@@ -11,11 +11,11 @@
     
     <main class="page-content">
       <div class="content-section">
-        <h2>About Photo Grid Overlay</h2>
+        <h2>About grid maker pro</h2>
         
         <section>
           <h3>Our Mission</h3>
-          <p>Photo Grid Overlay is a free online tool designed to help artists, designers, and photography enthusiasts add customizable grid lines to their images. Whether you're sketching from a reference photo, creating Instagram grid layouts, or planning compositions, our tool provides the precision you need.</p>
+          <p>grid maker pro is a free online tool designed to help artists, designers, and photography enthusiasts add customizable grid lines to their images. Whether you're sketching from a reference photo, creating Instagram grid layouts, or planning compositions, our tool provides the precision you need.</p>
         </section>
         
         <section>
@@ -54,7 +54,7 @@
         
         <section>
           <h3>Our Story</h3>
-          <p>Photo Grid Overlay was created out of a need for a simple, privacy-focused tool for artists. As artists ourselves, we struggled to find a grid tool that didn't require uploading images to servers or paying for subscriptions. So we built one.</p>
+          <p>grid maker pro was created out of a need for a simple, privacy-focused tool for artists. As artists ourselves, we struggled to find a grid tool that didn't require uploading images to servers or paying for subscriptions. So we built one.</p>
           <p>What started as a personal project has grown into a tool used by thousands of creatives worldwide. We're committed to keeping it free, private, and continuously improving based on user feedback.</p>
         </section>
         

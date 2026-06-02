@@ -16,7 +16,7 @@
         
         <section>
           <h3>Introduction</h3>
-          <p>At Photo Grid Overlay, we respect your privacy and are committed to protecting your personal information. This Privacy Policy explains how we collect, use, and safeguard your data when you use our online grid maker tool.</p>
+          <p>At grid maker pro, we respect your privacy and are committed to protecting your personal information. This Privacy Policy explains how we collect, use, and safeguard your data when you use our online grid maker tool.</p>
         </section>
         
         <section>

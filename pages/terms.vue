@@ -16,7 +16,7 @@
         
         <section>
           <h3>Introduction</h3>
-          <p>These Terms of Service ("Terms") govern your use of the Photo Grid Overlay website and service ("Service"). By using our Service, you agree to be bound by these Terms.</p>
+          <p>These Terms of Service ("Terms") govern your use of the grid maker pro website and service ("Service"). By using our Service, you agree to be bound by these Terms.</p>
         </section>
         
         <section>
@@ -34,7 +34,7 @@
         
         <section>
           <h3>Intellectual Property</h3>
-          <p>The Service and its original content, features, and functionality are owned by Photo Grid Overlay and are protected by international copyright, trademark, patent, trade secret, and other intellectual property or proprietary rights laws.</p>
+          <p>The Service and its original content, features, and functionality are owned by grid maker pro and are protected by international copyright, trademark, patent, trade secret, and other intellectual property or proprietary rights laws.</p>
           <p>You retain all rights to the images you upload and process using our Service. We do not claim ownership of your content.</p>
         </section>
         
@@ -45,12 +45,12 @@
         
         <section>
           <h3>Limitation of Liability</h3>
-          <p>Photo Grid Overlay shall not be liable for any damages arising from your use of the Service, including but not limited to direct, indirect, incidental, consequential, or punitive damages.</p>
+          <p>grid maker pro shall not be liable for any damages arising from your use of the Service, including but not limited to direct, indirect, incidental, consequential, or punitive damages.</p>
         </section>
         
         <section>
           <h3>Indemnification</h3>
-          <p>You agree to indemnify and hold harmless Photo Grid Overlay from any claims, damages, or expenses arising from your use of the Service or violation of these Terms.</p>
+          <p>You agree to indemnify and hold harmless grid maker pro from any claims, damages, or expenses arising from your use of the Service or violation of these Terms.</p>
         </section>
         
         <section>
