@@ -13,7 +13,7 @@
       </div>
 
       <div v-else-if="error || !post" class="error-state">
-        <h1>Article Not Found</h1>
+        <h2>Article Not Found</h2>
         <p>The article you're looking for doesn't exist or has been removed.</p>
         <a href="/blog" class="back-link">← Back to Blog</a>
       </div>
@@ -21,7 +21,7 @@
       <article v-else class="blog-article">
         <header class="article-header">
           <span class="article-date">{{ post.date }}</span>
-          <h1>{{ post.title }}</h1>
+          <h2>{{ post.title }}</h2>
           <!-- <p class="article-excerpt">{{ post.excerpt }}</p> -->
           <div class="article-image">
             <img :src="post.image" :alt="post.title" />
@@ -166,7 +166,7 @@ watch(() => route.params.slug, () => {
   margin-bottom: 16px;
 }
 
-.article-header h1 {
+.article-header h2 {
   color: #333;
   font-size: 2.2rem;
   line-height: 1.3;
