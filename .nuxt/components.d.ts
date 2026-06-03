@@ -18,6 +18,7 @@ export const ActionSection: typeof import("../components/ActionSection.vue")['de
 export const AppFooter: typeof import("../components/AppFooter.vue")['default']
 export const AppHeader: typeof import("../components/AppHeader.vue")['default']
 export const AppNavbar: typeof import("../components/AppNavbar.vue")['default']
+export const ExternalLinks: typeof import("../components/ExternalLinks.vue")['default']
 export const FeaturesSection: typeof import("../components/FeaturesSection.vue")['default']
 export const GridControls: typeof import("../components/GridControls.vue")['default']
 export const GridMaker: typeof import("../components/GridMaker.vue")['default']
@@ -51,6 +52,7 @@ export const LazyActionSection: LazyComponent<typeof import("../components/Actio
 export const LazyAppFooter: LazyComponent<typeof import("../components/AppFooter.vue")['default']>
 export const LazyAppHeader: LazyComponent<typeof import("../components/AppHeader.vue")['default']>
 export const LazyAppNavbar: LazyComponent<typeof import("../components/AppNavbar.vue")['default']>
+export const LazyExternalLinks: LazyComponent<typeof import("../components/ExternalLinks.vue")['default']>
 export const LazyFeaturesSection: LazyComponent<typeof import("../components/FeaturesSection.vue")['default']>
 export const LazyGridControls: LazyComponent<typeof import("../components/GridControls.vue")['default']>
 export const LazyGridMaker: LazyComponent<typeof import("../components/GridMaker.vue")['default']>

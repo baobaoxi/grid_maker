@@ -18,6 +18,7 @@ interface _GlobalComponents {
   AppFooter: typeof import("../../components/AppFooter.vue")['default']
   AppHeader: typeof import("../../components/AppHeader.vue")['default']
   AppNavbar: typeof import("../../components/AppNavbar.vue")['default']
+  ExternalLinks: typeof import("../../components/ExternalLinks.vue")['default']
   FeaturesSection: typeof import("../../components/FeaturesSection.vue")['default']
   GridControls: typeof import("../../components/GridControls.vue")['default']
   GridMaker: typeof import("../../components/GridMaker.vue")['default']
@@ -51,6 +52,7 @@ interface _GlobalComponents {
   LazyAppFooter: LazyComponent<typeof import("../../components/AppFooter.vue")['default']>
   LazyAppHeader: LazyComponent<typeof import("../../components/AppHeader.vue")['default']>
   LazyAppNavbar: LazyComponent<typeof import("../../components/AppNavbar.vue")['default']>
+  LazyExternalLinks: LazyComponent<typeof import("../../components/ExternalLinks.vue")['default']>
   LazyFeaturesSection: LazyComponent<typeof import("../../components/FeaturesSection.vue")['default']>
   LazyGridControls: LazyComponent<typeof import("../../components/GridControls.vue")['default']>
   LazyGridMaker: LazyComponent<typeof import("../../components/GridMaker.vue")['default']>

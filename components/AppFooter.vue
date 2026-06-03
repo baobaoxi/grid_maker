@@ -15,12 +15,14 @@
       <div class="footer-copyright">
         <p>&copy; {{ year }} {{ company }}. All rights reserved.</p>
       </div>
+      <ExternalLinks />
     </div>
   </footer>
 </template>
 
 <script setup lang="ts">
 import { ref } from 'vue'
+import ExternalLinks from './ExternalLinks.vue'
 
 withDefaults(defineProps<{
   company?: string
