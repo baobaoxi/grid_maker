@@ -55,6 +55,13 @@ const imageLinks = ref([
     alt: 'Verified on DANG!',
     width: 260,
     height: 94
+  },
+  {
+    url: 'https://aidirs.org/item/grid-maker-pro',
+    target: '_blank',
+    rel: 'noopener noreferrer',
+    imageSrc: 'https://aidirs.org/badges/badge-listed-dark.svg',
+    alt: 'Listed on AIDirs'
   }
 ])
 </script>
