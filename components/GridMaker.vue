@@ -125,6 +125,8 @@ const canvasRef = ref<HTMLCanvasElement | null>(null)
 const gridCount = ref(12)
 const selectedCombo = ref({ rows: 3, cols: 4, label: '3×4' })
 const selectedStyle = ref('square')
+const isMobile = ref(false)
+const lineWidth = ref(2)
 
 const gridStyles = [
   { value: 'square', label: 'Square', icon: '◻️' },
@@ -181,7 +183,7 @@ const drawGrid = () => {
 
   ctx.clearRect(0, 0, width, height)
   ctx.strokeStyle = color
-  ctx.lineWidth = 2
+  ctx.lineWidth = lineWidth.value
   ctx.globalAlpha = alpha
 
   const cellWidth = width / cols
@@ -393,6 +395,14 @@ const printImage = () => {
 }
 
 onMounted(() => {
+  // 检测是否为移动端
+  isMobile.value = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth < 768
+  
+  // 移动端设置更大的默认格子宽度
+  if (isMobile.value) {
+    lineWidth.value = 6
+  }
+  
   if (imageRef.value?.complete) {
     drawGrid()
   }
