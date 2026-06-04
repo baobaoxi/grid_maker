@@ -43,6 +43,11 @@ const textLinks = ref([
     label: 'BestAITool AI Tools Directory', 
     url: 'https://bestaitool.app/', 
     title: 'BestAITool AI Tools Directory' 
+  },
+  { 
+    label: 'Z-Image', 
+    url: 'https://z-image.net/', 
+    title: 'Z-Image' 
   }
 ])
 
