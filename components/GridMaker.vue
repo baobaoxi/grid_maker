@@ -303,15 +303,49 @@ const selectCombo = (combo: { rows: number; cols: number; label: string }) => {
   selectedCombo.value = combo
 }
 
+// 设置 cookie 工具函数（备用方案）
+const setCookie = (name: string, value: string, days: number = 1) => {
+  const expires = new Date()
+  expires.setTime(expires.getTime() + (days * 24 * 60 * 60 * 1000))
+  document.cookie = `${name}=${encodeURIComponent(value)};expires=${expires.toUTCString()};path=/`
+}
+
+// 检查 sessionStorage 是否可用
+const isSessionStorageAvailable = (): boolean => {
+  try {
+    const key = '__grid_maker_test__'
+    sessionStorage.setItem(key, key)
+    sessionStorage.removeItem(key)
+    return true
+  } catch (e) {
+    return false
+  }
+}
+
 const goToEdit = () => {
-  // 使用 sessionStorage 存储图片数据，避免 URL 过长
-  sessionStorage.setItem('editGridImage', currentImage.value)
-  sessionStorage.setItem('editGridRows', selectedCombo.value.rows.toString())
-  sessionStorage.setItem('editGridCols', selectedCombo.value.cols.toString())
-  sessionStorage.setItem('editGridCount', gridCount.value.toString())
-  sessionStorage.setItem('editGridStyle', selectedStyle.value)
-  
-  router.push('/edit-grid')
+  try {
+    if (isSessionStorageAvailable()) {
+      // 优先使用 sessionStorage
+      sessionStorage.setItem('editGridImage', currentImage.value)
+      sessionStorage.setItem('editGridRows', selectedCombo.value.rows.toString())
+      sessionStorage.setItem('editGridCols', selectedCombo.value.cols.toString())
+      sessionStorage.setItem('editGridCount', gridCount.value.toString())
+      sessionStorage.setItem('editGridStyle', selectedStyle.value)
+    } else {
+      // sessionStorage 不可用时，回退到 cookie
+      console.warn('sessionStorage unavailable, falling back to cookies')
+      setCookie('editGridImage', currentImage.value)
+      setCookie('editGridRows', selectedCombo.value.rows.toString())
+      setCookie('editGridCols', selectedCombo.value.cols.toString())
+      setCookie('editGridCount', gridCount.value.toString())
+      setCookie('editGridStyle', selectedStyle.value)
+    }
+    
+    router.push('/edit-grid')
+  } catch (e) {
+    console.error('Failed to save image data:', e)
+    alert('Your browser privacy settings prevent saving your image. Please adjust your privacy settings or use a different browser.')
+  }
 }
 
 const downloadImage = (format: string) => {

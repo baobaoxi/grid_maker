@@ -526,30 +526,61 @@ const printImage = () => {
   }, 'image/png')
 }
 
+// 获取 cookie 工具函数（备用方案）
+const getCookie = (name: string): string | null => {
+  const value = `; ${document.cookie}`
+  const parts = value.split(`; ${name}=`)
+  if (parts.length === 2) {
+    const result = parts.pop()?.split(';').shift()
+    return result ? decodeURIComponent(result) : null
+  }
+  return null
+}
+
+// 删除 cookie 工具函数
+const deleteCookie = (name: string) => {
+  document.cookie = `${name}=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/`
+}
+
+// 读取存储的数据（优先 sessionStorage，回退到 cookie）
+const getData = (key: string): string | null => {
+  try {
+    // 优先尝试 sessionStorage
+    const sessionValue = sessionStorage.getItem(key)
+    if (sessionValue !== null) {
+      sessionStorage.removeItem(key)
+      return sessionValue
+    }
+  } catch (e) {
+    // sessionStorage 不可用，忽略错误
+  }
+  
+  // 回退到 cookie
+  const cookieValue = getCookie(key)
+  if (cookieValue !== null) {
+    deleteCookie(key)
+    return cookieValue
+  }
+  
+  return null
+}
+
 onMounted(() => {
-  // 从 sessionStorage 读取数据，替代 URL 参数
-  const storedImage = sessionStorage.getItem('editGridImage')
-  const storedRows = sessionStorage.getItem('editGridRows')
-  const storedCols = sessionStorage.getItem('editGridCols')
-  const storedCount = sessionStorage.getItem('editGridCount')
-  const storedStyle = sessionStorage.getItem('editGridStyle')
+  // 从存储读取数据
+  const storedImage = getData('editGridImage')
+  const storedRows = getData('editGridRows')
+  const storedCols = getData('editGridCols')
+  const storedCount = getData('editGridCount')
+  const storedStyle = getData('editGridStyle')
   
   if (storedImage) {
     currentImage.value = storedImage
     hasUploadedImage.value = true
-    // 读取后清除，避免下次进入时使用旧数据
-    sessionStorage.removeItem('editGridImage')
   }
   if (storedRows) selectedCombo.value.rows = parseInt(storedRows)
   if (storedCols) selectedCombo.value.cols = parseInt(storedCols)
   if (storedCount) gridCount.value = parseInt(storedCount)
   if (storedStyle) selectedStyle.value = storedStyle
-  
-  // 清除其他存储数据
-  sessionStorage.removeItem('editGridRows')
-  sessionStorage.removeItem('editGridCols')
-  sessionStorage.removeItem('editGridCount')
-  sessionStorage.removeItem('editGridStyle')
   
   selectedCombo.value.label = selectedCombo.value.rows + '×' + selectedCombo.value.cols
   
