@@ -209,6 +209,7 @@ const selectedStyle = ref('square')
 const lineWidth = ref(2)
 const opacity = ref(60)
 const gridColor = ref('#8b5cf6')
+const isMobile = ref(false)
 
 // 简单的防抖机制
 let drawTimeout: ReturnType<typeof setTimeout> | null = null
@@ -566,6 +567,14 @@ const getData = (key: string): string | null => {
 }
 
 onMounted(() => {
+  // 检测是否为移动端
+  isMobile.value = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth < 768
+  
+  // 移动端设置更大的默认格子宽度
+  if (isMobile.value) {
+    lineWidth.value = 6
+  }
+  
   // 从存储读取数据
   const storedImage = getData('editGridImage')
   const storedRows = getData('editGridRows')
