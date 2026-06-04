@@ -190,11 +190,8 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch, onMounted } from 'vue'
-import { useRoute } from 'vue-router'
+import { ref, computed, watch, onMounted, onUnmounted } from 'vue'
 import AppFooter from '~/components/AppFooter.vue'
-
-const route = useRoute()
 
 useHead({
   link: [
@@ -212,6 +209,18 @@ const selectedStyle = ref('square')
 const lineWidth = ref(2)
 const opacity = ref(60)
 const gridColor = ref('#8b5cf6')
+
+// 简单的防抖机制
+let drawTimeout: ReturnType<typeof setTimeout> | null = null
+const debouncedDrawGrid = () => {
+  if (drawTimeout) {
+    clearTimeout(drawTimeout)
+  }
+  drawTimeout = setTimeout(() => {
+    drawGrid()
+    drawTimeout = null
+  }, 100)
+}
 
 const gridStyles = [
   { value: 'square', label: 'Square', icon: '◻️' },
@@ -256,13 +265,17 @@ const gridCombinations = computed(() => {
 const drawGrid = () => {
   const canvas = canvasRef.value
   const img = imageRef.value
-  if (!canvas || !img) return
+  if (!canvas || !img || !img.complete) return
 
   const ctx = canvas.getContext('2d')
   if (!ctx) return
 
-  canvas.width = img.naturalWidth
-  canvas.height = img.naturalHeight
+  // 限制 Canvas 最大尺寸，防止内存过大
+  const maxSize = 4096
+  const scale = Math.min(1, maxSize / Math.max(img.naturalWidth, img.naturalHeight))
+  
+  canvas.width = Math.floor(img.naturalWidth * scale)
+  canvas.height = Math.floor(img.naturalHeight * scale)
 
   const width = canvas.width
   const height = canvas.height
@@ -273,7 +286,7 @@ const drawGrid = () => {
 
   ctx.clearRect(0, 0, width, height)
   ctx.strokeStyle = color
-  ctx.lineWidth = lineWidth.value
+  ctx.lineWidth = lineWidth.value * scale
   ctx.globalAlpha = alpha
 
   const cellWidth = width / cols
@@ -357,7 +370,15 @@ const onImageLoad = () => {
 }
 
 watch([selectedCombo, selectedStyle, gridColor, lineWidth, opacity], () => {
-  drawGrid()
+  debouncedDrawGrid()
+})
+
+// 组件卸载时清理资源
+onUnmounted(() => {
+  if (drawTimeout) {
+    clearTimeout(drawTimeout)
+    drawTimeout = null
+  }
 })
 
 const selectCombo = (combo: { rows: number; cols: number; label: string }) => {
@@ -369,17 +390,27 @@ const handleImageUpload = (event: Event) => {
   const file = target.files?.[0]
   
   if (file) {
+    // 检查文件大小，限制为 10MB
+    const maxSize = 10 * 1024 * 1024 // 10MB
+    if (file.size > maxSize) {
+      alert('Image size exceeds 10MB limit. Please choose a smaller image.')
+      target.value = '' // 清空输入
+      return
+    }
+
     const reader = new FileReader()
     reader.onload = (e) => {
-      currentImage.value = e.target?.result as string
-      hasUploadedImage.value = true
+      const result = e.target?.result as string
+      if (result) {
+        currentImage.value = result
+        hasUploadedImage.value = true
+      }
+    }
+    reader.onerror = () => {
+      alert('Failed to read the image file.')
     }
     reader.readAsDataURL(file)
   }
-}
-
-const goBack = () => {
-  window.history.back()
 }
 
 const handleNavigate = (link: { label: string; url: string }) => {
@@ -391,20 +422,30 @@ const downloadImage = (format: string) => {
   const canvas = canvasRef.value
   if (!img || !canvas) return
 
+  // 使用当前 canvas 的尺寸，而不是原始图片尺寸
   const exportCanvas = document.createElement('canvas')
-  exportCanvas.width = img.naturalWidth
-  exportCanvas.height = img.naturalHeight
+  exportCanvas.width = canvas.width
+  exportCanvas.height = canvas.height
   const ctx = exportCanvas.getContext('2d')
   if (!ctx) return
 
-  ctx.drawImage(img, 0, 0)
+  // 绘制图片（缩放到 canvas 尺寸）
+  ctx.drawImage(img, 0, 0, canvas.width, canvas.height)
   ctx.globalAlpha = opacity.value / 100
   ctx.drawImage(canvas, 0, 0)
 
   const link = document.createElement('a')
   link.download = 'grid.' + format
-  link.href = exportCanvas.toDataURL('image/' + format, 0.95)
-  link.click()
+  
+  // 使用 blob 替代 dataURL，减少内存占用
+  exportCanvas.toBlob((blob) => {
+    if (blob) {
+      link.href = URL.createObjectURL(blob)
+      link.click()
+      // 下载后释放 URL 对象
+      setTimeout(() => URL.revokeObjectURL(link.href), 100)
+    }
+  }, 'image/' + format, 0.95)
 }
 
 const printImage = () => {
@@ -415,70 +456,100 @@ const printImage = () => {
     return
   }
 
+  // 使用当前 canvas 的尺寸
   const printCanvas = document.createElement('canvas')
-  printCanvas.width = img.naturalWidth
-  printCanvas.height = img.naturalHeight
+  printCanvas.width = canvas.width
+  printCanvas.height = canvas.height
   const ctx = printCanvas.getContext('2d')
   if (!ctx) {
     alert('Failed to create canvas context')
     return
   }
 
-  ctx.drawImage(img, 0, 0)
+  ctx.drawImage(img, 0, 0, canvas.width, canvas.height)
   ctx.globalAlpha = opacity.value / 100
   ctx.drawImage(canvas, 0, 0)
 
-  const imageDataUrl = printCanvas.toDataURL('image/png')
+  // 使用 blob 替代 dataURL
+  printCanvas.toBlob((blob) => {
+    if (!blob) {
+      alert('Failed to create image for printing')
+      return
+    }
 
-  const iframe = document.createElement('iframe')
-  iframe.style.display = 'none'
-  document.body.appendChild(iframe)
+    const imageUrl = URL.createObjectURL(blob)
+    const iframe = document.createElement('iframe')
+    iframe.style.display = 'none'
+    document.body.appendChild(iframe)
 
-  const doc = iframe.contentDocument || iframe.contentWindow?.document
-  if (!doc) {
-    document.body.removeChild(iframe)
-    return
-  }
-
-  doc.write(`
-    <!DOCTYPE html>
-    <html>
-    <head>
-      <title>Print Grid</title>
-      <style>
-        body { margin: 0; padding: 20px; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
-        img { max-width: 100%; max-height: 100vh; }
-        @media print {
-          body { padding: 0; }
-        }
-      </style>
-    </head>
-    <body>
-      <img src="${imageDataUrl}" onload="window.print();" />
-    </body>
-    </html>
-  `)
-  doc.close()
-
-  iframe.onload = function() {
-    setTimeout(() => {
+    const doc = iframe.contentDocument || iframe.contentWindow?.document
+    if (!doc) {
+      URL.revokeObjectURL(imageUrl)
       document.body.removeChild(iframe)
-    }, 100)
-  }
+      return
+    }
+
+    doc.documentElement.innerHTML = `
+      <head>
+        <title>Print Grid</title>
+        <style>
+          body { margin: 0; padding: 20px; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
+          img { max-width: 100%; max-height: 100vh; }
+          @media print {
+            body { padding: 0; }
+          }
+        </style>
+      </head>
+      <body>
+        <img src="${imageUrl}" onload="window.print();" />
+      </body>
+    `
+
+    // 清理函数
+    const cleanup = () => {
+      URL.revokeObjectURL(imageUrl)
+      if (iframe && iframe.parentNode) {
+        document.body.removeChild(iframe)
+      }
+    }
+
+    // 监听打印结束事件
+    const mediaQueryList = window.matchMedia('print')
+    mediaQueryList.addEventListener('change', (e) => {
+      if (!e.matches) {
+        cleanup()
+      }
+    })
+
+    // 备用清理：10秒后强制清理
+    setTimeout(cleanup, 10000)
+  }, 'image/png')
 }
 
 onMounted(() => {
-  const image = route.query.image as string
-  const rowsParam = route.query.rows as string
-  const colsParam = route.query.cols as string
-  const countParam = route.query.count as string
-  const styleParam = route.query.style as string
+  // 从 sessionStorage 读取数据，替代 URL 参数
+  const storedImage = sessionStorage.getItem('editGridImage')
+  const storedRows = sessionStorage.getItem('editGridRows')
+  const storedCols = sessionStorage.getItem('editGridCols')
+  const storedCount = sessionStorage.getItem('editGridCount')
+  const storedStyle = sessionStorage.getItem('editGridStyle')
   
-  if (image) currentImage.value = decodeURIComponent(image)
-  if (rowsParam) selectedCombo.value.rows = parseInt(rowsParam)
-  if (colsParam) selectedCombo.value.cols = parseInt(colsParam)
-  if (countParam) gridCount.value = parseInt(countParam)
-  if (styleParam) selectedStyle.value = styleParam
+  if (storedImage) {
+    currentImage.value = storedImage
+    hasUploadedImage.value = true
+    // 读取后清除，避免下次进入时使用旧数据
+    sessionStorage.removeItem('editGridImage')
+  }
+  if (storedRows) selectedCombo.value.rows = parseInt(storedRows)
+  if (storedCols) selectedCombo.value.cols = parseInt(storedCols)
+  if (storedCount) gridCount.value = parseInt(storedCount)
+  if (storedStyle) selectedStyle.value = storedStyle
+  
+  // 清除其他存储数据
+  sessionStorage.removeItem('editGridRows')
+  sessionStorage.removeItem('editGridCols')
+  sessionStorage.removeItem('editGridCount')
+  sessionStorage.removeItem('editGridStyle')
   
   selectedCombo.value.label = selectedCombo.value.rows + '×' + selectedCombo.value.cols
   

@@ -304,16 +304,14 @@ const selectCombo = (combo: { rows: number; cols: number; label: string }) => {
 }
 
 const goToEdit = () => {
-  router.push({
-    path: '/edit-grid',
-    query: {
-      image: encodeURIComponent(currentImage.value),
-      rows: selectedCombo.value.rows.toString(),
-      cols: selectedCombo.value.cols.toString(),
-      count: gridCount.value.toString(),
-      style: selectedStyle.value
-    }
-  })
+  // 使用 sessionStorage 存储图片数据，避免 URL 过长
+  sessionStorage.setItem('editGridImage', currentImage.value)
+  sessionStorage.setItem('editGridRows', selectedCombo.value.rows.toString())
+  sessionStorage.setItem('editGridCols', selectedCombo.value.cols.toString())
+  sessionStorage.setItem('editGridCount', gridCount.value.toString())
+  sessionStorage.setItem('editGridStyle', selectedStyle.value)
+  
+  router.push('/edit-grid')
 }
 
 const downloadImage = (format: string) => {
