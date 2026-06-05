@@ -48,6 +48,11 @@ const textLinks = ref([
     label: 'Z-Image', 
     url: 'https://z-image.net/', 
     title: 'Z-Image' 
+  },
+  { 
+    label: 'Lemon Directory .com', 
+    url: 'http://www.lemon-directory.com/', 
+    title: 'Lemon Directory' 
   }
 ])
 
