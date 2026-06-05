@@ -99,6 +99,14 @@ const imageLinks = ref([
     alt: 'Featured on ShowMeBestAI',
     width: 220,
     height: 60
+  },
+  {
+    url: 'https://findly.tools/grid-maker-pro?utm_source=grid-maker-pro',
+    target: '_blank',
+    rel: 'noopener noreferrer',
+    imageSrc: 'https://findly.tools/badges/findly-tools-badge-light.svg',
+    alt: 'Featured on Findly.tools',
+    width: 150
   }
 ])
 </script>
