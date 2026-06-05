@@ -31,6 +31,21 @@
           class="external-image"
         />
       </a>
+      <!-- AgentWise SVG Badge -->
+      <a 
+        href="https://agentwise.org/agent/grid-maker" 
+        target="_blank" 
+        rel="noopener"
+        class="external-image-link"
+      >
+        <svg width="200" height="48" viewBox="0 0 200 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect width="200" height="48" rx="6" fill="#FFFFFF" stroke="#E5E7EB" stroke-width="1"/>
+          <circle cx="28" cy="24" r="14" fill="#2563eb"/>
+          <text x="28" y="29" font-family="Arial, sans-serif" font-size="14" font-weight="700" text-anchor="middle" fill="white">A</text>
+          <text x="54" y="22" font-family="system-ui, sans-serif" font-size="11" font-weight="500" fill="#6B7280">Featured on</text>
+          <text x="54" y="37" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#2563eb">AgentWise</text>
+        </svg>
+      </a>
     </div>
   </div>
 </template>
@@ -148,6 +163,24 @@ const imageLinks = ref([
     imageSrc: 'https://aifinder.site/light-badge.png',
     alt: 'Discover more AI tools at aifinder.site',
     width: 200
+  },
+  {
+    url: 'https://navfolders.com',
+    target: '_blank',
+    rel: 'noopener noreferrer',
+    imageSrc: 'https://navfolders.com/badge/nav_dark.svg',
+    alt: 'NavFolders',
+    width: 200,
+    height: 54
+  },
+  {
+    url: 'https://aidirs.best/item/grid-maker',
+    target: '_blank',
+    rel: 'noopener',
+    imageSrc: 'https://aidirs.best/light.svg',
+    alt: 'Grid Maker - Photo Grid Design Tool | Aidirs',
+    width: 200,
+    height: 56
   }
 ])
 </script>
