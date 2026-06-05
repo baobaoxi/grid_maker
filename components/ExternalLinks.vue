@@ -72,6 +72,14 @@ const imageLinks = ref([
     rel: 'noopener noreferrer',
     imageSrc: 'https://aidirs.org/badges/badge-listed-dark.svg',
     alt: 'Listed on AIDirs'
+  },
+  {
+    url: 'https://shinylaunch.com',
+    target: '_blank',
+    rel: 'noopener noreferrer',
+    imageSrc: 'https://shinylaunch.com/static/images/badge-dark.png',
+    alt: 'ShinyLaunch',
+    height: 54
   }
 ])
 </script>
