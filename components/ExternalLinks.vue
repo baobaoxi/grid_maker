@@ -107,6 +107,22 @@ const imageLinks = ref([
     imageSrc: 'https://findly.tools/badges/findly-tools-badge-light.svg',
     alt: 'Featured on Findly.tools',
     width: 150
+  },
+  {
+    url: 'https://theonestartup.com',
+    target: '_blank',
+    rel: 'noopener noreferrer',
+    imageSrc: 'https://theonestartup.com/badages-awards.svg',
+    alt: 'Featured on The One Startup',
+    height: 54
+  },
+  {
+    url: 'https://submito.net',
+    target: '_blank',
+    rel: 'noopener noreferrer',
+    imageSrc: 'https://submito.net/badge/listed-light.svg',
+    alt: 'Listed on Submito',
+    title: 'Listed on Submito'
   }
 ])
 </script>
