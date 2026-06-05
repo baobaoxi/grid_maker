@@ -80,6 +80,15 @@ const imageLinks = ref([
     imageSrc: 'https://shinylaunch.com/static/images/badge-dark.png',
     alt: 'ShinyLaunch',
     height: 54
+  },
+  {
+    url: 'https://showmebest.ai',
+    target: '_blank',
+    rel: 'noopener noreferrer',
+    imageSrc: 'https://showmebest.ai/badge/feature-badge-white.webp',
+    alt: 'Featured on ShowMeBestAI',
+    width: 220,
+    height: 60
   }
 ])
 </script>
