@@ -123,6 +123,23 @@ const imageLinks = ref([
     imageSrc: 'https://submito.net/badge/listed-light.svg',
     alt: 'Listed on Submito',
     title: 'Listed on Submito'
+  },
+  {
+    url: '',
+    target: '_blank',
+    rel: 'noopener noreferrer',
+    imageSrc: 'https://acidtools.com/assets/images/badge.png',
+    alt: 'Acid Tools',
+    height: 54
+  },
+  {
+    url: 'https://launchigniter.com/product/grid-maker-pro?ref=badge-grid-maker-pro',
+    target: '_blank',
+    rel: 'noopener noreferrer',
+    imageSrc: 'https://launchigniter.com/api/badge/grid-maker-pro?theme=light',
+    alt: 'Featured on LaunchIgniter',
+    width: 212,
+    height: 55
   }
 ])
 </script>
