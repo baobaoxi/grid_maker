@@ -140,6 +140,14 @@ const imageLinks = ref([
     alt: 'Featured on LaunchIgniter',
     width: 212,
     height: 55
+  },
+  {
+    url: 'https://aifinder.site',
+    target: '_blank',
+    rel: 'noopener noreferrer',
+    imageSrc: 'https://aifinder.site/light-badge.png',
+    alt: 'Discover more AI tools at aifinder.site',
+    width: 200
   }
 ])
 </script>
