@@ -58,6 +58,11 @@ const textLinks = ref([
     label: 'MossAI Tools', 
     url: 'https://mossai.org', 
     title: 'MossAI Tools' 
+  },
+  { 
+    label: '[反向链接描述]', 
+    url: 'https://www.seewhatnewai.com', 
+    title: 'See What New AI' 
   }
 ])
 
