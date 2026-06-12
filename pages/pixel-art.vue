@@ -124,11 +124,35 @@
       </div>
     </div>
 
+    <div class="features-section">
+      <div class="features-header">
+        <h2>Feature Introduction</h2>
+      </div>
+      <FeatureSection 
+        v-for="(feature, index) in pixelArtFeatures" 
+        :key="feature.id" 
+        :feature="feature" 
+        :reverse="index === 1"
+      />
+    </div>
+
+    <HowToGuide :guide="pixelArtGuide" />
+
+    <FeaturesSection
+      :show-header="false"
+      :show-features="false"
+      :show-steps="false"
+      :show-why-to-use="false"
+      :show-faq="true"
+      :faq-items="pixelArtFaq"
+    />
+
     <PageGuide 
-      title="Try Advanced Grid Tools"
-      description="Professional grid overlay tools with full customization. Features Rule of Thirds, Golden Ratio, Perspective guides, and more."
+      title="Try Our Other Tools"
+      description="Grid Maker, Create professional artwork with zero drawing skills."
       link-url="/advanced"
       button-text="Go to Advanced"
+      image-url="https://6a1925960bc623d413aeb142.imgix.net/jump.png"
     />
 
     <AppFooter company="Photo Grid App" @navigate="handleFooterNavigate" />
@@ -140,6 +164,9 @@ import { ref, watch, onMounted, nextTick } from 'vue'
 import AppNavbar from '~/components/AppNavbar.vue'
 import AppFooter from '~/components/AppFooter.vue'
 import PageGuide from '~/components/PageGuide.vue'
+import FeatureSection from '~/components/FeatureSection.vue'
+import HowToGuide from '~/components/HowToGuide.vue'
+import { pixelArtFeatures, pixelArtGuide, pixelArtFaq } from '~/config/pixelArtFeatures'
 
 useHead({
   title: 'Pixel Art Generator for Cross-Stitch Patterns',
@@ -704,5 +731,28 @@ onMounted(() => {
 
 .back-home:hover {
   color: #764ba2;
+}
+
+.features-section {
+  max-width: 1200px;
+  margin: 40px auto;
+  padding: 0 20px;
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+}
+
+.features-header {
+  text-align: center;
+  padding: 30px 20px 20px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.features-header h2 {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #1f2937;
+  margin: 0;
 }
 </style>

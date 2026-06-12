@@ -19,10 +19,12 @@ interface _GlobalComponents {
   AppHeader: typeof import("../../components/AppHeader.vue")['default']
   AppNavbar: typeof import("../../components/AppNavbar.vue")['default']
   ExternalLinks: typeof import("../../components/ExternalLinks.vue")['default']
+  FeatureSection: typeof import("../../components/FeatureSection.vue")['default']
   FeaturesSection: typeof import("../../components/FeaturesSection.vue")['default']
   GridControls: typeof import("../../components/GridControls.vue")['default']
   GridMaker: typeof import("../../components/GridMaker.vue")['default']
   HeroSection: typeof import("../../components/HeroSection.vue")['default']
+  HowToGuide: typeof import("../../components/HowToGuide.vue")['default']
   ImageCanvas: typeof import("../../components/ImageCanvas.vue")['default']
   PageGuide: typeof import("../../components/PageGuide.vue")['default']
   UploadArea: typeof import("../../components/UploadArea.vue")['default']
@@ -54,10 +56,12 @@ interface _GlobalComponents {
   LazyAppHeader: LazyComponent<typeof import("../../components/AppHeader.vue")['default']>
   LazyAppNavbar: LazyComponent<typeof import("../../components/AppNavbar.vue")['default']>
   LazyExternalLinks: LazyComponent<typeof import("../../components/ExternalLinks.vue")['default']>
+  LazyFeatureSection: LazyComponent<typeof import("../../components/FeatureSection.vue")['default']>
   LazyFeaturesSection: LazyComponent<typeof import("../../components/FeaturesSection.vue")['default']>
   LazyGridControls: LazyComponent<typeof import("../../components/GridControls.vue")['default']>
   LazyGridMaker: LazyComponent<typeof import("../../components/GridMaker.vue")['default']>
   LazyHeroSection: LazyComponent<typeof import("../../components/HeroSection.vue")['default']>
+  LazyHowToGuide: LazyComponent<typeof import("../../components/HowToGuide.vue")['default']>
   LazyImageCanvas: LazyComponent<typeof import("../../components/ImageCanvas.vue")['default']>
   LazyPageGuide: LazyComponent<typeof import("../../components/PageGuide.vue")['default']>
   LazyUploadArea: LazyComponent<typeof import("../../components/UploadArea.vue")['default']>

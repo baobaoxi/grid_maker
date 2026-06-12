@@ -1,10 +1,13 @@
 <template>
   <div class="page-guide">
     <div class="guide-content">
-      <div class="guide-icon">
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M9 18l6-6-6-6"/>
-        </svg>
+      <div class="guide-image-wrapper">
+        <img v-if="imageUrl" :src="imageUrl" :alt="title" class="guide-image" />
+        <div v-else class="guide-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9 18l6-6-6-6"/>
+          </svg>
+        </div>
       </div>
       <div class="guide-text">
         <h3>{{ title }}</h3>
@@ -42,6 +45,10 @@ defineProps({
   linkTarget: {
     type: String,
     default: '_self'
+  },
+  imageUrl: {
+    type: String,
+    default: ''
   }
 })
 </script>
@@ -61,8 +68,18 @@ defineProps({
   gap: 20px;
 }
 
-.guide-icon {
+.guide-image-wrapper {
   flex-shrink: 0;
+}
+
+.guide-image {
+  width: 100px;
+  height: 100px;
+  border-radius: 12px;
+  object-fit: cover;
+}
+
+.guide-icon {
   width: 50px;
   height: 50px;
   background: rgba(255, 255, 255, 0.2);
