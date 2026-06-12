@@ -24,6 +24,7 @@ export const GridControls: typeof import("../components/GridControls.vue")['defa
 export const GridMaker: typeof import("../components/GridMaker.vue")['default']
 export const HeroSection: typeof import("../components/HeroSection.vue")['default']
 export const ImageCanvas: typeof import("../components/ImageCanvas.vue")['default']
+export const PageGuide: typeof import("../components/PageGuide.vue")['default']
 export const UploadArea: typeof import("../components/UploadArea.vue")['default']
 export const NuxtWelcome: typeof import("../node_modules/nuxt/dist/app/components/welcome.vue")['default']
 export const NuxtLayout: typeof import("../node_modules/nuxt/dist/app/components/nuxt-layout")['default']
@@ -58,6 +59,7 @@ export const LazyGridControls: LazyComponent<typeof import("../components/GridCo
 export const LazyGridMaker: LazyComponent<typeof import("../components/GridMaker.vue")['default']>
 export const LazyHeroSection: LazyComponent<typeof import("../components/HeroSection.vue")['default']>
 export const LazyImageCanvas: LazyComponent<typeof import("../components/ImageCanvas.vue")['default']>
+export const LazyPageGuide: LazyComponent<typeof import("../components/PageGuide.vue")['default']>
 export const LazyUploadArea: LazyComponent<typeof import("../components/UploadArea.vue")['default']>
 export const LazyNuxtWelcome: LazyComponent<typeof import("../node_modules/nuxt/dist/app/components/welcome.vue")['default']>
 export const LazyNuxtLayout: LazyComponent<typeof import("../node_modules/nuxt/dist/app/components/nuxt-layout")['default']>

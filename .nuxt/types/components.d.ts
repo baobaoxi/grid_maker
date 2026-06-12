@@ -24,6 +24,7 @@ interface _GlobalComponents {
   GridMaker: typeof import("../../components/GridMaker.vue")['default']
   HeroSection: typeof import("../../components/HeroSection.vue")['default']
   ImageCanvas: typeof import("../../components/ImageCanvas.vue")['default']
+  PageGuide: typeof import("../../components/PageGuide.vue")['default']
   UploadArea: typeof import("../../components/UploadArea.vue")['default']
   NuxtWelcome: typeof import("../../node_modules/nuxt/dist/app/components/welcome.vue")['default']
   NuxtLayout: typeof import("../../node_modules/nuxt/dist/app/components/nuxt-layout")['default']
@@ -58,6 +59,7 @@ interface _GlobalComponents {
   LazyGridMaker: LazyComponent<typeof import("../../components/GridMaker.vue")['default']>
   LazyHeroSection: LazyComponent<typeof import("../../components/HeroSection.vue")['default']>
   LazyImageCanvas: LazyComponent<typeof import("../../components/ImageCanvas.vue")['default']>
+  LazyPageGuide: LazyComponent<typeof import("../../components/PageGuide.vue")['default']>
   LazyUploadArea: LazyComponent<typeof import("../../components/UploadArea.vue")['default']>
   LazyNuxtWelcome: LazyComponent<typeof import("../../node_modules/nuxt/dist/app/components/welcome.vue")['default']>
   LazyNuxtLayout: LazyComponent<typeof import("../../node_modules/nuxt/dist/app/components/nuxt-layout")['default']>

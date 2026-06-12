@@ -124,6 +124,13 @@
       </div>
     </div>
 
+    <PageGuide 
+      title="Try Advanced Grid Tools"
+      description="Professional grid overlay tools with full customization. Features Rule of Thirds, Golden Ratio, Perspective guides, and more."
+      link-url="/advanced"
+      button-text="Go to Advanced"
+    />
+
     <AppFooter company="Photo Grid App" @navigate="handleFooterNavigate" />
   </div>
 </template>
@@ -132,6 +139,7 @@
 import { ref, watch, onMounted, nextTick } from 'vue'
 import AppNavbar from '~/components/AppNavbar.vue'
 import AppFooter from '~/components/AppFooter.vue'
+import PageGuide from '~/components/PageGuide.vue'
 
 useHead({
   title: 'Pixel Art Generator for Cross-Stitch Patterns',

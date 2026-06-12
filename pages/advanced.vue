@@ -140,6 +140,13 @@
       </div>
     </div>
     
+    <PageGuide 
+      title="Try Pixel Art Generator"
+      description="Convert your photos into pixel art for cross-stitch patterns. Customize colors, grid size, and download pattern guides."
+      link-url="/pixel-art"
+      button-text="Go to Pixel Art"
+    />
+    
     <AppFooter 
       company="Grid Maker"
       @navigate="handleNavigate"
@@ -151,6 +158,7 @@
 import { ref, reactive, watch, onMounted } from 'vue'
 import AppNavbar from '~/components/AppNavbar.vue'
 import AppFooter from '~/components/AppFooter.vue'
+import PageGuide from '~/components/PageGuide.vue'
 
 useHead({
   title: 'Advanced Online Grid Tool for Artists| Custom Photo Overlay.',
