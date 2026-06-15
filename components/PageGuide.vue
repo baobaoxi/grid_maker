@@ -3,7 +3,7 @@
     <a :href="linkUrl" :target="linkTarget" class="guide-link">
       <div class="guide-content">
         <div class="guide-image-wrapper">
-          <img v-if="imageUrl" :src="imageUrl" :alt="title" class="guide-image" />
+          <img v-if="imageUrl" :src="imageUrl" :alt="description" class="guide-image" />
           <div v-else class="guide-icon">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M9 18l6-6-6-6"/>
