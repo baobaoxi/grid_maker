@@ -139,13 +139,17 @@
         </div>
       </div>
     </div>
-    
-    <PageGuide 
-      title="Try Pixel Art Generator"
-      description="Convert your photos into pixel art for cross-stitch patterns. Customize colors, grid size, and download pattern guides."
-      link-url="/pixel-art"
-      button-text="Go to Pixel Art"
-    />
+    <div class="try-more">
+      <h2>Try Our Other Tools</h2>
+      <div class="try-more-box">
+        <PageGuide
+          description="Convert your photos into pixel art for cross-stitch patterns. Customize colors, grid size, and download pattern guides."
+          link-url="/pixel-art"
+          button-text="Go to Pixel Art"
+          image-url="https://6a1925960bc623d413aeb142.imgix.net/p.PNG"
+        />
+      </div>
+    </div>
     
     <AppFooter 
       company="Grid Maker"
@@ -648,7 +652,7 @@ onMounted(() => {
   display: grid;
   grid-template-columns: 320px 1fr;
   gap: 30px;
-  padding-bottom: 200px;
+  padding-bottom: 20px;
 }
 
 .sidebar {
@@ -1113,5 +1117,21 @@ input[type="color"] {
 
 .back-home:hover {
   color: #764ba2;
+}
+
+.try-more {
+  margin-top: 40px;
+}
+.try-more h2 {
+    text-align: center;
+    font-size: 2rem;
+    color: #1a1a2e;
+    margin-bottom: 40px;
+    font-weight: 700;
+}
+.try-more-box {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
 }
 </style>

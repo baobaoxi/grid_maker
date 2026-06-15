@@ -146,14 +146,19 @@
       :show-faq="true"
       :faq-items="pixelArtFaq"
     />
+    <div class="try-more">
+      <h2>Try Our Other Tools</h2>
+      <div class="try-more-box">
+        <PageGuide
+          description="Grid Maker, Create professional artwork with zero drawing skills."
+          link-url="/advanced"
+          button-text="Go to Advanced"
+          image-url="https://6a1925960bc623d413aeb142.imgix.net/jump.png"
+        />
+      </div>
+    </div>
 
-    <PageGuide 
-      title="Try Our Other Tools"
-      description="Grid Maker, Create professional artwork with zero drawing skills."
-      link-url="/advanced"
-      button-text="Go to Advanced"
-      image-url="https://6a1925960bc623d413aeb142.imgix.net/jump.png"
-    />
+   
 
     <AppFooter company="Photo Grid App" @navigate="handleFooterNavigate" />
   </div>
@@ -754,5 +759,20 @@ onMounted(() => {
   font-weight: 700;
   color: #1f2937;
   margin: 0;
+}
+.try-more {
+  margin-top: 40px;
+}
+.try-more h2 {
+    text-align: center;
+    font-size: 2rem;
+    color: #1a1a2e;
+    margin-bottom: 40px;
+    font-weight: 700;
+}
+.try-more-box {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
 }
 </style>
