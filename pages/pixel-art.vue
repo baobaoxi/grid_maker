@@ -85,7 +85,13 @@
 
         <div class="canvas-section">
           <div class="canvas-container" ref="containerRef">
-            <canvas v-if="currentImage" ref="canvasRef" class="pixel-canvas"></canvas>
+            <canvas v-if="currentImage && !isDefaultImage" ref="canvasRef" class="pixel-canvas"></canvas>
+            <img 
+              v-if="currentImage && isDefaultImage" 
+              :src="currentImage" 
+              class="pixel-canvas"
+              alt="Default pixel art preview"
+            />
             <div v-if="!currentImage" class="placeholder">
               <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
@@ -183,7 +189,8 @@ useHead({
   ]
 })
 
-const currentImage = ref<string>('')
+const currentImage = ref<string>('https://6a1925960bc623d413aeb142.imgix.net/p.PNG')
+const isDefaultImage = ref(true)
 const originalWidth = ref(0)
 const originalHeight = ref(0)
 const pixelSize = ref(15)
@@ -201,6 +208,7 @@ const handleImageUpload = (event: Event) => {
   const file = target.files?.[0]
   
   if (file) {
+    isDefaultImage.value = false
     const reader = new FileReader()
     reader.onload = (e) => {
       currentImage.value = e.target?.result as string
@@ -300,10 +308,14 @@ const drawPixelArt = (img?: HTMLImageElement) => {
   if (!ctx || !currentImage.value) return
   
   const sourceImg = img || new Image()
+  sourceImg.crossOrigin = 'anonymous'
   
   if (!img) {
     sourceImg.onload = () => {
       processImage(sourceImg)
+    }
+    sourceImg.onerror = () => {
+      console.error('Failed to load image:', currentImage.value)
     }
     sourceImg.src = currentImage.value
     return
@@ -441,9 +453,11 @@ watch([pixelSize, outputWidth, outputHeight, colorCount, showGrid], () => {
 })
 
 onMounted(() => {
-  if (currentImage.value) {
-    drawPixelArt()
-  }
+  nextTick(() => {
+    if (currentImage.value) {
+      drawPixelArt()
+    }
+  })
 })
 </script>
 
