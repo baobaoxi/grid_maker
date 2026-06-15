@@ -1,51 +1,53 @@
 <template>
   <div class="external-links">
     <div class="external-links-title">Featured Resources</div>
-    <div class="external-links-list">
-      <a 
-        v-for="link in textLinks" 
-        :key="link.url"
-        :href="link.url"
-        :title="link.title"
-        target="_blank"
-        rel="noopener noreferrer"
-        class="external-link"
-      >
-        {{ link.label }}
-      </a>
-    </div>
-    <div class="external-image-links">
-      <a 
-        v-for="link in imageLinks" 
-        :key="link.url"
-        :href="link.url"
-        :target="link.target"
-        :rel="link.rel"
-        class="external-image-link"
-      >
-        <img 
-          :src="link.imageSrc" 
-          :alt="link.alt" 
-          :width="link.width" 
-          :height="link.height"
-          class="external-image"
-        />
-      </a>
-      <!-- AgentWise SVG Badge -->
-      <a 
-        href="https://agentwise.org/agent/grid-maker" 
-        target="_blank" 
-        rel="noopener"
-        class="external-image-link"
-      >
-        <svg width="200" height="48" viewBox="0 0 200 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <rect width="200" height="48" rx="6" fill="#FFFFFF" stroke="#E5E7EB" stroke-width="1"/>
-          <circle cx="28" cy="24" r="14" fill="#2563eb"/>
-          <text x="28" y="29" font-family="Arial, sans-serif" font-size="14" font-weight="700" text-anchor="middle" fill="white">A</text>
-          <text x="54" y="22" font-family="system-ui, sans-serif" font-size="11" font-weight="500" fill="#6B7280">Featured on</text>
-          <text x="54" y="37" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#2563eb">AgentWise</text>
-        </svg>
-      </a>
+    <div class="links-container">
+      <div class="external-links-list">
+        <a 
+          v-for="link in textLinks" 
+          :key="link.url"
+          :href="link.url"
+          :title="link.title"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="external-link"
+        >
+          {{ link.label }}
+        </a>
+      </div>
+      <div class="external-image-links">
+        <a 
+          v-for="link in imageLinks" 
+          :key="link.url"
+          :href="link.url"
+          :target="link.target"
+          :rel="link.rel"
+          class="external-image-link"
+        >
+          <img 
+            :src="link.imageSrc" 
+            :alt="link.alt" 
+            :width="link.width" 
+            :height="link.height"
+            class="external-image"
+          />
+        </a>
+        <!-- AgentWise SVG Badge -->
+        <a 
+          href="https://agentwise.org/agent/grid-maker" 
+          target="_blank" 
+          rel="noopener"
+          class="external-image-link"
+        >
+          <svg width="200" height="48" viewBox="0 0 200 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect width="200" height="48" rx="6" fill="#FFFFFF" stroke="#E5E7EB" stroke-width="1"/>
+            <circle cx="28" cy="24" r="14" fill="#2563eb"/>
+            <text x="28" y="29" font-family="Arial, sans-serif" font-size="14" font-weight="700" text-anchor="middle" fill="white">A</text>
+            <text x="54" y="22" font-family="system-ui, sans-serif" font-size="11" font-weight="500" fill="#6B7280">Featured on</text>
+            <text x="54" y="37" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#2563eb">AgentWise</text>
+          </svg>
+        </a>
+      </div>
     </div>
   </div>
 </template>
@@ -202,11 +204,15 @@ const imageLinks = ref([
   margin-bottom: 12px;
 }
 
-.external-links-list {
+.links-container {
   display: flex;
-  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.external-links-list {
   gap: 16px;
   margin-bottom: 16px;
+  width: 50%;
 }
 
 .external-link {
@@ -214,6 +220,8 @@ const imageLinks = ref([
   text-decoration: none;
   font-size: 0.875rem;
   transition: color 0.2s ease;
+  margin-right: 10px;
+  display: inline-block;
 }
 
 .external-link:hover {
@@ -223,12 +231,16 @@ const imageLinks = ref([
 
 .external-image-links {
   margin-top: 16px;
+  width: 50%;
 }
 
 .external-image-link {
   display: inline-block;
   text-decoration: none;
   transition: transform 0.2s ease;
+  width: 100px;
+  height: 40px;
+  margin-right: 10px;
 }
 
 .external-image-link:hover {
