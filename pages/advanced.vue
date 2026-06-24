@@ -148,6 +148,12 @@
           button-text="Go to Pixel Art"
           image-url="https://6a1925960bc623d413aeb142.imgix.net/p.PNG"
         />
+        <PageGuide
+          description="Create portrait drawing grids from any photo. Perfect for learning realistic face drawing with customizable grid overlays."
+          link-url="/portrait-drawing-grid"
+          button-text="Portrait Grid"
+          image-url="https://6a1925960bc623d413aeb142.imgix.net/pp.PNG"
+        />
       </div>
     </div>
     

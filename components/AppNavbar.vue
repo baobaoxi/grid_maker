@@ -16,6 +16,7 @@
         <a href="/" :class="['nav-link', { active: currentPath === '/' }]">Home</a>
         <a href="/advanced" :class="['nav-link', { active: currentPath === '/advanced' }]">Advanced</a>
         <a href="/pixel-art" :class="['nav-link', { active: currentPath === '/pixel-art' }]">Pixel Art</a>
+        <a href="/portrait-drawing-grid" :class="['nav-link', { active: currentPath === '/portrait-drawing-grid' }]">Portrait Grid</a>
         <a href="/blog" :class="['nav-link', { active: currentPath === '/blog' }]">Blog</a>
       </div>
       
@@ -40,6 +41,7 @@
         <a href="/" class="dropdown-link" :class="{ active: currentPath === '/' }">Home</a>
         <a href="/advanced" class="dropdown-link" :class="{ active: currentPath === '/advanced' }">Advanced</a>
         <a href="/pixel-art" class="dropdown-link" :class="{ active: currentPath === '/pixel-art' }">Pixel Art</a>
+        <a href="/portrait-drawing-grid" class="dropdown-link" :class="{ active: currentPath === '/portrait-drawing-grid' }">Portrait Grid</a>
         <a href="/blog" class="dropdown-link" :class="{ active: currentPath === '/blog' }">Blog</a>
         <a href="/edit-grid" class="dropdown-link start-editing">Start Editing</a>
       </div>

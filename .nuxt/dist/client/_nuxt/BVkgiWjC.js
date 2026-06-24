@@ -1,0 +1,1 @@
+import{m as s,I as l,g as r,d as t,T as a}from"./C9dBI269.js";const n={class:"header"},c=s({__name:"AppHeader",props:{title:{default:"grid maker pro"},subtitle:{default:"Upload image and add customizable grid lines"}},setup(e){return(o,d)=>(l(),r("header",n,[t("h1",null,a(e.title),1),t("p",null,a(e.subtitle),1)]))}});export{c as _};
