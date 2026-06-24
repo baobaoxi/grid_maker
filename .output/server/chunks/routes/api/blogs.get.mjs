@@ -1,4 +1,4 @@
-import { b as defineEventHandler } from '../../nitro/nitro.mjs';
+import { d as defineEventHandler } from '../../nitro/nitro.mjs';
 import { d as dbConnect } from '../../_/connect.mjs';
 import { B as Blog } from '../../_/Blog.mjs';
 import 'node:http';

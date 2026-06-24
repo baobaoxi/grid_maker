@@ -36,7 +36,7 @@ function createNuxtApp(options) {
     globalName: "nuxt",
     versions: {
       get nuxt() {
-        return "3.21.6";
+        return "3.21.8";
       },
       get vue() {
         return nuxtApp.vueApp.version;
@@ -292,8 +292,8 @@ const navigateTo = (to, options) => {
       const location2 = isExternal ? toPath : joinURL((/* @__PURE__ */ useRuntimeConfig()).app.baseURL, fullPath);
       const redirect = async function(response) {
         await nuxtApp.callHook("app:redirected");
-        const encodedLoc = encodeForHtmlAttr(location2);
         const encodedHeader = encodeURL(location2, isExternalHost);
+        const encodedLoc = encodeForHtmlAttr(encodedHeader);
         nuxtApp.ssrContext["~renderResponse"] = {
           statusCode: sanitizeStatusCode(options?.redirectCode || 302, 302),
           body: `<!DOCTYPE html><html><head><meta http-equiv="refresh" content="0; url=${encodedLoc}"></head></html>`,
@@ -336,7 +336,8 @@ function resolveRouteObject(to) {
 function encodeURL(location2, isExternalHost = false) {
   const url = new URL(location2, "http://localhost");
   if (!isExternalHost) {
-    return url.pathname + url.search + url.hash;
+    const pathname = url.pathname.replace(/^\/{2,}/, "/");
+    return pathname + url.search + url.hash;
   }
   if (location2.startsWith("//")) {
     return url.toString().replace(url.protocol, "");
@@ -411,12 +412,12 @@ function toArray(value) {
 const matcher = (m, p) => {
   return [];
 };
-const _routeRulesMatcher = (path) => defu({}, ...matcher().map((r) => r.data).reverse());
+const _routeRulesMatcher = (path) => defu({}, ...matcher("", typeof path === "string" ? path.toLowerCase() : path).map((r) => r.data).reverse());
 const routeRulesMatcher = _routeRulesMatcher;
 function getRouteRules(arg) {
   const path = typeof arg === "string" ? arg : arg.path;
   try {
-    return routeRulesMatcher(path);
+    return routeRulesMatcher(path.toLowerCase());
   } catch (e) {
     console.error("[nuxt] Error matching route rules.", e);
     return {};
@@ -426,42 +427,42 @@ const _routes = [
   {
     name: "about",
     path: "/about",
-    component: () => import("./_nuxt/about-CckvxHXw.js")
+    component: () => import("./_nuxt/about-jsFIN83F.js")
   },
   {
     name: "index",
     path: "/",
-    component: () => import("./_nuxt/index-rv1xVznO.js")
+    component: () => import("./_nuxt/index-B0QmzUth.js")
   },
   {
     name: "terms",
     path: "/terms",
-    component: () => import("./_nuxt/terms-CK63ragK.js")
+    component: () => import("./_nuxt/terms-CY7zm4W3.js")
   },
   {
     name: "privacy",
     path: "/privacy",
-    component: () => import("./_nuxt/privacy-pe-HpCgR.js")
+    component: () => import("./_nuxt/privacy-NPyjLL2I.js")
   },
   {
     name: "advanced",
     path: "/advanced",
-    component: () => import("./_nuxt/advanced-DrT7g7e9.js")
+    component: () => import("./_nuxt/advanced-CnN48E4k.js")
   },
   {
     name: "edit-grid",
     path: "/edit-grid",
-    component: () => import("./_nuxt/edit-grid-DYvDgBvp.js")
+    component: () => import("./_nuxt/edit-grid-BJUc31m0.js")
   },
   {
     name: "pixel-art",
     path: "/pixel-art",
-    component: () => import("./_nuxt/pixel-art-C3_AmfI_.js")
+    component: () => import("./_nuxt/pixel-art-4UX6H56j.js")
   },
   {
     name: "blog",
     path: "/blog",
-    component: () => import("./_nuxt/index-DDugbR1p.js")
+    component: () => import("./_nuxt/index-Dhs6pkwN.js")
   },
   {
     name: "admin-blogs",
@@ -471,12 +472,17 @@ const _routes = [
   {
     name: "blog-slug",
     path: "/blog/:slug()",
-    component: () => import("./_nuxt/_slug_-CII19okm.js")
+    component: () => import("./_nuxt/_slug_-BhN30YXK.js")
   },
   {
     name: "perler-bead",
     path: "/perler-bead",
-    component: () => import("./_nuxt/perler-bead-BO1tfLzj.js")
+    component: () => import("./_nuxt/perler-bead-C-UIvHsh.js")
+  },
+  {
+    name: "portrait-drawing-grid",
+    path: "/portrait-drawing-grid",
+    component: () => import("./_nuxt/portrait-drawing-grid-cHid0gNe.js")
   }
 ];
 const ROUTE_KEY_PARENTHESES_RE = /(:\w+)\([^)]+\)/g;
@@ -601,7 +607,8 @@ const globalMiddleware = [
   manifest_45route_45rule
 ];
 const namedMiddleware = {};
-const pageIslandRoutes = {};
+Object.assign(/* @__PURE__ */ Object.create(null), {});
+const pageIslandRoutes = Object.assign(/* @__PURE__ */ Object.create(null), {});
 const plugin = /* @__PURE__ */ defineNuxtPlugin({
   name: "nuxt:router",
   enforce: "pre",
@@ -983,8 +990,8 @@ const _sfc_main$1 = {
     const statusText = _error.statusMessage ?? (is404 ? "Page Not Found" : "Internal Server Error");
     const description = _error.message || _error.toString();
     const stack = void 0;
-    const _Error404 = defineAsyncComponent(() => import("./_nuxt/error-404-BUqyK4QR.js"));
-    const _Error = defineAsyncComponent(() => import("./_nuxt/error-500-BxToTYri.js"));
+    const _Error404 = defineAsyncComponent(() => import("./_nuxt/error-404-57pIro2T.js"));
+    const _Error = defineAsyncComponent(() => import("./_nuxt/error-500-h2-N93J2.js"));
     const ErrorTemplate = is404 ? _Error404 : _Error;
     return (_ctx, _push, _parent, _attrs) => {
       _push(ssrRenderComponent(unref(ErrorTemplate), mergeProps({ status: unref(status), statusText: unref(statusText), statusCode: unref(status), statusMessage: unref(statusText), description: unref(description), stack: unref(stack) }, _attrs), null, _parent));
@@ -1076,18 +1083,18 @@ let entry;
 }
 const entry_default = ((ssrContext) => entry(ssrContext));
 export {
-  asyncDataDefaults as a,
-  nuxtLinkDefaults as b,
-  createError as c,
-  useNuxtApp as d,
+  useNuxtApp as a,
+  useRuntimeConfig as b,
+  nuxtLinkDefaults as c,
+  useHead as d,
   entry_default as default,
   encodeRoutePath as e,
-  fetchDefaults as f,
-  useRoute as g,
-  useRouter as h,
-  useRuntimeConfig as i,
+  asyncDataDefaults as f,
+  createError as g,
+  fetchDefaults as h,
+  useRoute as i,
   navigateTo as n,
   resolveRouteObject as r,
-  useHead as u
+  useRouter as u
 };
 //# sourceMappingURL=server.mjs.map

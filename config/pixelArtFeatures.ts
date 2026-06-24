@@ -10,6 +10,7 @@ export interface GuideSection {
 }
 
 export const pixelArtGuide: GuideSection = {
+  id: 'pixel-art-guide',
   title: 'How to generate pixel art images',
   steps: [
     {
@@ -70,6 +71,10 @@ export const pixelArtFaq = [
   }
 ]
 
+export interface FeatureItem {
+  label: string
+}
+
 export interface FeatureSection {
   id: string
   title: string
@@ -120,3 +125,8 @@ export const pixelArtFeatures: FeatureSection[] = [
     ]
   }
 ]
+
+// Perler bead page aliases
+export const perlerBeadFeatures = pixelArtFeatures
+export const perlerBeadGuide = pixelArtGuide
+export const perlerBeadFaq = pixelArtFaq

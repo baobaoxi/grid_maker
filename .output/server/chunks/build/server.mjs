@@ -1,5 +1,5 @@
 import process from 'node:process';globalThis._importMeta_=globalThis._importMeta_||{url:"file:///_entry.js",env:process.env};import { hasInjectionContext, inject, getCurrentInstance, defineComponent, ref, h, Suspense, Fragment, useSSRContext, createApp, provide, shallowReactive, onErrorCaptured, onServerPrefetch, unref, createVNode, resolveDynamicComponent, reactive, effectScope, defineAsyncComponent, mergeProps, getCurrentScope, toRef, shallowRef, isReadonly, isRef, isShallow, isReactive, toRaw } from 'vue';
-import { c as createError$1, t as parseURL, g as encodePath, d as decodePath, n as hasProtocol, o as isScriptProtocol, q as joinURL, y as withQuery, v as sanitizeStatusCode, i as getContext, $ as $fetch, a as createHooks, h as executeAsync, f as defu } from '../nitro/nitro.mjs';
+import { p as parseURL, e as encodePath, k as decodePath, c as createError$1, l as hasProtocol, m as isScriptProtocol, n as joinURL, w as withQuery, s as sanitizeStatusCode, o as getContext, $ as $fetch, q as createHooks, t as executeAsync, v as defu } from '../nitro/nitro.mjs';
 import { u as useHead$1, h as headSymbol, b as baseURL } from '../routes/renderer.mjs';
 import { RouterView, createMemoryHistory, createRouter, START_LOCATION } from 'vue-router';
 import { ssrRenderComponent, ssrRenderSuspense, ssrRenderVNode } from 'vue/server-renderer';
@@ -44,7 +44,7 @@ function createNuxtApp(options) {
     globalName: "nuxt",
     versions: {
       get nuxt() {
-        return "3.21.6";
+        return "3.21.8";
       },
       get vue() {
         return nuxtApp.vueApp.version;
@@ -300,8 +300,8 @@ const navigateTo = (to, options) => {
       const location2 = isExternal ? toPath : joinURL((/* @__PURE__ */ useRuntimeConfig()).app.baseURL, fullPath);
       const redirect = async function(response) {
         await nuxtApp.callHook("app:redirected");
-        const encodedLoc = encodeForHtmlAttr(location2);
         const encodedHeader = encodeURL(location2, isExternalHost);
+        const encodedLoc = encodeForHtmlAttr(encodedHeader);
         nuxtApp.ssrContext["~renderResponse"] = {
           statusCode: sanitizeStatusCode(options?.redirectCode || 302, 302),
           body: `<!DOCTYPE html><html><head><meta http-equiv="refresh" content="0; url=${encodedLoc}"></head></html>`,
@@ -344,7 +344,8 @@ function resolveRouteObject(to) {
 function encodeURL(location2, isExternalHost = false) {
   const url = new URL(location2, "http://localhost");
   if (!isExternalHost) {
-    return url.pathname + url.search + url.hash;
+    const pathname = url.pathname.replace(/^\/{2,}/, "/");
+    return pathname + url.search + url.hash;
   }
   if (location2.startsWith("//")) {
     return url.toString().replace(url.protocol, "");
@@ -419,12 +420,12 @@ function toArray(value) {
 const matcher = (m, p) => {
   return [];
 };
-const _routeRulesMatcher = (path) => defu({}, ...matcher().map((r) => r.data).reverse());
+const _routeRulesMatcher = (path) => defu({}, ...matcher("", typeof path === "string" ? path.toLowerCase() : path).map((r) => r.data).reverse());
 const routeRulesMatcher = _routeRulesMatcher;
 function getRouteRules(arg) {
   const path = typeof arg === "string" ? arg : arg.path;
   try {
-    return routeRulesMatcher(path);
+    return routeRulesMatcher(path.toLowerCase());
   } catch (e) {
     console.error("[nuxt] Error matching route rules.", e);
     return {};
@@ -434,42 +435,42 @@ const _routes = [
   {
     name: "about",
     path: "/about",
-    component: () => import('./about-CckvxHXw.mjs')
+    component: () => import('./about-jsFIN83F.mjs')
   },
   {
     name: "index",
     path: "/",
-    component: () => import('./index-rv1xVznO.mjs')
+    component: () => import('./index-B0QmzUth.mjs')
   },
   {
     name: "terms",
     path: "/terms",
-    component: () => import('./terms-CK63ragK.mjs')
+    component: () => import('./terms-CY7zm4W3.mjs')
   },
   {
     name: "privacy",
     path: "/privacy",
-    component: () => import('./privacy-pe-HpCgR.mjs')
+    component: () => import('./privacy-NPyjLL2I.mjs')
   },
   {
     name: "advanced",
     path: "/advanced",
-    component: () => import('./advanced-DrT7g7e9.mjs')
+    component: () => import('./advanced-CnN48E4k.mjs')
   },
   {
     name: "edit-grid",
     path: "/edit-grid",
-    component: () => import('./edit-grid-DYvDgBvp.mjs')
+    component: () => import('./edit-grid-BJUc31m0.mjs')
   },
   {
     name: "pixel-art",
     path: "/pixel-art",
-    component: () => import('./pixel-art-C3_AmfI_.mjs')
+    component: () => import('./pixel-art-4UX6H56j.mjs')
   },
   {
     name: "blog",
     path: "/blog",
-    component: () => import('./index-DDugbR1p.mjs')
+    component: () => import('./index-Dhs6pkwN.mjs')
   },
   {
     name: "admin-blogs",
@@ -479,12 +480,17 @@ const _routes = [
   {
     name: "blog-slug",
     path: "/blog/:slug()",
-    component: () => import('./_slug_-CII19okm.mjs')
+    component: () => import('./_slug_-BhN30YXK.mjs')
   },
   {
     name: "perler-bead",
     path: "/perler-bead",
-    component: () => import('./perler-bead-BO1tfLzj.mjs')
+    component: () => import('./perler-bead-C-UIvHsh.mjs')
+  },
+  {
+    name: "portrait-drawing-grid",
+    path: "/portrait-drawing-grid",
+    component: () => import('./portrait-drawing-grid-cHid0gNe.mjs')
   }
 ];
 const ROUTE_KEY_PARENTHESES_RE = /(:\w+)\([^)]+\)/g;
@@ -609,7 +615,8 @@ const globalMiddleware = [
   manifest_45route_45rule
 ];
 const namedMiddleware = {};
-const pageIslandRoutes = {};
+Object.assign(/* @__PURE__ */ Object.create(null), {});
+const pageIslandRoutes = Object.assign(/* @__PURE__ */ Object.create(null), {});
 const plugin = /* @__PURE__ */ defineNuxtPlugin({
   name: "nuxt:router",
   enforce: "pre",
@@ -991,8 +998,8 @@ const _sfc_main$1 = {
     const statusText = _error.statusMessage ?? (is404 ? "Page Not Found" : "Internal Server Error");
     const description = _error.message || _error.toString();
     const stack = void 0;
-    const _Error404 = defineAsyncComponent(() => import('./error-404-BUqyK4QR.mjs'));
-    const _Error = defineAsyncComponent(() => import('./error-500-BxToTYri.mjs'));
+    const _Error404 = defineAsyncComponent(() => import('./error-404-57pIro2T.mjs'));
+    const _Error = defineAsyncComponent(() => import('./error-500-h2-N93J2.mjs'));
     const ErrorTemplate = is404 ? _Error404 : _Error;
     return (_ctx, _push, _parent, _attrs) => {
       _push(ssrRenderComponent(unref(ErrorTemplate), mergeProps({ status: unref(status), statusText: unref(statusText), statusCode: unref(status), statusMessage: unref(statusText), description: unref(description), stack: unref(stack) }, _attrs), null, _parent));
@@ -1084,5 +1091,5 @@ let entry;
 }
 const entry_default = ((ssrContext) => entry(ssrContext));
 
-export { asyncDataDefaults as a, nuxtLinkDefaults as b, createError as c, useNuxtApp as d, entry_default as default, encodeRoutePath as e, fetchDefaults as f, useRoute as g, useRouter as h, useRuntimeConfig as i, navigateTo as n, resolveRouteObject as r, useHead as u };
+export { useNuxtApp as a, useRuntimeConfig as b, nuxtLinkDefaults as c, useHead as d, entry_default as default, encodeRoutePath as e, asyncDataDefaults as f, createError as g, fetchDefaults as h, useRoute as i, navigateTo as n, resolveRouteObject as r, useRouter as u };
 //# sourceMappingURL=server.mjs.map
