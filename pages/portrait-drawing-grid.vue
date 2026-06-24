@@ -104,7 +104,7 @@
             </div>
           </div>
           
-          <div v-if="currentImage" class="compare-section">
+          <div v-if="hasUploadedImage" class="compare-section">
             <div>Compare</div>
             <div class="compare-images">
               <div class="compare-item">
@@ -206,6 +206,7 @@
         <div class="try-more-box">
           <PageGuide 
             title="Advanced Grid Maker"
+            subtitle="Advanced"
             description="Create professional artwork with zero drawing skills. Customizable grid overlays for any image." 
             imageUrl="https://6a1925960bc623d413aeb142.imgix.net/jump.png"
             linkUrl="/advanced"
@@ -213,6 +214,7 @@
           />
           <PageGuide 
             title="Pixel Art Generator"
+            subtitle="Pixel Art"
             description="Turn any image into stunning pixel art in seconds. Customizable pixel size and retro styles." 
             imageUrl="https://6a1925960bc623d413aeb142.imgix.net/p.PNG"
             linkUrl="/pixel-art"
@@ -220,9 +222,9 @@
           />
         </div>
       </div>
-
-      <AppFooter></AppFooter>
     </div>
+
+    <AppFooter></AppFooter>
   </div>
 </template>
 
@@ -243,6 +245,7 @@ useHead({
 })
 
 const currentImage = ref<string>('https://6a1925960bc623d413aeb142.imgix.net/pp.PNG')
+const hasUploadedImage = ref(false)
 const gridSize = ref(6)
 const gridColor = ref('#ff6b6b')
 const gridThickness = ref(2)
@@ -276,6 +279,7 @@ const handleImageUpload = (event: Event) => {
     const reader = new FileReader()
     reader.onload = (e) => {
       currentImage.value = e.target?.result as string
+      hasUploadedImage.value = true
       nextTick(() => {
         drawGrid()
       })

@@ -144,12 +144,14 @@
       <div class="try-more-box">
         <PageGuide
           description="Convert your photos into pixel art for cross-stitch patterns. Customize colors, grid size, and download pattern guides."
+          subtitle="Pixel Art"
           link-url="/pixel-art"
           button-text="Go to Pixel Art"
           image-url="https://6a1925960bc623d413aeb142.imgix.net/p.PNG"
         />
         <PageGuide
           description="Create portrait drawing grids from any photo. Perfect for learning realistic face drawing with customizable grid overlays."
+          subtitle="Portrait Grid"
           link-url="/portrait-drawing-grid"
           button-text="Portrait Grid"
           image-url="https://6a1925960bc623d413aeb142.imgix.net/pp.PNG"

@@ -159,6 +159,7 @@
       <div class="try-more-box">
         <PageGuide
           title="Pixel Art Generator"
+          subtitle="Pixel Art"
           description="Convert photos to pixel art for cross-stitch patterns."
           link-url="/pixel-art"
           button-text="Go to Pixel Art"

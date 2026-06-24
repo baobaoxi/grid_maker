@@ -10,6 +10,7 @@
             </svg>
           </div>
         </div>
+        <h3 v-if="subtitle" class="guide-subtitle">{{ subtitle }}</h3>
         <div class="guide-text">
           <p>{{ description }}</p>
         </div>
@@ -23,6 +24,10 @@ defineProps({
   description: {
     type: String,
     required: true
+  },
+  subtitle: {
+    type: String,
+    default: ''
   },
   linkUrl: {
     type: String,
@@ -101,6 +106,14 @@ defineProps({
   font-size: 1.3rem;
   font-weight: 700;
   color: #1f2937;
+  text-align: center;
+}
+
+.guide-subtitle {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #667eea;
   text-align: center;
 }
 
