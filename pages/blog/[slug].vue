@@ -30,6 +30,27 @@
 
         <div class="article-content" v-html="post.content"></div>
       </article>
+
+      <!-- 推荐文章 -->
+      <section v-if="recommendedPosts.length > 0" class="recommended-posts">
+        <h3>Recommended Articles</h3>
+        <div class="recommended-grid">
+          <a
+            v-for="recommendedPost in recommendedPosts"
+            :key="recommendedPost._id || recommendedPost.id"
+            :href="`/blog/${recommendedPost.slug}`"
+            class="recommended-card"
+          >
+            <div class="recommended-image">
+              <img :src="recommendedPost.image" :alt="recommendedPost.title" />
+            </div>
+            <div class="recommended-content">
+              <h4>{{ recommendedPost.title }}</h4>
+              <p class="recommended-excerpt">{{ recommendedPost.excerpt }}</p>
+            </div>
+          </a>
+        </div>
+      </section>
     </main>
 
     <AppFooter company="Photo Grid App" @navigate="handleNavigate" />
@@ -50,6 +71,8 @@ useHead({
 const loading = ref(true)
 const error = ref(false)
 const post = ref(null)
+const recommendedPosts = ref([])
+const allPosts = ref([])
 
 async function fetchBlog() {
   loading.value = true
@@ -58,10 +81,16 @@ async function fetchBlog() {
   try {
     const res = await $fetch('/api/blogs')
     if (res.success && res.data) {
+      const allPosts = res.data
       const slug = route.params.slug
       post.value = res.data.find(b => b.slug === slug)
       if (!post.value) {
         error.value = true
+      } else {
+        const otherPosts = allPosts.filter(p => p.slug !== post.value.slug)
+        const shuffled = otherPosts.sort(() => 0.5 - Math.random())
+        const count = Math.min(Math.max(3, shuffled.length), 5)
+        recommendedPosts.value = shuffled.slice(0, count)
       }
     } else {
       error.value = true
@@ -256,6 +285,97 @@ watch(() => route.params.slug, () => {
 
 .article-content :deep(a) {
   color: #4c99e6 !important;
+}
+
+/* 推荐文章样式 */
+.recommended-posts {
+  max-width: 800px;
+  margin: 60px auto 0;
+  padding: 0 20px;
+}
+
+.recommended-posts h3 {
+  font-size: 1.5rem;
+  color: #1a1a2e;
+  margin-bottom: 24px;
+  text-align: center;
+}
+
+.recommended-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.recommended-card {
+  display: flex;
+  flex-direction: row;
+  width: calc(50% - 8px);
+  background: white;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  text-decoration: none;
+}
+
+.recommended-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.recommended-image {
+  width: 100px;
+  height: 100%;
+  flex-shrink: 0;
+  overflow: hidden;
+  display: flex;
+  text-align: center;
+  font-size: 0;
+}
+
+.recommended-image img {
+  width: auto;
+  max-width: 100%;
+  height: auto;
+  max-height: 100%;
+  vertical-align: middle;
+  transition: transform 0.2s ease;
+}
+
+.recommended-card:hover .recommended-image img {
+  transform: scale(1.03);
+}
+
+.recommended-content {
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.recommended-content h4 {
+  font-size: 0.85rem;
+  color: #1a1a2e;
+  margin: 0 0 4px 0;
+  line-height: 1.3;
+}
+
+.recommended-excerpt {
+  font-size: 0.75rem;
+  color: #666;
+  margin: 0;
+  line-height: 1.3;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+@media (max-width: 600px) {
+  .recommended-card {
+    width: 100%;
+  }
 }
 
 @media (max-width: 768px) {
