@@ -27,6 +27,13 @@
     <priority>0.9</priority>
   </url>
   
+  <url>
+    <loc>https://grid-maker.pro/portrait-drawing-grid</loc>
+    <lastmod>2026-06-26</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  
   <!-- 工具页面 -->
   <url>
     <loc>https://grid-maker.pro/edit-grid</loc>
@@ -60,13 +67,6 @@
   <!-- 博客首页 -->
   <url>
     <loc>https://grid-maker.pro/blog</loc>
-    <lastmod>2026-05-28</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-
-  <url>
-    <loc>https://grid-maker.pro/portrait-drawing-grid</loc>
     <lastmod>2026-05-28</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
