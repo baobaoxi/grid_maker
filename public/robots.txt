@@ -23,3 +23,12 @@ Allow: /terms
 Allow: /advanced
 Allow: /pixel-art
 Allow: /edit-grid
+Allow: /portrait-drawing-grid
+Allow: /blog/Overcoming-the-Lopsided-Face-Syndrome-The-Ultimate-Tool-for-Flawless-Portraits
+Allow: /blog/Mastering-Proportions-How-the-Portrait-Drawing-Grid-Can-Transform-Your-Art
+Allow: /blog/Top-7-Grid-Apps-and-Online-Grid-Makers-for-Artists
+Allow: /blog/Pixel-Art-&-Grid-Art-Guide-How-to-Create-Gridded-Art-and-Square-Drawings
+Allow: /blog/How-to-Master-Portrait-Drawing-Using-the-Grid-Method-Sketch-Faces-Accurately
+Allow: /blog/Free-Printable-Grid-Drawing-Templates-&-Transparent-Grid-Lines-PNG-Download
+Allow: /blog/How-To-Guide-for-Putting-a-Grid-on-a-Photo
+Allow: blog/The-Ultimate-Guide-to-Grid-Drawing
